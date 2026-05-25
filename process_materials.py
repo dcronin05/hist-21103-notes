@@ -306,6 +306,10 @@ def clean_html_content(body):
     if not body:
         return ""
         
+    # Strip duplicate/broken headers at the top
+    body = re.sub(r'^Christopher Columbus Biography \[\s*# 123Holiday\.net\s*\]\([^)]+\)\s*', '', body)
+    body = re.sub(r'^## Christopher Columbus Biography\s*', '', body)
+        
     # Strip trailing navigation menu/links (e.g. starting with "### Menu" or "### Network")
     for menu_pattern in ["### Menu", "### Network", "### Navigation", "### Share"]:
         idx = body.find(menu_pattern)
@@ -324,6 +328,10 @@ def clean_html_content(body):
     # Clean up double spacing and multiple line breaks
     body = re.sub(r'\n{3,}', '\n\n', body)
     body = re.sub(r' +', ' ', body)
+    
+    # Clean up spaces before punctuation (e.g., "Sea ." -> "Sea.")
+    body = re.sub(r' +([.,;:!?])', r'\1', body)
+    
     return body.strip()
 
 def extract_html_text(path):
