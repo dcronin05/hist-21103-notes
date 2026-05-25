@@ -37,6 +37,8 @@ Course assignments, essays, and prompts:
   - [Columbus Essay Video Lecture Notes](./assignments/columbus_essay_video_notes.md) (Auto-Generated Transcript)
 - **[Essay Two: Colonial Settlement](./assignments/essay_02_colonial_settlement_prompt.md)** (Worth 25 points)
   - [Colonial Settlement Video Lecture Notes](./assignments/colonial_settlement_video_notes.md) (Auto-Generated Transcript)
+- **[Essay Three: The Great Reforms](./assignments/essay_03_great_reforms_prompt.md)** (Worth 25 points)
+  - [Great Reforms Video Lecture Notes](./assignments/great_reforms_video_notes.md) (Auto-Generated Transcript)
 
 ### [Readings](./readings/)
 
@@ -71,4 +73,6 @@ Preserved media resources linked throughout the wiki:
 - **[Colonial Settlement Map](./media/growth-of-colonial-settlement.jpg)** (Embedded in Essay Two prompt)
 - **[Colonial Settlement Video Lecture](./media/GMT20250527-152216_Recording_1920x924.mp4)** (Linked in Essay Two prompt)
 - **[Colonial Settlement Audio Recording](./media/GMT20250527-152216_Recording.m4a)** (Linked in Essay Two prompt)
+- **[Great Reforms Video Lecture](./media/GMT20250528-145401_Recording_1280x720.mp4)** (Linked in Essay Three prompt)
+- **[Great Reforms Audio Recording](./media/GMT20250528-145401_Recording.m4a)** (Linked in Essay Three prompt)
 
