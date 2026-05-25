@@ -14,7 +14,7 @@ United States History to 1877
 Online Course
 Dr. Jim Ross
 
-Contact information 
+Contact information
 
 Phone: 501-569-8395
 Email: Message on Blackboard
@@ -25,7 +25,7 @@ This course provides a broad overview of United States history from the 16th cen
 
 Required Text:
 
-*   [James Horn, 1619: Jamestown and the Founding of American Democracy](./readings/1619_jamestown_and_the_founding_of_american_democracy.md)
+- [James Horn, 1619: Jamestown and the Founding of American Democracy](./readings/1619_jamestown_and_the_founding_of_american_democracy.md)
 
 I have provided a PDF file in Blackboard for this book
 
@@ -33,10 +33,10 @@ I do not require the traditional textbook, and we will have no assignments based
 
 Requirements for the course:
 
-To pass this class you will need to do the following:	
+To pass this class you will need to do the following:
 
-*   **6 Essays** worth 50 points each: A 2-3 page essay on the topic assigned. These essays should be double spaced and in 12-point font.
-*   **6 Book short essays** on the James Horn book: These are worth 25 points each (1-2 pages).
+- **6 Essays** worth 50 points each: A 2-3 page essay on the topic assigned. These essays should be double spaced and in 12-point font.
+- **6 Book short essays** on the James Horn book: These are worth 25 points each (1-2 pages).
 
 Email:
 
@@ -52,17 +52,17 @@ If you are the type of person who needs a schedule, I would say you should do 2-
 
 STUDENT LEARNING OBJECTIVES - CORE COURSES
 
-*   Students will demonstrate knowledge of historical information such as names, dates and chronologies, events, terms, and concepts.
-*   Students will demonstrate an understanding of the diversity and complexity of the historical context that shapes human experience.
-*   Students will demonstrate an understanding of the inter-relatedness of historical events as expressed in such concepts as continuity and change, causation, interdependence of cultures, and the interaction between differing groups and societies.
-*   Students will organize and articulate their ideas through an essay that presents a thesis relevant to the question.
-*   Students will support their ideas with historical evidence and will reach conclusions based on that evidence.
+- Students will demonstrate knowledge of historical information such as names, dates and chronologies, events, terms, and concepts.
+- Students will demonstrate an understanding of the diversity and complexity of the historical context that shapes human experience.
+- Students will demonstrate an understanding of the inter-relatedness of historical events as expressed in such concepts as continuity and change, causation, interdependence of cultures, and the interaction between differing groups and societies.
+- Students will organize and articulate their ideas through an essay that presents a thesis relevant to the question.
+- Students will support their ideas with historical evidence and will reach conclusions based on that evidence.
 
-UALR statement on plagiarism and academic dishonesty 
+UALR statement on plagiarism and academic dishonesty
 
-All of your work must reflect your own thoughts, words, opinions, and efforts. 
+All of your work must reflect your own thoughts, words, opinions, and efforts.
 
-Academic dishonesty of any kind will not be tolerated in this class, may be reported to the Office of the Dean of Students, and could result in a failing grade on the assignment, in the class, and/or harsher penalties. If you are unclear about what constitutes academic dishonesty, please ask me. 
+Academic dishonesty of any kind will not be tolerated in this class, may be reported to the Office of the Dean of Students, and could result in a failing grade on the assignment, in the class, and/or harsher penalties. If you are unclear about what constitutes academic dishonesty, please ask me.
 
 Policy on Artificial Intelligence (AI) Use in Writing Assignments
 
@@ -72,11 +72,11 @@ Essay writing is a fundamental part of developing your critical thinking skills.
 
 Relying on AI to generate ideas or write essays short-circuits the thinking process and undermines the purpose of this class. Our goal is not just to reach the right answer, but to learn how to think independently and analytically.
 
-UALR statement on students with disabilities 
+UALR statement on students with disabilities
 
-Students with Disabilities: It is the policy of the University of Arkansas at Little Rock to create inclusive learning environments. If there are aspects of the instruction or design of this course that result in barriers to your inclusion or to accurate assessment of achievement–such as time-limited exams, inaccessible web content, or the use of non-captioned videos–please notify the instructor as soon as possible. Students are also welcome to contact the Disability Resource Center, telephone 501-569-3143 (v/tty). For more information, visit the DRC website at http://ualr.edu/disability/.
+Students with Disabilities: It is the policy of the University of Arkansas at Little Rock to create inclusive learning environments. If there are aspects of the instruction or design of this course that result in barriers to your inclusion or to accurate assessment of achievement–such as time-limited exams, inaccessible web content, or the use of non-captioned videos–please notify the instructor as soon as possible. Students are also welcome to contact the Disability Resource Center, telephone 501-569-3143 (v/tty). For more information, visit the DRC website at [http\://ualr.edu/disability/](http://ualr.edu/disability/).
 
-The UALR policy statement on web accessibility 
+The UALR policy statement on web accessibility
 
 It is the policy and practice of UALR to make all web information accessible to students with disabilities. If you, as a student with a disability, have difficulty accessing any part of any online course materials for this class, please notify the instructor immediately.
 

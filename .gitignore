@@ -33,3 +33,6 @@ pip-delete-this-directory.txt
 # Scratch scripts or temporary logs created during parsing
 scratch/
 *.log
+
+# Course raw and processed binary sources
+sources/

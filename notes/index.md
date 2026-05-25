@@ -33,7 +33,15 @@ Notes, lectures, and summaries organized by week or module:
 
 Summaries and insights from assigned course readings:
 
-- *(No readings processed yet. Key book: "1619: Jamestown and the Founding of American Democracy" by James Horn)*
+- **[1619: Jamestown and the Founding of American Democracy](./readings/1619_jamestown_and_the_founding_of_american_democracy.md)** by James Horn
+  - [Introduction](./readings/1619/introduction.md)
+  - [Chapter 1: Jamestown](./readings/1619/chapter_01.md)
+  - [Chapter 2: The Great Reforms](./readings/1619/chapter_02.md)
+  - [Chapter 3: First Africans](./readings/1619/chapter_03.md)
+  - [Chapter 4: Commonwealth](./readings/1619/chapter_04.md)
+  - [Chapter 5: Tumult and Liberty](./readings/1619/chapter_05.md)
+  - [Chapter 6: Inequality and Freedom](./readings/1619/chapter_06.md)
+  - [Epilogue: After 1619](./readings/1619/epilogue.md)
 
 ### 💡 [Concepts](./concepts/)
 
