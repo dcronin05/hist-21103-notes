@@ -8,8 +8,6 @@ tags:
   - syllabus
 ---
 
-[← Back to Wiki Home](./index.md)
-
 # Syllabus
 
 United States History to 1877
@@ -85,7 +83,3 @@ It is the policy and practice of UALR to make all web information accessible to 
 Weather Policy:
 
 UALR closes for inclement weather when the Little Rock public schools close. If UALR is open yet the roads in your community are dangerous, you should use your own judgment about attending class. However, it is your responsibility to inform your instructor that it is too dangerous for you to travel to Little Rock before class meets. It is also your responsibility to speak to the instructor about making up missed work.
-
-***
-
-[← Back to Wiki Home](./index.md)

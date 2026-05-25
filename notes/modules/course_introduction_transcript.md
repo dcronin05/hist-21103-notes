@@ -10,8 +10,6 @@ tags:
   - introduction
 ---
 
-[← Back to Wiki Home](../index.md)
-
 # Course Introduction Transcript
 
 **Professor James Ross:**
@@ -67,7 +65,3 @@ I want you to leave here with an understanding of American history and how we de
 Because we have access to so many forms of information on our phones and computers, we sometimes get overwhelmed and are willing to believe anything. We're going to try to move beyond the conspiracy mindset and simplistic explanations. We're going to get deep into who were the people who settled here, what did they create, how did they create it, and what does it all mean.
 
 I hope you find it enjoyable. Start turning in stuff and I'll start grading. Let me know if you have questions. I am a little bit behind on some of the videos, but I'll be posting those in the coming days. Thank you very much.
-
----
-
-[← Back to Wiki Home](../index.md)
