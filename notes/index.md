@@ -39,6 +39,15 @@ Course assignments, essays, and prompts:
   - [Colonial Settlement Video Lecture Notes](./assignments/colonial_settlement_video_notes.md) (Auto-Generated Transcript)
 - **[Essay Three: The Great Reforms](./assignments/essay_03_great_reforms_prompt.md)** (Worth 25 points)
   - [Great Reforms Video Lecture Notes](./assignments/great_reforms_video_notes.md) (Auto-Generated Transcript)
+- **[Essay Four: First Africans](./assignments/essay_04_first_africans_prompt.md)** (Worth 25 points)
+  - [First Africans Video Lecture Notes](./assignments/first_africans_video_notes.md) (Auto-Generated Transcript)
+- **[Essay Five: Commonwealth](./assignments/essay_05_commonwealth_prompt.md)** (Worth 25 points)
+  - [Commonwealth Video Lecture Notes](./assignments/commonwealth_video_notes.md) (Auto-Generated Transcript)
+- **[Essay Six: Tumult and Liberty](./assignments/essay_06_tumult_and_liberty_prompt.md)** (Worth 25 points)
+  - [Tumult and Liberty Video Lecture Notes](./assignments/tumult_and_liberty_video_notes.md) (Auto-Generated Transcript)
+- **[Essay Seven: Inequality and Freedom](./assignments/essay_07_inequality_and_freedom_prompt.md)** (Worth 25 points)
+  - [Inequality and Freedom Video Lecture Notes](./assignments/inequality_and_freedom_video_notes.md) (Auto-Generated Transcript)
+
 
 ### [Readings](./readings/)
 
@@ -75,4 +84,9 @@ Preserved media resources linked throughout the wiki:
 - **[Colonial Settlement Audio Recording](./media/GMT20250527-152216_Recording.m4a)** (Linked in Essay Two prompt)
 - **[Great Reforms Video Lecture](./media/GMT20250528-145401_Recording_1280x720.mp4)** (Linked in Essay Three prompt)
 - **[Great Reforms Audio Recording](./media/GMT20250528-145401_Recording.m4a)** (Linked in Essay Three prompt)
+- **[First Africans Video Lecture](./media/Horn, Chapter 3.mov)** (Linked in Essay Four prompt)
+- **[Commonwealth Video Lecture](./media/Horn Book Chapter 4.mov)** (Linked in Essay Five prompt)
+- **[Tumult and Liberty Video Lecture](./media/Horn, Chapter 5.mov)** (Linked in Essay Six prompt)
+- **[Inequality and Freedom Video Lecture](./media/GMT20250529-144810_Recording_1280x720.mp4)** (Linked in Essay Seven prompt)
+- **[Inequality and Freedom Audio Recording](./media/GMT20250529-144810_Recording.m4a)** (Linked in Essay Seven prompt)
 
