@@ -35,6 +35,8 @@ Course assignments, essays, and prompts:
 
 - **[Essay One: Columbus](./assignments/essay_01_columbus_prompt.md)** (Due: May 31, 2026)
   - [Columbus Essay Video Lecture Notes](./assignments/columbus_essay_video_notes.md) (Auto-Generated Transcript)
+- **[Essay Two: Colonial Settlement](./assignments/essay_02_colonial_settlement_prompt.md)** (Worth 25 points)
+  - [Colonial Settlement Video Lecture Notes](./assignments/colonial_settlement_video_notes.md) (Auto-Generated Transcript)
 
 ### [Readings](./readings/)
 
@@ -66,4 +68,7 @@ Preserved media resources linked throughout the wiki:
 - **[Columbus Essay Video Lecture](./media/Columbus Essay.mov)** (Linked in Essay One assignment prompt)
 - **[Course Introduction Video](./media/GMT20250523-155851_Recording_1920x924.mp4)** (Linked in Course Introduction Module)
 - **[Course Introduction Audio](./media/GMT20250523-155851_Recording.m4a)** (Linked in Course Introduction Module)
+- **[Colonial Settlement Map](./media/growth-of-colonial-settlement.jpg)** (Embedded in Essay Two prompt)
+- **[Colonial Settlement Video Lecture](./media/GMT20250527-152216_Recording_1920x924.mp4)** (Linked in Essay Two prompt)
+- **[Colonial Settlement Audio Recording](./media/GMT20250527-152216_Recording.m4a)** (Linked in Essay Two prompt)
 
