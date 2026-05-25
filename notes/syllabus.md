@@ -35,8 +35,8 @@ Requirements for the course:
 
 To pass this class you will need to do the following:
 
-- **6 Essays** worth 50 points each: A 2-3 page essay on the topic assigned. These essays should be double spaced and in 12-point font.
-- **6 Book short essays** on the James Horn book: These are worth 25 points each (1-2 pages).
+- **6 Essays** worth 50 points each: A 2-3 page essay on the topic assigned. See the **[Assignments Directory](./assignments/)** for prompts, starting with **[Essay One: Columbus](./assignments/essay_01_columbus_prompt.md)**. These essays should be double spaced and in 12-point font.
+- **6 Book short essays** on the **[James Horn book](./readings/1619_jamestown_and_the_founding_of_american_democracy.md)**: These are worth 25 points each (1-2 pages).
 
 Email:
 

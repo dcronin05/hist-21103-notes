@@ -30,7 +30,7 @@ Now, we do have a text we're going to read together. It's called *[1619: Jamesto
 
 In 1619, two things happened:
 
-1. The first legislative body was set up in the Virginia colony, called the [House of Burgesses](../concepts/house_of_burgesses.md). It's the blooming of democracy in the English colonies in the Americas.
+1. The first legislative body was set up in the Virginia colony, called the **[House of Burgesses](../readings/1619/chapter_02.md)** (detailed in Chapter Two of the James Horn readings). It's the blooming of democracy in the English colonies in the Americas.
 2. 19 Africans were brought to Virginia and put into an unfree labor relationship to work in the tobacco fields.
 
 So this book is a narrative about the Virginia colony. You may have been told that Americans came here for religious freedom. That's true of some—the Puritans came to New England for the right to establish their own theocracy, and some Catholics fled the Old World and came to Maryland. But in Virginia, which is the first colony, we're going to find out they were coming for something else: economic gain. And that's one of the things we're going to be looking at here.
@@ -48,7 +48,7 @@ The best thing to do is to write your essays yourself. If they suck, that's okay
 
 If you have any questions about this syllabus, please let me know. I think you're going to enjoy a lot of this class. You're going to get to think about some really important issues, such as the nature of democracy in the English world, the nature of economic relationships, the nature of free and unfree labor, how people of power work with people of no power, and how revolutions happen.
 
-Let's look at what we're going to do. The first thing you should do is start with Assignment Number One: *[Columbus and the Motivation for European Invasion of the Americas](../concepts/columbus_and_the_motivation_for_european_invasion_of_the_americas.md)*. I've given you two narratives: the traditional narrative about Columbus that you learned in high school, and a scholarly article that dives deep into Columbus's religious motivation for looking for India. You'll write a short essay about that.
+Let's look at what we're going to do. The first thing you should do is start with Assignment Number One: **[Essay One: Columbus](../assignments/essay_01_columbus_prompt.md)**. I've given you two narratives: the **[traditional biography narrative](../readings/christopher_columbus_biography.md)** and a **[scholarly article](../readings/columbus_and_the_recovery_of_jerusalem.md)** that dives deep into Columbus's religious motivation for looking for India. You'll write a short essay about that.
 
 Then you get to make some choices. You can work on assignments in any order you want. I placed the book essays all together. You might do the Columbus essay and start a book essay. Down below, you've got these other essays:
 
