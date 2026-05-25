@@ -14,7 +14,6 @@ tags:
 
 # Index
 
-1619
 
 and democracy, [2–3](introduction.md#page-2), [215–217](epilogue.md#page-215)
 
@@ -994,7 +993,7 @@ Ndongo, [90](chapter_03.md#page-90), [91 (map)](chapter_03.md#page-91), [95](cha
 
 Necotowance, [170](chapter_05.md#page-170)
 
-*Negro * and* Negar,*as terms, [113](chapter_03.md#page-113)
+*Negro * and * Negar,* as terms, [113](chapter_03.md#page-113)
 
 New Bermudas, [47](chapter_02.md#page-47)
 

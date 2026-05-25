@@ -16,7 +16,6 @@ tags:
 
 ***
 
-1619 
 
 If a nation expects to be ignorant and free… it expects what never was and never will be.
 
