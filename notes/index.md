@@ -66,11 +66,11 @@ A glossary of key historical figures, events, terms, and debates:
 ### Preserved Media Library
 
 Preserved media resources linked throughout the wiki:
-- **[Portrait of Christopher Columbus](./media/columbus.gif)** (Embedded in Columbus Biography reading)
+- **[Portrait of Christopher Columbus](./images/columbus.gif)** (Embedded in Columbus Biography reading)
 - **[Columbus Essay Video Lecture](./media/Columbus Essay.mov)** (Linked in Essay One assignment prompt)
 - **[Course Introduction Video](./media/GMT20250523-155851_Recording_1920x924.mp4)** (Linked in Course Introduction Module)
 - **[Course Introduction Audio](./media/GMT20250523-155851_Recording.m4a)** (Linked in Course Introduction Module)
-- **[Colonial Settlement Map](./media/growth-of-colonial-settlement.jpg)** (Embedded in Essay Two prompt)
+- **[Colonial Settlement Map](./images/growth-of-colonial-settlement.jpg)** (Embedded in Essay Two prompt)
 - **[Colonial Settlement Video Lecture](./media/GMT20250527-152216_Recording_1920x924.mp4)** (Linked in Essay Two prompt)
 - **[Colonial Settlement Audio Recording](./media/GMT20250527-152216_Recording.m4a)** (Linked in Essay Two prompt)
 - **[Great Reforms Video Lecture](./media/GMT20250528-145401_Recording_1280x720.mp4)** (Linked in Essay Three prompt)
