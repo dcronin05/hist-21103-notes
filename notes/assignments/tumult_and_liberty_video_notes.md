@@ -12,9 +12,7 @@ tags:
 
 # Tumult and Liberty Video Notes
 
-**Source Media:** [Tumult and Liberty Video Lecture](../media/Horn, Chapter 5.mov)
-
-This transcript was programmatically extracted and transcribed from the `Horn, Chapter 5.mov` video lecture included with the Assignment 6 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross\'s video lecture.
 
 ---
 

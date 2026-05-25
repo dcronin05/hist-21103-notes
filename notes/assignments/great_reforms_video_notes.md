@@ -12,9 +12,7 @@ tags:
 
 # Great Reforms Video Notes
 
-**Source Media:** [Great Reforms Video Lecture](../media/GMT20250528-145401_Recording_1280x720.mp4) | [Audio Recording](../media/GMT20250528-145401_Recording.m4a)
-
-This transcript was programmatically extracted from the `GMT20250528-145401_Recording_1280x720.mp4` video lecture included with the Assignment 3 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross's video lecture.
 
 ---
 

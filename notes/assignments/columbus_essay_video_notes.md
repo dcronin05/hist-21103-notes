@@ -12,9 +12,7 @@ tags:
 
 # Columbus Essay Video Notes
 
-**Source Media:** [Columbus Essay Video Lecture](../media/Columbus Essay.mov)
-
-This transcript and summary notes were programmatically extracted from the `Columbus Essay.mov` video file included with the Assignment 1 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross's video lecture.
 
 ---
 

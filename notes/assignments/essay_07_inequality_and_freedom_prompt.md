@@ -48,7 +48,7 @@ The prompt from **[Assignment 7 Chapter 6 Summer 2311.docx](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[Inequality and Freedom Video Lecture](../media/GMT20250529-144810_Recording_1280x720.mp4)** (click for full **[Auto-Generated Video Transcript](./inequality_and_freedom_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./inequality_and_freedom_video_notes.md)**).
 
 ### 1. The Core Paradox: Freedom and Unfreedom
 * **The Contradiction of 1619:** The pivotal moment of 1619 represents a fundamental tension in early America—the establishment of representative democratic institutions (the General Assembly) coexisting with, and dependent on, the expansion of unfree labor.
@@ -73,7 +73,5 @@ Below is a structured summary of the key themes explained by **Professor Jim Ros
 
 * **Required Text Chapters:**
   * **[Chapter 6: Inequality and Freedom](../readings/1619/chapter_06.md)** in *1619* by James Horn
-* **Media & Lecture Resources:**
-  * **[Inequality and Freedom Video Lecture](../media/GMT20250529-144810_Recording_1280x720.mp4)**
-  * **[Inequality and Freedom Audio Recording](../media/GMT20250529-144810_Recording.m4a)**
-  * **[Auto-Generated Video Transcript](./inequality_and_freedom_video_notes.md)**
+* **Lecture Transcript:**
+  - **[Auto-Generated Video Transcript](./inequality_and_freedom_video_notes.md)**

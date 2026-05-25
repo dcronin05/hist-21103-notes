@@ -42,7 +42,7 @@ The prompt from **[essay 2 for 2311 (4).doc](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[American Revolution Video Lecture](../media/Introduction%20to%20the%20American%20Revolution.mov)** (click for full **[Auto-Generated Video Transcript](./american_revolution_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./american_revolution_video_notes.md)**).
 
 ### 1. Long-Term Roots of Tension
 * **Before 1776:** Colonists were proud British citizens, but tensions had been building for decades between the American colonies and the British home government.
@@ -101,7 +101,6 @@ You must select **two documents from each group** (ten documents total):
 
 ---
 
-## Required Resources
+## Required Readings & Resources
 * **Video Lecture:**
-  * **[American Revolution Video Lecture](../media/Introduction%20to%20the%20American%20Revolution.mov)**
-  * **[Auto-Generated Video Transcript](./american_revolution_video_notes.md)**
+  - **[Auto-Generated Video Transcript](./american_revolution_video_notes.md)**

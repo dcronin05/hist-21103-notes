@@ -47,7 +47,7 @@ The prompt from **[Assignment 6 Chapter 5 Summer 2311.docx](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[Tumult and Liberty Video Lecture](../media/Horn,%20Chapter%205.mov)** (click for full **[Auto-Generated Video Transcript](./tumult_and_liberty_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./tumult_and_liberty_video_notes.md)**).
 
 ### 1. The Surprising Crisis of 1622
 * **A Coordinated Blow:** In March 1622, the Jamestown colony was finally starting to grow and become profitable. However, on March 22, 1622, the Powhatan Confederacy (a powerful network of Native groups led by Powhatan's successor, Opechancanough) launched a massive, coordinated surprise attack on plantations up and down the James River.
@@ -74,6 +74,5 @@ Below is a structured summary of the key themes explained by **Professor Jim Ros
 
 * **Required Text Chapters:**
   * **[Chapter 5: Tumult and Liberty](../readings/1619/chapter_05.md)** in *1619* by James Horn
-* **Media & Lecture Resources:**
-  * **[Tumult and Liberty Video Lecture](../media/Horn,%20Chapter%205.mov)**
-  * **[Auto-Generated Video Transcript](./tumult_and_liberty_video_notes.md)**
+* **Lecture Transcript:**
+  - **[Auto-Generated Video Transcript](./tumult_and_liberty_video_notes.md)**

@@ -48,7 +48,7 @@ The prompt from **[Assignment 12 Summer 2311.docx](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[Civil War Video Lecture](../media/GMT20250530-151239_Recording_1920x924.mp4)** (click for full **[Auto-Generated Video Transcript](./civil_war_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./civil_war_video_notes.md)**).
 
 ### 1. The True Cause of the Civil War
 * **The Sidetracking Debate:** Political polemicists and high school curricula often force a debate between "slavery" vs. "states' rights" as the cause of the Civil War.
@@ -70,7 +70,5 @@ Below is a structured summary of the key themes explained by **Professor Jim Ros
 
 * **Required Readings:**
   * **W.E.B. Du Bois's Essay (1935)** (Refer to PDF: `DUbois CW.pdf`)
-* **Media & Lecture Resources:**
-  * **[Civil War Video Lecture](../media/GMT20250530-151239_Recording_1920x924.mp4)**
-  * **[Civil War Audio Recording](../media/GMT20250530-151239_Recording.m4a)**
-  * **[Auto-Generated Video Transcript](./civil_war_video_notes.md)**
+* **Lecture Transcript:**
+  - **[Auto-Generated Video Transcript](./civil_war_video_notes.md)**

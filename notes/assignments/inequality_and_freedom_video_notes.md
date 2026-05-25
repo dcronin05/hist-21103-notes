@@ -12,9 +12,7 @@ tags:
 
 # Inequality and Freedom Video Notes
 
-**Source Media:** [Inequality and Freedom Video Lecture](../media/GMT20250529-144810_Recording_1280x720.mp4) | [Audio Recording](../media/GMT20250529-144810_Recording.m4a)
-
-This transcript was programmatically extracted from the `GMT20250529-144810_Recording.transcript.vtt` file included with the Assignment 7 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross's video lecture.
 
 ---
 

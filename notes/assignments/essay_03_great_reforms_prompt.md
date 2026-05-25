@@ -47,7 +47,7 @@ The prompt from **[Assignment 3 Summer 2311.docx](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[Great Reforms Video Lecture](../media/GMT20250528-145401_Recording_1280x720.mp4)** (click for full **[Auto-Generated Video Transcript](./great_reforms_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./great_reforms_video_notes.md)**).
 
 ### 1. The Jamestown Crisis (Why Reforms Were Needed)
 
@@ -89,8 +89,6 @@ Below is a structured summary of the key themes explained by **Professor Jim Ros
 
 - **Required Text Chapters:**
   - **[Chapter 2: The Great Reforms](../readings/1619/chapter_02.md)** in *1619* by James Horn
-- **Media & Lecture Resources:**
-  - **[Great Reforms Video Lecture](../media/GMT20250528-145401_Recording_1280x720.mp4)**
-  - **[Great Reforms Audio Recording](../media/GMT20250528-145401_Recording.m4a)**
+- **Lecture Transcript:**
   - **[Auto-Generated Video Transcript](./great_reforms_video_notes.md)**
 

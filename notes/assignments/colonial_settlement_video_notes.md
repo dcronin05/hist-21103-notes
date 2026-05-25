@@ -12,9 +12,7 @@ tags:
 
 # Colonial Settlement Video Notes
 
-**Source Media:** [Colonial Settlement Video Lecture](../media/GMT20250527-152216_Recording_1920x924.mp4) | [Audio Recording](../media/GMT20250527-152216_Recording.m4a)
-
-This transcript and summary notes were programmatically extracted from the `GMT20250527-152216_Recording_1920x924.mp4` video lecture included with the Assignment 2 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross's video lecture.
 
 ---
 

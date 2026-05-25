@@ -46,7 +46,7 @@ The prompt from **[Assignment 5 Chapter 4 Summer 2311.docx](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[Commonwealth Video Lecture](../media/Horn%20Book%20Chapter%204.mov)** (click for full **[Auto-Generated Video Transcript](./commonwealth_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./commonwealth_video_notes.md)**).
 
 ### 1. Defining the Commonwealth
 * **The Core Definition:** A commonwealth represents the ideal balance between private enterprise (commercial interest) and the common good of all citizens.
@@ -75,6 +75,5 @@ According to Horn and Dr. Ross, the Commonwealth idea synthesized three major so
 
 * **Required Text Chapters:**
   * **[Chapter 4: Commonwealth](../readings/1619/chapter_04.md)** in *1619* by James Horn
-* **Media & Lecture Resources:**
-  * **[Commonwealth Video Lecture](../media/Horn%20Book%20Chapter%204.mov)**
-  * **[Auto-Generated Video Transcript](./commonwealth_video_notes.md)**
+* **Lecture Transcript:**
+  - **[Auto-Generated Video Transcript](./commonwealth_video_notes.md)**

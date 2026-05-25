@@ -12,9 +12,7 @@ tags:
 
 # Commonwealth Video Notes
 
-**Source Media:** [Commonwealth Video Lecture](../media/Horn Book Chapter 4.mov)
-
-This transcript was programmatically extracted and transcribed from the `Horn Book Chapter 4.mov` video lecture included with the Assignment 5 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross\'s video lecture.
 
 ---
 

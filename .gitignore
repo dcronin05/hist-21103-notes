@@ -38,5 +38,3 @@ scratch/
 sources/
 !sources/processed/Horn, James - 1619- Jamestown and the Forging of American Democracy.epub
 
-# Ignore large media files in the notes folder (exceeds GitHub size limits)
-notes/media/

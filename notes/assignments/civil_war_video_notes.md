@@ -12,9 +12,7 @@ tags:
 
 # Civil War Video Notes
 
-**Source Media:** [Civil War Video Lecture](../media/GMT20250530-151239_Recording_1920x924.mp4) | [Audio Recording](../media/GMT20250530-151239_Recording.m4a)
-
-This transcript was programmatically extracted from the `GMT20250530-151239_Recording.transcript.vtt` file included with the Assignment 12 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross's video lecture.
 
 ---
 

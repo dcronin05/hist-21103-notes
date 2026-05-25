@@ -47,7 +47,7 @@ The prompt from **[Assignment 10 Essay 4 Summer 2311.docx](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[Creation of Two Societies Video Lecture](../media/GMT20250530-134952_Recording_1920x924.mp4)** (click for full **[Auto-Generated Video Transcript](./creation_of_two_societies_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./creation_of_two_societies_video_notes.md)**).
 
 ### 1. The Splitting of a National Consensus (1800–1865)
 * **Two Divergent Economic Relationships:** During the antebellum period, the United States split apart into two distinct economic systems:
@@ -71,7 +71,5 @@ Below is a structured summary of the key themes explained by **Professor Jim Ros
   * **Bruce Levine's Book — Chapters 1 & 2** (Primary/Secondary reading PDF: `Levine 1 and 2.pdf`)
     * Chapter 1: The Southern Slave Economy
     * Chapter 2: "Each Person Works for Himself" — The Ideal and Reality of Free Labor
-* **Media & Lecture Resources:**
-  * **[Creation of Two Societies Video Lecture](../media/GMT20250530-134952_Recording_1920x924.mp4)**
-  * **[Creation of Two Societies Audio Recording](../media/GMT20250530-134952_Recording.m4a)**
-  * **[Auto-Generated Video Transcript](./creation_of_two_societies_video_notes.md)**
+* **Lecture Transcript:**
+  - **[Auto-Generated Video Transcript](./creation_of_two_societies_video_notes.md)**

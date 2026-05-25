@@ -10,7 +10,7 @@ tags:
 
 # Christopher Columbus Biography
 
-![Portrait of Christopher Columbus](../images/columbus.gif)
+![Portrait of Christopher Columbus](../assets/columbus.gif)
 
 > **Christopher Columbus (1451–1506)** was an Italian-Spanish navigator who sailed west across the Atlantic Ocean in search of a route to Asia but achieved fame by making landfall in the Americas instead.
 

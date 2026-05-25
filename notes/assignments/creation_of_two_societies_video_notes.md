@@ -12,9 +12,7 @@ tags:
 
 # Creation of Two Societies Video Notes
 
-**Source Media:** [Creation of Two Societies Video Lecture](../media/GMT20250530-134952_Recording_1920x924.mp4) | [Audio Recording](../media/GMT20250530-134952_Recording.m4a)
-
-This transcript was programmatically extracted from the `GMT20250530-134952_Recording.transcript.vtt` file included with the Assignment 10 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross's video lecture.
 
 ---
 

@@ -50,7 +50,7 @@ The prompt from **[Assignment 11 Summer 2311.docx](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[Debate over Slavery Video Lecture](../media/GMT20250530-135405_Recording_1920x924.mp4)** (click for full **[Auto-Generated Video Transcript](./debate_over_slavery_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./debate_over_slavery_video_notes.md)**).
 
 ### 1. Understanding the Southern Pro-Slavery Mindset
 * **A Pervasive Ideology:** In the antebellum period, slavery was so fundamental to the South that it shaped white Southerners' views on politics, history, science, and theology. 
@@ -82,7 +82,5 @@ You should select and read one of the following to write your paper:
 * **Required Readings (Choose One):**
   * *Proslavery Millennialism: Social Eschatology in Antebellum Southern Calvinism* by Jack P. Maddex Jr. (Refer to PDF: `Proslavery Millennialsim.pdf`)
   * *Evangelicalism and the Meaning of the Proslavery Argument: The Reverend Thornton Stringfellow of Virginia* by Drew Gilpin Faust (Refer to PDF: `Evangelicalsim and the meaning proslavery.pdf`)
-* **Media & Lecture Resources:**
-  * **[Debate over Slavery Video Lecture](../media/GMT20250530-135405_Recording_1920x924.mp4)**
-  * **[Debate over Slavery Audio Recording](../media/GMT20250530-135405_Recording.m4a)**
-  * **[Auto-Generated Video Transcript](./debate_over_slavery_video_notes.md)**
+* **Lecture Transcript:**
+  - **[Auto-Generated Video Transcript](./debate_over_slavery_video_notes.md)**

@@ -47,7 +47,7 @@ The prompt from **[Assignment 4 Chapter 3.docx](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[First Africans Video Lecture](../media/Horn,%20Chapter%203.mov)** (click for full **[Auto-Generated Video Transcript](./first_africans_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./first_africans_video_notes.md)**).
 
 ### 1. The 17th Century Context (vs. 19th Century)
 * **Not Yet the "King Cotton" South:** This is 200 years before the cotton plantation slavery of the 19th century. 
@@ -75,6 +75,5 @@ Below is a structured summary of the key themes explained by **Professor Jim Ros
 
 * **Required Text Chapters:**
   * **[Chapter 3: First Africans](../readings/1619/chapter_03.md)** in *1619* by James Horn
-* **Media & Lecture Resources:**
-  * **[First Africans Video Lecture](../media/Horn,%20Chapter%203.mov)**
-  * **[Auto-Generated Video Transcript](./first_africans_video_notes.md)**
+* **Lecture Transcript:**
+  - **[Auto-Generated Video Transcript](./first_africans_video_notes.md)**

@@ -37,7 +37,7 @@ The prompt from **[Essay One 2311 Columbus.docx](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[Columbus Essay Video Lecture](../media/Columbus Essay.mov)** (click for full **[Auto-Generated Video Transcript](./columbus_essay_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./columbus_essay_video_notes.md)**).
 
 ### 1. The Traditional Narrative (The Myth)
 
@@ -64,12 +64,11 @@ Below is a structured summary of the key themes explained by **Professor Jim Ros
 
 ---
 
-## Preserved Media & Quick Links
+## Required Readings & Resources
 
 - **Required Readings:**
   - **[Christopher Columbus Biography](../readings/christopher_columbus_biography.md)** (Traditional Narrative)
   - **[Columbus and the Recovery of Jerusalem](../readings/columbus_and_the_recovery_of_jerusalem.md)** (Scholarly Article)
-- **Media Resources:**
-  - **[Columbus Essay Video Lecture](../media/Columbus Essay.mov)** (Local Media File)
-  - **[Auto-Generated Video Transcript](./columbus_essay_video_notes.md)** (Text Copy)
+- **Lecture Transcript:**
+  - **[Auto-Generated Video Transcript](./columbus_essay_video_notes.md)**
 

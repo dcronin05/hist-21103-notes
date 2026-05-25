@@ -12,9 +12,7 @@ tags:
 
 # Articles vs. Constitution Video Notes
 
-**Source Media:** [Articles vs. Constitution Video Lecture](../media/GMT20250529-145510_Recording_1920x924.mp4) | [Audio Recording](../media/GMT20250529-145510_Recording.m4a)
-
-This transcript was programmatically extracted from the `GMT20250529-145510_Recording.transcript.vtt` file included with the Assignment 9 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross's video lecture.
 
 ---
 

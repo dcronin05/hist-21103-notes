@@ -58,7 +58,6 @@ Course assignments, essays, and prompts:
 - **[Assignment 12 (Essay Six): The Civil War](./assignments/essay_12_civil_war_prompt.md)** (Worth 50 points)
   - [Civil War Video Notes](./assignments/civil_war_video_notes.md) (Auto-Generated Transcript)
 
-
 ### [Readings](./readings/)
 
 Summaries and insights from assigned course readings:
@@ -82,31 +81,9 @@ A glossary of key historical figures, events, terms, and debates:
 
 - *(No concepts processed yet. Key upcoming topics: Columbus's religious motivation, House of Burgesses, Articles of Confederation, Free vs. Slave Labor societies)*
 
-### Preserved Media Library
+### Course Assets
 
-Preserved media resources linked throughout the wiki:
+- **[Portrait of Christopher Columbus](./assets/columbus.gif)** (Embedded in Columbus Biography reading)
+- **[Colonial Settlement Map](./assets/growth-of-colonial-settlement.jpg)** (Embedded in Essay Two prompt)
 
-- **[Portrait of Christopher Columbus](./images/columbus.gif)** (Embedded in Columbus Biography reading)
-- **[Columbus Essay Video Lecture](./media/Columbus Essay.mov)** (Linked in Essay One assignment prompt)
-- **[Course Introduction Video](./media/GMT20250523-155851_Recording_1920x924.mp4)** (Linked in Course Introduction Module)
-- **[Course Introduction Audio](./media/GMT20250523-155851_Recording.m4a)** (Linked in Course Introduction Module)
-- **[Colonial Settlement Map](./images/growth-of-colonial-settlement.jpg)** (Embedded in Essay Two prompt)
-- **[Colonial Settlement Video Lecture](./media/GMT20250527-152216_Recording_1920x924.mp4)** (Linked in Essay Two prompt)
-- **[Colonial Settlement Audio Recording](./media/GMT20250527-152216_Recording.m4a)** (Linked in Essay Two prompt)
-- **[Great Reforms Video Lecture](./media/GMT20250528-145401_Recording_1280x720.mp4)** (Linked in Essay Three prompt)
-- **[Great Reforms Audio Recording](./media/GMT20250528-145401_Recording.m4a)** (Linked in Essay Three prompt)
-- **[First Africans Video Lecture](./media/Horn, Chapter 3.mov)** (Linked in Essay Four prompt)
-- **[Commonwealth Video Lecture](./media/Horn Book Chapter 4.mov)** (Linked in Essay Five prompt)
-- **[Tumult and Liberty Video Lecture](./media/Horn, Chapter 5.mov)** (Linked in Essay Six prompt)
-- **[Inequality and Freedom Video Lecture](./media/GMT20250529-144810_Recording_1280x720.mp4)** (Linked in Essay Seven prompt)
-- **[Inequality and Freedom Audio Recording](./media/GMT20250529-144810_Recording.m4a)** (Linked in Essay Seven prompt)
-- **[American Revolution Video Lecture](./media/Introduction to the American Revolution.mov)** (Linked in Assignment 8 prompt)
-- **[Articles vs. Constitution Video Lecture](./media/GMT20250529-145510_Recording_1920x924.mp4)** (Linked in Assignment 9 prompt)
-- **[Articles vs. Constitution Audio Recording](./media/GMT20250529-145510_Recording.m4a)** (Linked in Assignment 9 prompt)
-- **[Creation of Two Societies Video Lecture](./media/GMT20250530-134952_Recording_1920x924.mp4)** (Linked in Assignment 10 prompt)
-- **[Creation of Two Societies Audio Recording](./media/GMT20250530-134952_Recording.m4a)** (Linked in Assignment 10 prompt)
-- **[Debate over Slavery Video Lecture](./media/GMT20250530-135405_Recording_1920x924.mp4)** (Linked in Assignment 11 prompt)
-- **[Debate over Slavery Audio Recording](./media/GMT20250530-135405_Recording.m4a)** (Linked in Assignment 11 prompt)
-- **[Civil War Video Lecture](./media/GMT20250530-151239_Recording_1920x924.mp4)** (Linked in Assignment 12 prompt)
-- **[Civil War Audio Recording](./media/GMT20250530-151239_Recording.m4a)** (Linked in Assignment 12 prompt)
 

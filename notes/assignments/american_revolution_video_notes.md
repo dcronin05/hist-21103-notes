@@ -12,9 +12,7 @@ tags:
 
 # American Revolution Video Notes
 
-**Source Media:** [American Revolution Video Lecture](../media/Introduction to the American Revolution.mov)
-
-This transcript was programmatically extracted and transcribed from the `Introduction to the American Revolution.mov` video lecture included with the Assignment 8 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross\'s video lecture.
 
 ---
 

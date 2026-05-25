@@ -12,9 +12,7 @@ tags:
 
 # First Africans Video Notes
 
-**Source Media:** [First Africans Video Lecture](../media/Horn, Chapter 3.mov)
-
-This transcript was programmatically extracted and transcribed from the `Horn, Chapter 3.mov` video lecture included with the Assignment 4 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross\'s video lecture.
 
 ---
 

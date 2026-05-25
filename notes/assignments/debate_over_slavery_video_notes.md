@@ -12,9 +12,7 @@ tags:
 
 # Debate over Slavery Video Notes
 
-**Source Media:** [Debate over Slavery Video Lecture](../media/GMT20250530-135405_Recording_1920x924.mp4) | [Audio Recording](../media/GMT20250530-135405_Recording.m4a)
-
-This transcript was programmatically extracted from the `GMT20250530-135405_Recording.transcript.vtt` file included with the Assignment 11 materials.
+This transcript was programmatically extracted and transcribed from Dr. Jim Ross's video lecture.
 
 ---
 

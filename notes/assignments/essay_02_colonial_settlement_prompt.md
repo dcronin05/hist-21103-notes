@@ -43,13 +43,13 @@ The prompt from **[Assignment 2 summer 2311.docx](about:blank)**:
 
 Below is the historical map included with the assignment materials, illustrating the geographical layout of early Chesapeake settlements along the James River:
 
-![Growth of Colonial Settlement Map](../images/growth-of-colonial-settlement.jpg)
+![Growth of Colonial Settlement Map](../assets/growth-of-colonial-settlement.jpg)
 
 ---
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[Colonial Settlement Video Lecture](../media/GMT20250527-152216_Recording_1920x924.mp4)** (click for full **[Auto-Generated Video Transcript](./colonial_settlement_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./colonial_settlement_video_notes.md)**).
 
 ### 1. The Core 1619 Paradox (The Horn Thesis)
 
@@ -83,8 +83,6 @@ Below is a structured summary of the key themes explained by **Professor Jim Ros
   - **[Introduction to 1619](../readings/1619/introduction.md)**
   - **[Chapter 1: Jamestown](../readings/1619/chapter_01.md)**
   - **[Epilogue: After 1619](../readings/1619/epilogue.md)**
-- **Media & Lecture Resources:**
-  - **[Colonial Settlement Video Lecture](../media/GMT20250527-152216_Recording_1920x924.mp4)**
-  - **[Colonial Settlement Audio Recording](../media/GMT20250527-152216_Recording.m4a)**
+- **Lecture Transcript:**
   - **[Auto-Generated Video Transcript](./colonial_settlement_video_notes.md)**
 

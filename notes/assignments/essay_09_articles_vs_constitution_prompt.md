@@ -49,7 +49,7 @@ The prompt from **[Assignment 9 Essay 3 Summer 2311.docx](about:blank)**:
 
 ## Professor's Guidance Notes
 
-Below is a structured summary of the key themes explained by **Professor Jim Ross** in the **[Articles vs. Constitution Video Lecture](../media/GMT20250529-145510_Recording_1920x924.mp4)** (click for full **[Auto-Generated Video Transcript](./articles_vs_constitution_video_notes.md)**).
+Below is a structured summary of the key themes explained by **Professor Jim Ross** in his video lecture (see the **[Auto-Generated Video Transcript](./articles_vs_constitution_video_notes.md)**).
 
 ### 1. Who Holds Power? (State Sovereignty vs. Popular Sovereignty)
 * **The Articles of Confederation (Power in the States):** 
@@ -83,7 +83,5 @@ Below is a structured summary of the key themes explained by **Professor Jim Ros
 * **Required Texts:**
   * **Articles of Confederation (1776)** (Primary Source PDF)
   * **The U.S. Constitution (1787)** (Primary Source PDF)
-* **Media & Lecture Resources:**
-  * **[Articles vs. Constitution Video Lecture](../media/GMT20250529-145510_Recording_1920x924.mp4)**
-  * **[Articles vs. Constitution Audio Recording](../media/GMT20250529-145510_Recording.m4a)**
-  * **[Auto-Generated Video Transcript](./articles_vs_constitution_video_notes.md)**
+* **Lecture Transcript:**
+  - **[Auto-Generated Video Transcript](./articles_vs_constitution_video_notes.md)**
