@@ -11,4 +11,6 @@ tags:
   - 1619
 ---
 
-1619**FRONTISPIECE—**The General Assembly was the first representative governing body in America, convened at Jamestown, July 30–August 4, 1619. John Pory’s Report of the Proceedings of the General Assembly. Permission from the National Archives, UK.
+1619 
+
+**FRONTISPIECE—**The General Assembly was the first representative governing body in America, convened at Jamestown, July 30–August 4, 1619. John Pory’s Report of the Proceedings of the General Assembly. Permission from the National Archives, UK.

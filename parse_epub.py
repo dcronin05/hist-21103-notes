@@ -69,24 +69,25 @@ class EPUBHTMLToMarkdown(HTMLParser):
             else:
                 self.result.append(f'\n{indent}* ')
         elif tag == 'a' and 'href' in attrs_dict:
-            url = attrs_dict['href']
-            # Rewrite references for pseudo-wiki links between parsed chapters
-            url = re.sub(r'chapter001\.xhtml', 'chapter_01.md', url)
-            url = re.sub(r'chapter002\.xhtml|chapter003\.xhtml|chapter004\.xhtml', 'chapter_02.md', url)
-            url = re.sub(r'chapter005\.xhtml', 'chapter_03.md', url)
-            url = re.sub(r'chapter006\.xhtml', 'chapter_04.md', url)
-            url = re.sub(r'chapter007\.xhtml|chapter008\.xhtml|chapter009\.xhtml', 'chapter_05.md', url)
-            url = re.sub(r'chapter010\.xhtml', 'chapter_06.md', url)
-            url = re.sub(r'chapter011\.xhtml', 'epilogue.md', url)
-            url = re.sub(r'introduction\.xhtml', 'introduction.md', url)
-            url = re.sub(r'preface001\.xhtml', 'preface.md', url)
-            url = re.sub(r'preface003\.xhtml', 'authors_note.md', url)
-            url = re.sub(r'acknowledgements\.xhtml', 'acknowledgements.md', url)
-            url = re.sub(r'personblurb\.xhtml', 'about_the_author.md', url)
-            url = re.sub(r'endnotes\.xhtml', 'endnotes.md', url)
-            url = re.sub(r'appendix001\.xhtml', 'book_index.md', url)
-            self.link_url = url
-            self.result.append('[')
+            if not self.in_header:
+                url = attrs_dict['href']
+                # Rewrite references for pseudo-wiki links between parsed chapters
+                url = re.sub(r'chapter001\.xhtml', 'chapter_01.md', url)
+                url = re.sub(r'chapter002\.xhtml|chapter003\.xhtml|chapter004\.xhtml', 'chapter_02.md', url)
+                url = re.sub(r'chapter005\.xhtml', 'chapter_03.md', url)
+                url = re.sub(r'chapter006\.xhtml', 'chapter_04.md', url)
+                url = re.sub(r'chapter007\.xhtml|chapter008\.xhtml|chapter009\.xhtml', 'chapter_05.md', url)
+                url = re.sub(r'chapter010\.xhtml', 'chapter_06.md', url)
+                url = re.sub(r'chapter011\.xhtml', 'epilogue.md', url)
+                url = re.sub(r'introduction\.xhtml', 'introduction.md', url)
+                url = re.sub(r'preface001\.xhtml', 'preface.md', url)
+                url = re.sub(r'preface003\.xhtml', 'authors_note.md', url)
+                url = re.sub(r'acknowledgements\.xhtml', 'acknowledgements.md', url)
+                url = re.sub(r'personblurb\.xhtml', 'about_the_author.md', url)
+                url = re.sub(r'endnotes\.xhtml', 'endnotes.md', url)
+                url = re.sub(r'appendix001\.xhtml', 'book_index.md', url)
+                self.link_url = url
+                self.result.append('[')
 
     def handle_endtag(self, tag):
         if self.stack and self.stack[-1] == tag:
@@ -115,9 +116,10 @@ class EPUBHTMLToMarkdown(HTMLParser):
             self.result.append('\n')
         elif tag == 'li':
             self.in_list_item = False
-        elif tag == 'a' and self.link_url:
-            self.result.append(f']({self.link_url})')
-            self.link_url = None
+        elif tag == 'a':
+            if not self.in_header and self.link_url:
+                self.result.append(f']({self.link_url})')
+                self.link_url = None
 
     def handle_data(self, data):
         text = html.unescape(data)
@@ -131,12 +133,15 @@ class EPUBHTMLToMarkdown(HTMLParser):
 
     def get_markdown(self):
         raw = ''.join(self.result)
+        raw = re.sub(r'\r\n', '\n', raw)
+        # Convert lines containing only spaces/tabs to empty lines
+        raw = re.sub(r'\n[ \t]+\n', '\n\n', raw)
         raw = re.sub(r'\n{3,}', '\n\n', raw)
         raw = re.sub(r' +', ' ', raw)
-        raw = re.sub(r'\*\s+', '*', raw)
-        raw = re.sub(r'\s+\*', '*', raw)
-        raw = re.sub(r'\*\*\s+', '**', raw)
-        raw = re.sub(r'\s+\*\*', '**', raw)
+        raw = re.sub(r'\*[ \t]+', '*', raw)
+        raw = re.sub(r'[ \t]+\*', '*', raw)
+        raw = re.sub(r'\*\*[ \t]+', '**', raw)
+        raw = re.sub(r'[ \t]+\*\*', '**', raw)
         return raw.strip()
 
 # Define the merged grouping plan based on table of contents

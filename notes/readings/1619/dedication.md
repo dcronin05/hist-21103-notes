@@ -11,10 +11,14 @@ tags:
   - 1619
 ---
 
-1619*For Sally, Liz, Ben, and Alice, with love*
+1619 
+
+*For Sally, Liz, Ben, and Alice, with love*
 
 ***
 
 1619 
 
-If a nation expects to be ignorant and free… it expects what never was and never will be.*—Thomas Jefferson*
+If a nation expects to be ignorant and free… it expects what never was and never will be.
+
+*—Thomas Jefferson*

@@ -13,8 +13,6 @@ tags:
 
 1619 
 
-# [Author’s Note](toc.xhtml#toc-preface003)
-
- 
+# Author’s Note
 
 FOR THE CONVENIENCE OF THE READER, I HAVE ALTERED THE spelling and punctuation of historical passages to make them conform to modern conventions but have retained original capitalization to offer an impression of the original sources. No substantive changes of any sort have been made to direct quotations.

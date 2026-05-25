@@ -65,8 +65,9 @@ class HTMLToMarkdown(HTMLParser):
             else:
                 self.result.append(f'\n{indent}* ')
         elif tag == 'a' and 'href' in attrs_dict:
-            self.link_url = attrs_dict['href']
-            self.result.append('[')
+            if not self.in_header:
+                self.link_url = attrs_dict['href']
+                self.result.append('[')
 
     def handle_endtag(self, tag):
         if self.stack and self.stack[-1] == tag:
@@ -97,9 +98,10 @@ class HTMLToMarkdown(HTMLParser):
             self.result.append('\n')
         elif tag == 'li':
             self.in_list_item = False
-        elif tag == 'a' and self.link_url:
-            self.result.append(f']({self.link_url})')
-            self.link_url = None
+        elif tag == 'a':
+            if not self.in_header and self.link_url:
+                self.result.append(f']({self.link_url})')
+                self.link_url = None
 
     def handle_data(self, data):
         text = html.unescape(data)
@@ -115,12 +117,15 @@ class HTMLToMarkdown(HTMLParser):
 
     def get_markdown(self):
         raw = ''.join(self.result)
+        raw = re.sub(r'\r\n', '\n', raw)
+        # Convert lines containing only spaces/tabs to empty lines
+        raw = re.sub(r'\n[ \t]+\n', '\n\n', raw)
         raw = re.sub(r'\n{3,}', '\n\n', raw)
         raw = re.sub(r' +', ' ', raw)
-        raw = re.sub(r'\*\s+', '*', raw)
-        raw = re.sub(r'\s+\*', '*', raw)
-        raw = re.sub(r'\*\*\s+', '**', raw)
-        raw = re.sub(r'\s+\*\*', '**', raw)
+        raw = re.sub(r'\*[ \t]+', '*', raw)
+        raw = re.sub(r'[ \t]+\*', '*', raw)
+        raw = re.sub(r'\*\*[ \t]+', '**', raw)
+        raw = re.sub(r'[ \t]+\*\*', '**', raw)
         return raw.strip()
 
 def sanitize_filename(name):
@@ -149,6 +154,94 @@ def get_note_type(filename):
     else:
         return 'concept', 'concepts'
 
+def clean_pdf_content(text):
+    if not text:
+        return ""
+    lines = text.splitlines()
+    filtered_lines = []
+    
+    # Check if there is a JSTOR header and try to find the start of the article
+    start_idx = 0
+    for i, line in enumerate(lines[:100]):
+        if "COLUMBUS AND THE RECOVERY OF JERUSALEM" in line.upper() and "AUTHOR(S):" not in line.upper():
+            start_idx = i
+            break
+    lines = lines[start_idx:]
+    
+    # Filter running headers, footers, page numbers and JSTOR metadata
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+        
+        # Match JSTOR warnings / metadata
+        if any(term in stripped for term in [
+            "This content downloaded from", 
+            "All use subject to",
+            "Journal of the American Oriental Society",
+            "HAMDANI: Columbus and the Recovery of Jerusalem",
+            "Stable URL:",
+            "Accessed:",
+            "REFERENCES",
+            "Linked references are available",
+            "You may need to log in to JSTOR",
+            "JSTOR is a not-for-profit",
+            "Your use of the JSTOR archive",
+            "American Oriental Society is collaborating"
+        ]):
+            continue
+            
+        # Match page numbers in footers/headers (usually just a digit on its own line)
+        if stripped.isdigit() and len(stripped) <= 3:
+            continue
+            
+        filtered_lines.append(line)
+        
+    # Reassemble paragraphs
+    paragraphs = []
+    current_para = []
+    
+    for line in filtered_lines:
+        stripped = line.strip()
+        
+        if not stripped:
+            if current_para:
+                paragraphs.append(" ".join(current_para))
+                current_para = []
+            paragraphs.append("")
+            continue
+            
+        if stripped.startswith("#") or stripped.startswith("-") or stripped.startswith("*") or stripped.startswith(">"):
+            if current_para:
+                paragraphs.append(" ".join(current_para))
+                current_para = []
+            paragraphs.append(stripped)
+            continue
+            
+        # Check for paragraph break based on line length and punctuation
+        ends_sentence = re.search(r'[.!?\"\'\])]$', stripped)
+        is_short = len(stripped) < 52
+        
+        # If it ends with a hyphen, strip the hyphen and merge without space
+        if current_para and current_para[-1].endswith("-"):
+            current_para[-1] = current_para[-1][:-1] + stripped
+        else:
+            current_para.append(stripped)
+            
+        if ends_sentence and is_short:
+            paragraphs.append(" ".join(current_para))
+            current_para = []
+            
+    if current_para:
+        paragraphs.append(" ".join(current_para))
+        
+    new_body = "\n\n".join(paragraphs)
+    new_body = re.sub(r'\n{3,}', '\n\n', new_body)
+    new_body = re.sub(r' +', ' ', new_body)
+    # Convert footnote numbers at end of words/punctuation to bracketed footnotes
+    new_body = re.sub(r'(\b[a-zA-Z]+|[.\"?!\'\"]+)(\d+)\b', r'\1[\2]', new_body)
+    return new_body.strip()
+
 def extract_pdf_text(path):
     try:
         import pypdf
@@ -163,6 +256,8 @@ def extract_pdf_text(path):
             t = page.extract_text()
             if t:
                 text += t + "\n"
+        if text:
+            text = clean_pdf_content(text)
         return text
     except Exception as e:
         print(f"Error reading PDF {path}: {e}")
@@ -207,13 +302,40 @@ def extract_vtt_text(path):
         print(f"Error reading VTT {path}: {e}")
         return None
 
+def clean_html_content(body):
+    if not body:
+        return ""
+        
+    # Strip trailing navigation menu/links (e.g. starting with "### Menu" or "### Network")
+    for menu_pattern in ["### Menu", "### Network", "### Navigation", "### Share"]:
+        idx = body.find(menu_pattern)
+        if idx != -1:
+            body = body[:idx]
+            
+    # Remove advertising script snippets if they leaked as text
+    body = re.sub(r'window\.jQuery\s*\|\|.*$', '', body, flags=re.MULTILINE)
+    
+    # Remove empty markdown links like "[ ](url)" or "[](url)"
+    body = re.sub(r'\[\s*\]\([^)]+\)', '', body)
+    
+    # Remove "Continue-->" pagination links
+    body = re.sub(r'\[\s*Continue\s*-->\s*\]\([^)]+\)', '', body, flags=re.IGNORECASE)
+    
+    # Clean up double spacing and multiple line breaks
+    body = re.sub(r'\n{3,}', '\n\n', body)
+    body = re.sub(r' +', ' ', body)
+    return body.strip()
+
 def extract_html_text(path):
     try:
         with open(path, 'r', encoding='utf-8', errors='ignore') as f:
             html_content = f.read()
         parser = HTMLToMarkdown()
         parser.feed(html_content)
-        return parser.get_markdown()
+        body = parser.get_markdown()
+        if body:
+            body = clean_html_content(body)
+        return body
     except Exception as e:
         print(f"Error reading HTML {path}: {e}")
         return None
@@ -290,6 +412,14 @@ tags:
     
     # Decide output location
     clean_name = sanitize_filename(os.path.splitext(filename)[0] + ".md")
+    
+    FILENAME_MAPPING = {
+        "columbus_.md": "columbus_and_the_recovery_of_jerusalem.md",
+        "essay_one_2311_columbus.md": "essay_01_columbus_prompt.md"
+    }
+    if clean_name in FILENAME_MAPPING:
+        clean_name = FILENAME_MAPPING[clean_name]
+        
     if subfolder:
         out_dir = os.path.join(NOTES_DIR, subfolder)
     else:
