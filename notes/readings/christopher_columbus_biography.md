@@ -10,6 +10,8 @@ tags:
 
 # Christopher Columbus Biography
 
+![Portrait of Christopher Columbus](../media/columbus.gif)
+
 > **Christopher Columbus (1451–1506)** was an Italian-Spanish navigator who sailed west across the Atlantic Ocean in search of a route to Asia but achieved fame by making landfall in the Americas instead.
 
 On October 12, 1492, two worlds unknown to each other met for the first time on a small island in the Caribbean Sea. While on a voyage for Spain in search of a direct sea route from Europe to Asia, Christopher Columbus unintentionally discovered the Americas. However, in four separate voyages to the Caribbean from 1492 to 1504, he remained convinced that he had found the lands that Marco Polo reached in his overland travels to China at the end of the 13th century. To Columbus, it was only a matter of time before a passage was found through the Caribbean islands to the fabled cities of Asia.
@@ -90,9 +92,9 @@ The experiences of these years led directly to the genesis of Columbus’s plan 
 
 Inspiration and assistance for his plan came from a number of sources:
 
-* **Family Connections**: His marriage into the Portuguese nobility proved helpful because, although relatively poor, the family still had connections to the Portuguese court. Columbus apparently gained access to his father-in-law’s papers and found a wealth of information, including maps, charts revealing ocean currents, interviews with sailors, and stories about objects that had drifted to the coast of the Madeira Islands from the west.
-* **Association & Trade**: His association with the Genoese community in Portugal and his expeditions to Africa furthered his knowledge of Atlantic waters.
-* **Northern Accounts**: While in ports in England, Ireland, and Iceland, Columbus may have heard stories of lands to the west of Iceland. Although the histories of the Vikings, who settled Iceland and Greenland in the 9th and 10th centuries, never became part of the knowledge base of medieval Europeans, it is believed that stories of their encounters with unknown islands in the northern Atlantic were widespread.
+- **Family Connections**: His marriage into the Portuguese nobility proved helpful because, although relatively poor, the family still had connections to the Portuguese court. Columbus apparently gained access to his father-in-law’s papers and found a wealth of information, including maps, charts revealing ocean currents, interviews with sailors, and stories about objects that had drifted to the coast of the Madeira Islands from the west.
+- **Association & Trade**: His association with the Genoese community in Portugal and his expeditions to Africa furthered his knowledge of Atlantic waters.
+- **Northern Accounts**: While in ports in England, Ireland, and Iceland, Columbus may have heard stories of lands to the west of Iceland. Although the histories of the Vikings, who settled Iceland and Greenland in the 9th and 10th centuries, never became part of the knowledge base of medieval Europeans, it is believed that stories of their encounters with unknown islands in the northern Atlantic were widespread.
 
 Columbus’s genius was his remarkable ability to gather information from around the Mediterranean and the Atlantic and combine his own experiences with ancient theories from books in a way that few navigators could.
 
@@ -105,6 +107,7 @@ Columbus’s idea of sailing west to get to the east was not original with him, 
 ### Influential Cartographic and Literary Works
 
 Columbus’s ideas of the size of the earth and the distance between Europe and Asia were based on the descriptions contained in several geographic works:
+
 1. *Geography* by Ptolemy (2nd-century manuscript)
 2. *Imago Mundi* (Image of the World) by Pierre d’Ailly (published in the early 1480s)
 3. *The Travels of Marco Polo* (written in 1298)
@@ -112,8 +115,9 @@ Columbus’s ideas of the size of the earth and the distance between Europe and 
 ### Mistaken Assumptions and Undersized Earth
 
 Unfortunately, his calculations did not prove particularly accurate. Columbus founded his theory on two mistaken propositions:
-* That the Asian continent stretched much farther to the east than it actually does.
-* That Japan lay about 2,400 km (about 1,500 mi) east of the Asian mainland.
+
+- That the Asian continent stretched much farther to the east than it actually does.
+- That Japan lay about 2,400 km (about 1,500 mi) east of the Asian mainland.
 
 Columbus also greatly underestimated the circumference of the earth. He calculated that the Canary Islands lay only about 4,440 km (about 2,760 mi) from Japan; the actual distance is about 19,000 km (about 12,000 mi). Similar errors were made by other learned men of the time, including the Florentine geographer Paulo de Pozzo Toscanelli, with whom Columbus may have corresponded. Neither Columbus nor anyone else in Europe suspected that two vast continents lay in the way of a westward passage to Asia.
 
@@ -130,10 +134,11 @@ The king’s strong support of geographical exploration made him a logical choic
 ### Denial by the Council of Geographical Affairs
 
 After a public hearing, the council denied the request on the grounds that:
+
 1. The project was too expensive.
 2. Columbus was wrong about distances and measurements.
 3. Such a plan contradicted Portugal’s commitment to finding an eastward route to Asia by traveling around Africa.
 
-***
+---
 
 *Source: Microsoft Encarta*

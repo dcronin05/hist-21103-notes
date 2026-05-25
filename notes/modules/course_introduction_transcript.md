@@ -12,6 +12,8 @@ tags:
 
 # Course Introduction Transcript
 
+**Media Resources:** [Video Lecture](../media/GMT20250523-155851_Recording_1920x924.mp4) | [Audio Recording](../media/GMT20250523-155851_Recording.m4a)
+
 **Professor James Ross:**
 
 All right. Welcome to US History 2311. I am Jim Ross. I'll be with you this semester. As we work through some data. I want to start off at the very beginning by telling you this is not a traditional classroom. I'm not going to have a textbook that you'll be quizzed on. We will not have midterm exams. We will not have a final exam. Instead, what you and I are going to do is work through two things: primary sources and secondary sources.

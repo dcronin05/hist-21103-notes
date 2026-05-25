@@ -34,6 +34,7 @@ Notes, lectures, and summaries organized by week or module:
 Course assignments, essays, and prompts:
 
 - **[Essay One: Columbus](./assignments/essay_01_columbus_prompt.md)** (Due: May 31, 2026)
+  - [Columbus Essay Video Lecture Notes](./assignments/columbus_essay_video_notes.md) (Auto-Generated Transcript)
 
 ### [Readings](./readings/)
 
@@ -57,4 +58,12 @@ Summaries and insights from assigned course readings:
 A glossary of key historical figures, events, terms, and debates:
 
 - *(No concepts processed yet. Key upcoming topics: Columbus's religious motivation, House of Burgesses, Articles of Confederation, Free vs. Slave Labor societies)*
+
+### Preserved Media Library
+
+Preserved media resources linked throughout the wiki:
+- **[Portrait of Christopher Columbus](./media/columbus.gif)** (Embedded in Columbus Biography reading)
+- **[Columbus Essay Video Lecture](./media/Columbus Essay.mov)** (Linked in Essay One assignment prompt)
+- **[Course Introduction Video](./media/GMT20250523-155851_Recording_1920x924.mp4)** (Linked in Course Introduction Module)
+- **[Course Introduction Audio](./media/GMT20250523-155851_Recording.m4a)** (Linked in Course Introduction Module)
 
