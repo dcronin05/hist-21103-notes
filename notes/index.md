@@ -14,22 +14,22 @@ Welcome to the personal wiki space for UALR **HIST 21103 (US History to 1877)**.
 
 ---
 
-## 📌 Quick Access
+## <img src="../assets/icons/pin.svg" width="20" height="20" style="vertical-align: middle; margin-right: 4px;" /> Quick Access
 
-- 📄 **[Syllabus](./syllabus.md)** - Course description, grading policy, requirements, and deadlines.
-- 📼 **[Course Introduction Transcript](./modules/course_introduction_transcript.md)** - Dialogue and notes from Dr. Jim Ross's welcome lecture.
+- <img src="../assets/icons/syllabus.svg" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" /> **[Syllabus](./syllabus.md)** - Course description, grading policy, requirements, and deadlines.
+- <img src="../assets/icons/transcript.svg" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" /> **[Course Introduction Transcript](./modules/course_introduction_transcript.md)** - Dialogue and notes from Dr. Jim Ross's welcome lecture.
 
 ---
 
-## 🗂️ Wiki Directory
+## <img src="../assets/icons/folder.svg" width="20" height="20" style="vertical-align: middle; margin-right: 4px;" /> Wiki Directory
 
-### 📦 [Modules](./modules/)
+### <img src="../assets/icons/module.svg" width="18" height="18" style="vertical-align: middle; margin-right: 4px;" /> [Modules](./modules/)
 
 Notes, lectures, and summaries organized by week or module:
 
 - [Course Introduction](./modules/course_introduction_transcript.md)
 
-### 📚 [Readings](./readings/)
+### <img src="../assets/icons/book.svg" width="18" height="18" style="vertical-align: middle; margin-right: 4px;" /> [Readings](./readings/)
 
 Summaries and insights from assigned course readings:
 
@@ -43,7 +43,7 @@ Summaries and insights from assigned course readings:
   - [Chapter 6: Inequality and Freedom](./readings/1619/chapter_06.md)
   - [Epilogue: After 1619](./readings/1619/epilogue.md)
 
-### 💡 [Concepts](./concepts/)
+### <img src="../assets/icons/concept.svg" width="18" height="18" style="vertical-align: middle; margin-right: 4px;" /> [Concepts](./concepts/)
 
 A glossary of key historical figures, events, terms, and debates:
 
