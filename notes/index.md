@@ -29,10 +29,19 @@ Notes, lectures, and summaries organized by week or module:
 
 - [Course Introduction](./modules/course_introduction_transcript.md)
 
+### [Assignments](./assignments/)
+
+Course assignments, essays, and prompts:
+
+- **[Essay One: Columbus](./assignments/essay_01_columbus_prompt.md)** (Due: May 31, 2026)
+
 ### [Readings](./readings/)
 
 Summaries and insights from assigned course readings:
 
+- **Columbus Readings (for Essay One)**
+  - [Christopher Columbus Biography](./readings/christopher_columbus_biography.md) (Traditional Narrative)
+  - [Columbus and the Recovery of Jerusalem](./readings/columbus_and_the_recovery_of_jerusalem.md) by Abbas Hamdani (Scholarly Article)
 - **[1619: Jamestown and the Founding of American Democracy](./readings/1619_jamestown_and_the_founding_of_american_democracy.md)** by James Horn
   - [Introduction](./readings/1619/introduction.md)
   - [Chapter 1: Jamestown](./readings/1619/chapter_01.md)
@@ -48,3 +57,4 @@ Summaries and insights from assigned course readings:
 A glossary of key historical figures, events, terms, and debates:
 
 - *(No concepts processed yet. Key upcoming topics: Columbus's religious motivation, House of Burgesses, Articles of Confederation, Free vs. Slave Labor societies)*
+
