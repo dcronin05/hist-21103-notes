@@ -29,7 +29,7 @@ def get_note_type(filename):
     lower = filename.lower()
     if 'syllabus' in lower:
         return 'syllabus', ''
-    elif any(x in lower for x in ['module', 'unit', 'week', 'lecture']):
+    elif any(x in lower for x in ['module', 'unit', 'week', 'lecture', 'recording', 'intro', 'transcript']):
         return 'module', 'modules'
     elif any(x in lower for x in ['reading', 'chapter', 'book', 'article']):
         return 'reading', 'readings'
@@ -72,6 +72,29 @@ def extract_docx_text(path):
         print(f"Error reading DOCX {path}: {e}")
         return None
 
+def extract_vtt_text(path):
+    try:
+        with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+            lines = f.readlines()
+        text_lines = []
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith('WEBVTT') or line.startswith('Kind:') or line.startswith('Language:'):
+                continue
+            if '-->' in line:
+                continue
+            if line.isdigit():
+                continue
+            # Deduplicate lines if necessary (e.g. repeated cues)
+            if not text_lines or text_lines[-1] != line:
+                text_lines.append(line)
+        return '\n'.join(text_lines)
+    except Exception as e:
+        print(f"Error reading VTT {path}: {e}")
+        return None
+
 def process_file(filename):
     raw_path = os.path.join(RAW_DIR, filename)
     if not os.path.isfile(raw_path):
@@ -83,6 +106,18 @@ def process_file(filename):
     print(f"\nProcessing: {filename}")
     
     ext = os.path.splitext(filename)[1].lower()
+    
+    # Handle media files directly by archiving them
+    if ext in ['.mp4', '.m4a', '.mp3', '.mov', '.wav']:
+        print(f"Media file detected. Archiving to sources/processed/...")
+        try:
+            os.makedirs(PROCESSED_DIR, exist_ok=True)
+            shutil.move(raw_path, os.path.join(PROCESSED_DIR, filename))
+            print(f"Successfully archived: {filename}")
+        except Exception as e:
+            print(f"Error moving media file: {e}")
+        return
+
     content = ""
     
     if ext == '.txt':
@@ -91,6 +126,10 @@ def process_file(filename):
                 content = f.read()
         except Exception as e:
             print(f"Error reading text file: {e}")
+            return
+    elif ext == '.vtt':
+        content = extract_vtt_text(raw_path)
+        if content is None:
             return
     elif ext == '.pdf':
         content = extract_pdf_text(raw_path)
