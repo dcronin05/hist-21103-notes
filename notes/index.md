@@ -47,6 +47,16 @@ Course assignments, essays, and prompts:
   - [Tumult and Liberty Video Lecture Notes](./assignments/tumult_and_liberty_video_notes.md) (Auto-Generated Transcript)
 - **[Essay Seven: Inequality and Freedom](./assignments/essay_07_inequality_and_freedom_prompt.md)** (Worth 25 points)
   - [Inequality and Freedom Video Lecture Notes](./assignments/inequality_and_freedom_video_notes.md) (Auto-Generated Transcript)
+- **[Assignment 8 (Essay Two): Voices of the American Revolution](./assignments/essay_08_american_revolution_prompt.md)** (Worth 50 points)
+  - [American Revolution Video Notes](./assignments/american_revolution_video_notes.md) (Auto-Generated Transcript)
+- **[Assignment 9 (Essay Three): Articles vs. Constitution](./assignments/essay_09_articles_vs_constitution_prompt.md)** (Worth 50 points)
+  - [Articles vs. Constitution Video Notes](./assignments/articles_vs_constitution_video_notes.md) (Auto-Generated Transcript)
+- **[Assignment 10 (Essay Four): Creation of Two Societies](./assignments/essay_10_creation_of_two_societies_prompt.md)** (Worth 50 points)
+  - [Creation of Two Societies Video Notes](./assignments/creation_of_two_societies_video_notes.md) (Auto-Generated Transcript)
+- **[Assignment 11 (Essay Five): Debate over Slavery](./assignments/essay_11_debate_over_slavery_prompt.md)** (Worth 50 points)
+  - [Debate over Slavery Video Notes](./assignments/debate_over_slavery_video_notes.md) (Auto-Generated Transcript)
+- **[Assignment 12 (Essay Six): The Civil War](./assignments/essay_12_civil_war_prompt.md)** (Worth 50 points)
+  - [Civil War Video Notes](./assignments/civil_war_video_notes.md) (Auto-Generated Transcript)
 
 
 ### [Readings](./readings/)
@@ -75,6 +85,7 @@ A glossary of key historical figures, events, terms, and debates:
 ### Preserved Media Library
 
 Preserved media resources linked throughout the wiki:
+
 - **[Portrait of Christopher Columbus](./images/columbus.gif)** (Embedded in Columbus Biography reading)
 - **[Columbus Essay Video Lecture](./media/Columbus Essay.mov)** (Linked in Essay One assignment prompt)
 - **[Course Introduction Video](./media/GMT20250523-155851_Recording_1920x924.mp4)** (Linked in Course Introduction Module)
@@ -89,4 +100,13 @@ Preserved media resources linked throughout the wiki:
 - **[Tumult and Liberty Video Lecture](./media/Horn, Chapter 5.mov)** (Linked in Essay Six prompt)
 - **[Inequality and Freedom Video Lecture](./media/GMT20250529-144810_Recording_1280x720.mp4)** (Linked in Essay Seven prompt)
 - **[Inequality and Freedom Audio Recording](./media/GMT20250529-144810_Recording.m4a)** (Linked in Essay Seven prompt)
+- **[American Revolution Video Lecture](./media/Introduction to the American Revolution.mov)** (Linked in Assignment 8 prompt)
+- **[Articles vs. Constitution Video Lecture](./media/GMT20250529-145510_Recording_1920x924.mp4)** (Linked in Assignment 9 prompt)
+- **[Articles vs. Constitution Audio Recording](./media/GMT20250529-145510_Recording.m4a)** (Linked in Assignment 9 prompt)
+- **[Creation of Two Societies Video Lecture](./media/GMT20250530-134952_Recording_1920x924.mp4)** (Linked in Assignment 10 prompt)
+- **[Creation of Two Societies Audio Recording](./media/GMT20250530-134952_Recording.m4a)** (Linked in Assignment 10 prompt)
+- **[Debate over Slavery Video Lecture](./media/GMT20250530-135405_Recording_1920x924.mp4)** (Linked in Assignment 11 prompt)
+- **[Debate over Slavery Audio Recording](./media/GMT20250530-135405_Recording.m4a)** (Linked in Assignment 11 prompt)
+- **[Civil War Video Lecture](./media/GMT20250530-151239_Recording_1920x924.mp4)** (Linked in Assignment 12 prompt)
+- **[Civil War Audio Recording](./media/GMT20250530-151239_Recording.m4a)** (Linked in Assignment 12 prompt)
 
