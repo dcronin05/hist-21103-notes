@@ -1,0 +1,35 @@
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Office / OneDrive temp files
+~$*
+.~lock.*
+*.tmp
+
+# Python / Environment virtualenvs (if helper scripts are run)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Local workspace IDE/agent configs (excluding what is committed)
+.vscode/
+.idea/
+.obsidian/workspace
+.obsidian/workspace.json
+
+# Scratch scripts or temporary logs created during parsing
+scratch/
+*.log
