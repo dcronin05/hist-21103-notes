@@ -11,7 +11,6 @@ tags:
   - 1619
 ---
 
-1619 
 
 # Author’s Note
 

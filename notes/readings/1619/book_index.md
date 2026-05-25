@@ -11,7 +11,6 @@ tags:
   - 1619
 ---
 
-1619 
 
 # Index
 
@@ -23,7 +22,7 @@ English settlements, [61 (map)](chapter_02.md#page-61)
 
 first Africans in English Americas, [2](introduction.md#page-2), [88](chapter_03.md#page-88), [89](chapter_03.md#page-89)
 
-great reforms (*see*great reforms)
+great reforms (*see* great reforms)
 
 legacy, [213–217](epilogue.md#page-213)
 
@@ -159,7 +158,7 @@ Bermuda, [90](chapter_03.md#page-90), [112](chapter_03.md#page-112)
 
 Bermuda Hundred, [47](chapter_02.md#page-47)
 
-*Bona Nova*(ship), [194](chapter_06.md#page-194)
+*Bona Nova *(ship), [194](chapter_06.md#page-194)
 
 Bonoiel, Jean, [163](chapter_05.md#page-163)
 
@@ -175,11 +174,11 @@ Bray, Cicely, [137](chapter_04.md#page-137)
 
 Brewster, Edward, [193](chapter_06.md#page-193)
 
-*A Brief and True Report of the New Found Land of Virginia*(Hariot), [25–26](chapter_01.md#page-25)
+*A Brief and True Report of the New Found Land of Virginia *(Hariot), [25–26](chapter_01.md#page-25)
 
 Brinkelow, Henry, [142](chapter_04.md#page-142)
 
-British Empire.*See*England and British Empire
+British Empire.*See* England and British Empire
 
 Brooke, Christopher, [162–163](chapter_05.md#page-162)
 
@@ -225,7 +224,7 @@ arrest of Company leaders, [176](chapter_05.md#page-176)
 
 proposed marriage to Infanta Maria, [173](chapter_05.md#page-173), [175](chapter_05.md#page-175)
 
-*See also*Charles I
+*See also* Charles I
 
 Charles I (as king)
 
@@ -329,7 +328,7 @@ towns and corporations, [132–135](chapter_04.md#page-132)
 
 and virtuous government, [193](chapter_06.md#page-193)
 
-Company, the.*See*Virginia Company of London
+Company, the.*See* Virginia Company of London
 
 “Company’s Land,” [138–139](chapter_04.md#page-138)
 
@@ -339,7 +338,7 @@ Cooper, Thomas, [174](chapter_05.md#page-174)
 
 Copland, Patrick, [154](chapter_05.md#page-154)
 
-corporations.*See*towns
+corporations.*See* towns
 
 council of state, [65–67](chapter_02.md#page-65), [75](chapter_02.md#page-75)
 
@@ -413,7 +412,7 @@ model, [6](introduction.md#page-6)
 
 organization, [22–23](chapter_01.md#page-22), [24](chapter_01.md#page-24)
 
-*See also*trade and commerce
+*See also* trade and commerce
 
 Eden, Richard, [16–17](chapter_01.md#page-16)
 
@@ -435,7 +434,7 @@ and slaves, [199–200](chapter_06.md#page-199), [201](chapter_06.md#page-201)
 
 Elizabeth City, [61 (map)](chapter_02.md#page-61), [62](chapter_02.md#page-62), [134–135](chapter_04.md#page-134)
 
-*See also*Kecoughtan
+*See also* Kecoughtan
 
 Elyot, Thomas, [121](chapter_04.md#page-121)
 
@@ -521,7 +520,7 @@ Ferrar, Richard, [63](chapter_02.md#page-63)
 
 Finch, Katherine, [137](chapter_04.md#page-137)
 
-first Africans in America.*See*Africans
+first Africans in America.*See* Africans
 
 fleet of 1609, [31–32](chapter_01.md#page-31)
 
@@ -533,7 +532,7 @@ food shortages, [32–34](chapter_01.md#page-32)
 
 production, [45–47](chapter_02.md#page-45), [204](chapter_06.md#page-204)
 
-*See also*agriculture; trade and commerce
+*See also* agriculture; trade and commerce
 
 Fortescue, John, [121–122](chapter_04.md#page-121), [189](chapter_05.md#page-189)
 
@@ -545,7 +544,7 @@ role in war in Bohemia, [173–174](chapter_05.md#page-173)
 
 free planters, [104](chapter_03.md#page-104), [108–109](chapter_03.md#page-108)
 
-freedom.*See*rights and liberties
+freedom.*See* rights and liberties
 
 freedom of speech, [175](chapter_05.md#page-175)
 
@@ -623,7 +622,7 @@ rule without Parliament, [188](chapter_05.md#page-188), [207–208](chapter_06.m
 
 self-government, [2](introduction.md#page-2), [4–5](introduction.md#page-4), [67](chapter_02.md#page-67), [188](chapter_05.md#page-188), [215–216](epilogue.md#page-215)
 
-*See also*democracy; monarchy; representative government
+*See also* democracy; monarchy; representative government
 
 Gray, Robert, [129](chapter_04.md#page-129), [136](chapter_04.md#page-136)
 
@@ -725,7 +724,7 @@ slaughter and removal, [161–162](chapter_05.md#page-161)
 
 war of 1609–1613, [165–166](chapter_05.md#page-165)
 
-*See also*Powhatan people
+*See also* Powhatan people
 
 industries in colony, [154](chapter_05.md#page-154)
 
@@ -785,7 +784,7 @@ Spain policy, [175](chapter_05.md#page-175), [176](chapter_05.md#page-176), [206
 
 unity in Europe, [173–175](chapter_05.md#page-173)
 
-*James*(ship), [98](chapter_03.md#page-98)
+*James *(ship), [98](chapter_03.md#page-98)
 
 Jamestown
 
@@ -843,15 +842,15 @@ Kabasa (Angola), [95](chapter_03.md#page-95)
 
 Kecoughtan, [62](chapter_02.md#page-62), [134–135](chapter_04.md#page-134)
 
-*See also*Elizabeth City
+*See also* Elizabeth City
 
 Kendall, George, [19](chapter_01.md#page-19)
 
 King, Lettice, [137](chapter_04.md#page-137)
 
-king and monarchy.*See*monarchy
+king and monarchy.*See* monarchy
 
-King James.*See*James I
+King James.*See* James I
 
 Kingsmill, Richard, [98](chapter_03.md#page-98)
 
@@ -919,7 +918,7 @@ legacy of 1619, [215–216](epilogue.md#page-215)
 
 and power in colony, [8](introduction.md#page-8), [177–180](chapter_05.md#page-177), [181–183](chapter_05.md#page-181)
 
-*See also*rights and liberties
+*See also* rights and liberties
 
 Ligon, Richard, [101](chapter_03.md#page-101)
 
@@ -927,7 +926,7 @@ Lok, John, [107](chapter_03.md#page-107)
 
 MacMillan, Ken, [53](chapter_02.md#page-53)
 
-*Margaret and John*(ship), [98](chapter_03.md#page-98)
+*Margaret and John *(ship), [98](chapter_03.md#page-98)
 
 Maria (slave), [110](chapter_03.md#page-110)
 
@@ -989,13 +988,13 @@ Morgan, Philip, [115](chapter_03.md#page-115), [203](chapter_06.md#page-203)
 
 Nansemond fort, [33](chapter_01.md#page-33)
 
-Native Americans.*See*Indian peoples
+Native Americans.*See* Indian peoples
 
 Ndongo, [90](chapter_03.md#page-90), [91 (map)](chapter_03.md#page-91), [95](chapter_03.md#page-95)
 
 Necotowance, [170](chapter_05.md#page-170)
 
-*Negro*and*Negar,*as terms, [113](chapter_03.md#page-113)
+*Negro * and* Negar,*as terms, [113](chapter_03.md#page-113)
 
 New Bermudas, [47](chapter_02.md#page-47)
 
@@ -1005,7 +1004,7 @@ Nicolls, Thomas, [196](chapter_06.md#page-196)
 
 North America, exploration, [16–18](chapter_01.md#page-16)
 
-*Nova Britannia*(tract), [24–25](chapter_01.md#page-24)
+*Nova Britannia *(tract), [24–25](chapter_01.md#page-24)
 
 Opechancanough
 
@@ -1179,7 +1178,7 @@ territories in Virginia, [28 (map)](chapter_01.md#page-28), [29–31](chapter_01
 
 weapons used against, [166–168](chapter_05.md#page-166)
 
-*See also*Indian peoples
+*See also* Indian peoples
 
 privateers and privateering, [86–87](chapter_03.md#page-86), [89](chapter_03.md#page-89), [202–203](chapter_06.md#page-202)
 
@@ -1211,13 +1210,13 @@ Ratcliffe, John, [18–19](chapter_01.md#page-18), [32–33](chapter_01.md#page-
 
 Read, James, [19](chapter_01.md#page-19)
 
-Rebecca.*See*Pocahontas
+Rebecca.*See* Pocahontas
 
 reforms in colony
 
 first phase (1608–1609), [15](chapter_01.md#page-15), [24](chapter_01.md#page-24)
 
-great reforms (*see*great reforms)
+great reforms (*see* great reforms)
 
 religion
 
@@ -1229,7 +1228,7 @@ separatism in, [179](chapter_05.md#page-179)
 
 wars in Europe, [173–174](chapter_05.md#page-173)
 
-*See also*Christianity; Church of England; Protestantism
+*See also* Christianity; Church of England; Protestantism
 
 representative government
 
@@ -1253,7 +1252,7 @@ and great reforms, [55](chapter_02.md#page-55)
 
 ideology for colony, [89](chapter_03.md#page-89)
 
-owner of*Treasurer,*[85](chapter_03.md#page-85)
+owner of *Treasurer,*[85](chapter_03.md#page-85)
 
 as privateer, [86–87](chapter_03.md#page-86)
 
@@ -1361,7 +1360,7 @@ Sandys, George, [154](chapter_05.md#page-154), [164](chapter_05.md#page-164), [1
 
 São Salvador (Angola), [95](chapter_03.md#page-95)
 
-*Sea Venture*(ship), [32](chapter_01.md#page-32)
+*Sea Venture *(ship), [32](chapter_01.md#page-32)
 
 Sebastian I (King Sebastian), [93–94](chapter_03.md#page-93)
 
@@ -1509,7 +1508,7 @@ value, [100–101](chapter_03.md#page-100)
 
 well-being in colony, [200](chapter_06.md#page-200)
 
-*See also*Africans; racism/racial prejudice
+*See also* Africans; racism/racial prejudice
 
 Smith, John, [18](chapter_01.md#page-18), [30](chapter_01.md#page-30), [36](chapter_01.md#page-36), [37](chapter_01.md#page-37)
 
@@ -1539,7 +1538,7 @@ rule of law in colony, [80](chapter_02.md#page-80)
 
 Society of Martin’s Hundred, [49](chapter_02.md#page-49)
 
-Southampton, Earl of.*See*Wriothesley, Sir Henry
+Southampton, Earl of.*See* Wriothesley, Sir Henry
 
 Spain
 
@@ -1563,7 +1562,7 @@ Spenser, Edmund, [132–133](chapter_04.md#page-132)
 
 St. Bartholomew’s Day Massacre, [158–160](chapter_05.md#page-158)
 
-*St. John the Baptist*(ship), [86](chapter_03.md#page-86), [97](chapter_03.md#page-97), [99](chapter_03.md#page-99)
+*St. John the Baptist *(ship), [86](chapter_03.md#page-86), [97](chapter_03.md#page-97), [99](chapter_03.md#page-99)
 
 Stanford Center on Poverty and Inequality, [215](epilogue.md#page-215)
 
@@ -1577,9 +1576,9 @@ marriage to Frederick V, [173](chapter_05.md#page-173)
 
 role in war in Bohemia, [173–174](chapter_05.md#page-173)
 
-superior court.*See*General Court; Quarter Court
+superior court.*See* General Court; Quarter Court
 
-*Swan*(ship), [99](chapter_03.md#page-99)
+*Swan *(ship), [99](chapter_03.md#page-99)
 
 Sweet, James, [105](chapter_03.md#page-105)
 
@@ -1631,11 +1630,11 @@ Sandys’s views, [58–59](chapter_02.md#page-58)
 
 of slaves, [86–87](chapter_03.md#page-86), [90](chapter_03.md#page-90), [93](chapter_03.md#page-93), [94–98](chapter_03.md#page-94), [104–105](chapter_03.md#page-104), [107–108](chapter_03.md#page-107), [200](chapter_06.md#page-200)
 
-*See also*economy in colony
+*See also* economy in colony
 
 trading companies, [11–12](chapter_01.md#page-11)
 
-*Treasurer*(ship)
+*Treasurer *(ship)
 
 capture of slaves, [85–86](chapter_03.md#page-85)
 
@@ -1657,7 +1656,7 @@ Twine, John, [69 (fig.)](chapter_02.md#page-69)
 
 Tyndale, William, [124–125](chapter_04.md#page-124)
 
-*Utopia*(More), [124](chapter_04.md#page-124)
+*Utopia *(More), [124](chapter_04.md#page-124)
 
 Virginia colony
 
@@ -1767,7 +1766,7 @@ purpose of company, [127](chapter_04.md#page-127)
 
 recruitment and investment campaigns, [22–23](chapter_01.md#page-22), [41–42](chapter_01.md#page-41), [158](chapter_05.md#page-158), [171](chapter_05.md#page-171)
 
-reforms in colony (*see*great reforms)
+reforms in colony (*see* great reforms)
 
 religious initiative, [149–150](chapter_04.md#page-149)
 
@@ -1803,7 +1802,7 @@ Walsh, Lorena, [109](chapter_03.md#page-109)
 
 Ward, John, [69–70](chapter_02.md#page-69)
 
-Warwick, Earl of.*See*Rich, Robert
+Warwick, Earl of.*See* Rich, Robert
 
 Waterhouse, Edward
 
@@ -1811,9 +1810,9 @@ attack by Powhatans, [155](chapter_05.md#page-155), [158–160](chapter_05.md#pa
 
 attitude toward Indians, [160–162](chapter_05.md#page-160)
 
-*Declaration,*of 1622, [158](chapter_05.md#page-158), [160–161](chapter_05.md#page-160)
+*Declaration,* of 1622, [158](chapter_05.md#page-158), [160–161](chapter_05.md#page-160)
 
-wealthy.*See*elite
+wealthy.*See* elite
 
 West, Francis, [99](chapter_03.md#page-99)
 
@@ -1823,7 +1822,7 @@ West Indies, [89](chapter_03.md#page-89)
 
 Wheat, David, [200](chapter_06.md#page-200)
 
-*White Lion*(ship)
+*White Lion *(ship)
 
 capture of slaves, [85–86](chapter_03.md#page-85)
 
@@ -1831,7 +1830,7 @@ first Africans to English America, [2](introduction.md#page-2), [87](chapter_03.
 
 as privateering ship, [87–88](chapter_03.md#page-87)
 
-white people and society.*See*Europeans; servants (white); settlers
+white people and society.*See* Europeans; servants (white); settlers
 
 William, Sir (Lord Cavendish), [60](chapter_02.md#page-60), [185](chapter_05.md#page-185), [187](chapter_05.md#page-187)
 

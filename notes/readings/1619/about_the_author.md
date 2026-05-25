@@ -11,6 +11,5 @@ tags:
   - 1619
 ---
 
-1619 
 
-**James Horn**is president and chief officer of the Jamestown Rediscovery Foundation (Preservation Virginia), responsible for the management of Historic Jamestowne, the original site of the first permanent English colony in America. He is the author and editor of seven books on colonial America and is a regular contributor to radio and TV programs, including the History Channel,*Nova, Time Team America,*and PBS. He lives in Richmond, Virginia.
+**James Horn**is president and chief officer of the Jamestown Rediscovery Foundation (Preservation Virginia), responsible for the management of Historic Jamestowne, the original site of the first permanent English colony in America. He is the author and editor of seven books on colonial America and is a regular contributor to radio and TV programs, including the History Channel,*Nova, Time Team America,* and PBS. He lives in Richmond, Virginia.
