@@ -23,13 +23,13 @@ Welcome to the personal wiki space for UALR **HIST 21103 (US History to 1877)**.
 
 ## Wiki Directory
 
-### [Modules](./modules/)
+### Modules
 
 Notes, lectures, and summaries organized by week or module:
 
 - [Course Introduction](./modules/course_introduction_transcript.md)
 
-### [Assignments](./assignments/)
+### Assignments
 
 Course assignments, essays, and prompts:
 
@@ -58,7 +58,7 @@ Course assignments, essays, and prompts:
 - **[Assignment 12 (Essay Six): The Civil War](./assignments/essay_12_civil_war_prompt.md)** (Worth 50 points)
   - [Civil War Video Notes](./assignments/civil_war_video_notes.md) (Auto-Generated Transcript)
 
-### [Readings](./readings/)
+### Readings
 
 Summaries and insights from assigned course readings:
 
@@ -75,7 +75,7 @@ Summaries and insights from assigned course readings:
   - [Chapter 6: Inequality and Freedom](./readings/1619/chapter_06.md)
   - [Epilogue: After 1619](./readings/1619/epilogue.md)
 
-### [Concepts](./concepts/)
+### Concepts
 
 A glossary of key historical figures, events, terms, and debates:
 
@@ -85,5 +85,4 @@ A glossary of key historical figures, events, terms, and debates:
 
 - **[Portrait of Christopher Columbus](./assets/columbus.gif)** (Embedded in Columbus Biography reading)
 - **[Colonial Settlement Map](./assets/growth-of-colonial-settlement.jpg)** (Embedded in Essay Two prompt)
-
 

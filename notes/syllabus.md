@@ -8,78 +8,159 @@ tags:
   - syllabus
 ---
 
-# Syllabus
+# United States History to 1877
 
-United States History to 1877
-Online Course
-Dr. Jim Ross
+**Online Course | Dr. Jim Ross**
 
-Contact information
+---
 
-Phone: 501-569-8395
-Email: Message on Blackboard
+## Contact Information
 
-Course Description:
+| Contact Method   | Details                                                          |
+| :--------------- | :--------------------------------------------------------------- |
+| **Instructor**   | Dr. Jim Ross                                                     |
+| **Office Phone** | 501-569-8395                                                     |
+| **Email Policy** | **Use Blackboard Messages Only** (Do not email the UALR account) |
 
-This course provides a broad overview of United States history from the 16th century to the Reconstruction era. There are two ways to study history. One way is to simply memorize facts without a coherent narrative. The typical assessment in this kind of class is to simply give a multiple-choice test and call that education. My guess is most of you learned to hate history in a high school class like that. The other, and the way we will use, is to explore history by using a theme to tease out the meaning of the past. The way we assess knowledge in this type of class is to write. This is a reading and writing intensive class. Because this is an online class you need to stay focused and keep up with all assignments.
+---
 
-Required Text:
+## Course Description
 
-- [James Horn, 1619: Jamestown and the Founding of American Democracy](./readings/1619_jamestown_and_the_founding_of_american_democracy.md)
+This course provides a broad overview of United States history from the 16th century to the Reconstruction era.
 
-I have provided a PDF file in Blackboard for this book
+There are two ways to study history:
 
-I do not require the traditional textbook, and we will have no assignments based on it, but if you feel you need background information you might want to buy it.
+1. **Fact Memorization**: Memorizing names and dates without a coherent narrative, assessed via multiple-choice tests.
+2. **Thematic Exploration**: Exploring history by using a theme to tease out the meaning of the past, assessed via writing.
 
-Requirements for the course:
+We will use the **thematic and writing-intensive approach**. Because this is an online class, you need to stay focused, read carefully, and keep up with all assignments.
 
-To pass this class you will need to do the following:
+---
 
-- **6 Essays** worth 50 points each: A 2-3 page essay on the topic assigned. See the **[Assignments Directory](./assignments/)** for prompts, starting with **[Essay One: Columbus](./assignments/essay_01_columbus_prompt.md)**. These essays should be double spaced and in 12-point font.
-- **6 Book short essays** on the **[James Horn book](./readings/1619_jamestown_and_the_founding_of_american_democracy.md)**: These are worth 25 points each (1-2 pages).
+## Required Text
 
-Email:
+> [!NOTE]
+>
+> **Required Text:**
+>
+> - **[James Horn, 1619: Jamestown and the Founding of American Democracy](./readings/1619_jamestown_and_the_founding_of_american_democracy.md)**
+>
+> *A PDF copy of this book is provided under the resources area on Blackboard. A traditional textbook is not required.*
 
-Please do not email me at my UALR account. Only email me on Blackboard. You will find the link to do that on the Home page and in the left-hand column. Also, do not email me any assignments. Post them in the area provided under each assignment.
+---
 
-I will be on Blackboard every day, but not all the time. I do not get alerts when you message me, so you may not get an immediate response. I will check Blackboard once in the morning and once in the evening. Please be patient. There is nothing in this class that should cause an emergency. Let’s try to be laid back.
+## Course Requirements & Grading
 
-Due Dates:
+Your course grade is based entirely on writing. There are **12 total assignments** worth **450 points**:
 
-You will not find any due dates in this class. All your work must be to me by June 29 at 11:59 PM. That will give me enough time to get grades in. Please note that I do this to give you the freedom to control your own schedule. Please note also that if you wait till the last minute to turn in work you will not do well in the class. Do a little work every day and you will do well. I will get your work graded fairly quickly, but please note I have a lot of writing assignments and these do take time to grade.
+| Assignment Type        | Count  | Description                                                                                                                 | Points      | Total       |
+| :--------------------- | :----- | :-------------------------------------------------------------------------------------------------------------------------- | :---------- | :---------- |
+| **Major Essays**       | 6      | 2–3 pages, double-spaced, 12pt font, focused on primary sources.                                                            | 50 pts each | **300 pts** |
+| **Book Short Essays**  | 6      | 1–2 page summaries/responses on the [James Horn book](./readings/1619_jamestown_and_the_founding_of_american_democracy.md). | 25 pts each | **150 pts** |
+| **Total Course Grade** | **12** |                                                                                                                             |             | **450 pts** |
 
-If you are the type of person who needs a schedule, I would say you should do 2-3 assignments each week to stay ahead. I have also placed due dates on the assignments to guide you, but I do not have a late penalty. Work at your own pace. DO NOT WAIT TILL THE LAST MINUTE. There is lots and lots of reading involved in this class.
+### Course Workflow Map
 
-STUDENT LEARNING OBJECTIVES - CORE COURSES
+```mermaid
+graph TD
+    Start([Start Course]) --> Intro[Course Introduction]
+    Intro --> MajorEssays{6 Major Essays<br>50 pts each}
+    Intro --> BookEssays{6 Book Short Essays<br>25 pts each}
+    
+    MajorEssays --> Essay1[Essay 1: Columbus]
+    MajorEssays --> Essay2[Essay 2: American Revolution]
+    MajorEssays --> Essay3[Essay 3: Articles vs. Constitution]
+    MajorEssays --> Essay4[Essay 4: Two Societies]
+    MajorEssays --> Essay5[Essay 5: Debate over Slavery]
+    MajorEssays --> Essay6[Essay 6: Civil War]
+    
+    BookEssays --> Book1[Book Essay 1: Colonial Settlement]
+    BookEssays --> Book2[Book Essay 2: Great Reforms]
+    BookEssays --> Book3[Book Essay 3: First Africans]
+    BookEssays --> Book4[Book Essay 4: Commonwealth]
+    BookEssays --> Book5[Book Essay 5: Tumult & Liberty]
+    BookEssays --> Book6[Book Essay 6: Inequality & Freedom]
+    
+    Essay1 --> Submit[Submit on Blackboard]
+    Essay2 --> Submit
+    Essay3 --> Submit
+    Essay4 --> Submit
+    Essay5 --> Submit
+    Essay6 --> Submit
+    Book1 --> Submit
+    Book2 --> Submit
+    Book3 --> Submit
+    Book4 --> Submit
+    Book5 --> Submit
+    Book6 --> Submit
+    
+    Submit --> FinalGrade([Final Grade based on 450 Total Points])
+```
 
-- Students will demonstrate knowledge of historical information such as names, dates and chronologies, events, terms, and concepts.
-- Students will demonstrate an understanding of the diversity and complexity of the historical context that shapes human experience.
-- Students will demonstrate an understanding of the inter-relatedness of historical events as expressed in such concepts as continuity and change, causation, interdependence of cultures, and the interaction between differing groups and societies.
-- Students will organize and articulate their ideas through an essay that presents a thesis relevant to the question.
-- Students will support their ideas with historical evidence and will reach conclusions based on that evidence.
+---
 
-UALR statement on plagiarism and academic dishonesty
+## Important Course Policies
 
-All of your work must reflect your own thoughts, words, opinions, and efforts.
+### Communication Policy
 
-Academic dishonesty of any kind will not be tolerated in this class, may be reported to the Office of the Dean of Students, and could result in a failing grade on the assignment, in the class, and/or harsher penalties. If you are unclear about what constitutes academic dishonesty, please ask me.
+> [!IMPORTANT]
+>
+> **Use Blackboard Messages Only:**
+>
+> - Please do **NOT** email the instructor at their UALR email account.
+> - Do not email any assignments. All papers must be uploaded to the Blackboard portal under the respective assignment links.
+> - Messages are checked twice daily (once in the morning and once in the evening).
 
-Policy on Artificial Intelligence (AI) Use in Writing Assignments
+### Self-Pacing & Due Dates
 
-The use of generative artificial intelligence (AI), including tools like ChatGPT or similar programs, is not permitted for any writing assignments in this course. Your work must be your own, reflecting your own reasoning, interpretation, and writing.
+> [!TIP]
+>
+> **Suggested Deadlines & Late Policy:**
+>
+> - There are **no late penalties** or rigid weekly due dates.
+> - All work must be submitted by **June 29 at 11:59 PM (CDT)**.
+> - *Crucial Recommendation:* To stay ahead and write high-quality papers, target completing **2–3 assignments per week**. Waiting until the last minute will result in poor performance due to the intensive reading and writing requirements.
 
-Essay writing is a fundamental part of developing your critical thinking skills. It requires you to engage closely with sources, form and organize your own arguments, and express your thoughts clearly. These skills are essential not only for academic success but also for understanding complex issues, making informed decisions, and communicating effectively in a wide range of settings.
+### Academic Integrity & AI Use
 
-Relying on AI to generate ideas or write essays short-circuits the thinking process and undermines the purpose of this class. Our goal is not just to reach the right answer, but to learn how to think independently and analytically.
+> [!CAUTION]
+>
+> **Generative AI Policy:**
+>
+> - The use of generative artificial intelligence (AI), including tools like ChatGPT, Claude, or similar programs, is **not permitted** for any writing assignments in this course.
+> - Your essays must reflect your own critical thinking, reasoning, and independent voice.
+> - Relying on AI short-circuits the learning process and defeats the objective of developing analytical writing skills.
 
-UALR statement on students with disabilities
+> [!WARNING]
+>
+> **Plagiarism Policy:**
+>
+> - All work must reflect your own thoughts, words, and efforts.
+> - Academic dishonesty of any kind will be reported to the Office of the Dean of Students and could result in a failing grade on the assignment or for the entire course.
 
-Students with Disabilities: It is the policy of the University of Arkansas at Little Rock to create inclusive learning environments. If there are aspects of the instruction or design of this course that result in barriers to your inclusion or to accurate assessment of achievement–such as time-limited exams, inaccessible web content, or the use of non-captioned videos–please notify the instructor as soon as possible. Students are also welcome to contact the Disability Resource Center, telephone 501-569-3143 (v/tty). For more information, visit the DRC website at [http\://ualr.edu/disability/](http://ualr.edu/disability/).
+---
 
-The UALR policy statement on web accessibility
+## Student Learning Objectives
 
-It is the policy and practice of UALR to make all web information accessible to students with disabilities. If you, as a student with a disability, have difficulty accessing any part of any online course materials for this class, please notify the instructor immediately.
+Students in this core course will demonstrate:
 
-Weather Policy:
+1. **Historical Knowledge**: Understanding of key figures, names, dates, chronologies, events, and concepts.
+2. **Contextual Diversity**: Understanding of the complex historical context that shapes human experiences.
+3. **Causation & Interaction**: Understanding of the interrelatedness of historical events, including continuity and change, causation, and interaction between differing groups.
+4. **Thesis Formulation**: Organizing and articulating ideas clearly in an essay that presents a relevant, evidence-supported thesis.
 
-UALR closes for inclement weather when the Little Rock public schools close. If UALR is open yet the roads in your community are dangerous, you should use your own judgment about attending class. However, it is your responsibility to inform your instructor that it is too dangerous for you to travel to Little Rock before class meets. It is also your responsibility to speak to the instructor about making up missed work.
+---
+
+## UALR Institutional Policies
+
+### Students with Disabilities
+
+UALR is committed to creating inclusive learning environments. If there are aspects of this course that present barriers (e.g. time limits, non-captioned videos, or web accessibility), please notify the instructor immediately. You may also contact the **Disability Resource Center** at **501-569-3143** or visit [DRC Website](http://ualr.edu/disability/).
+
+### Web Accessibility
+
+It is the policy and practice of UALR to make all web information accessible to students with disabilities. If you experience difficulty accessing any part of these materials, please alert the instructor immediately.
+
+### Weather Policy
+
+UALR closes for inclement weather when the Little Rock public schools close. If the university remains open but road conditions in your specific area are dangerous, use your best judgment. Inform the instructor before class time if weather prevents you from traveling or participating, and coordinate on making up any missed work.
