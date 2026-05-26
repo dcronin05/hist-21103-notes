@@ -580,53 +580,47 @@
       flex-wrap: wrap;
     }
 
-    /* Styled Toggle Switch */
-    .switch-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      cursor: pointer;
-    }
-
-    .switch-label {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .toggle-switch {
-      position: relative;
-      width: 48px;
-      height: 26px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 13px;
+    /* Status Cycle Button */
+    .status-cycle-btn {
+      background-color: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--border);
-      transition: background-color 0.3s ease;
+      color: var(--text-muted);
+      border-radius: 12px;
+      padding: 0.6rem 1.4rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      outline: none;
     }
 
-    .toggle-switch::after {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 20px;
-      height: 20px;
-      background-color: #ffffff;
-      border-radius: 50%;
-      transition: transform 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    .status-cycle-btn:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
     }
 
-    input[type="checkbox"].hidden-toggle {
-      display: none;
+    .status-cycle-btn.status-not-submitted {
+      background: rgba(156, 163, 175, 0.05);
+      color: var(--text-muted);
+      border-color: rgba(156, 163, 175, 0.2);
     }
 
-    input[type="checkbox"].hidden-toggle:checked + .toggle-switch {
-      background-color: var(--success);
+    .status-cycle-btn.status-submitted {
+      background: rgba(245, 158, 11, 0.08);
+      color: var(--warning);
+      border-color: rgba(245, 158, 11, 0.25);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.1);
     }
 
-    input[type="checkbox"].hidden-toggle:checked + .toggle-switch::after {
-      transform: translateX(22px);
+    .status-cycle-btn.status-graded {
+      background: rgba(16, 185, 129, 0.08);
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.25);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
     }
 
     /* Styled Score Input */
@@ -1195,11 +1189,22 @@
         }
       }
       
-      // Initialize defaults for missing tasks
+      // Initialize defaults for missing tasks & migrate old formats
       courseData.forEach(milestone => {
         milestone.tasks.forEach(t => {
           if (!trackerState[t.id]) {
-            trackerState[t.id] = { submitted: false, score: '', feedback: '' };
+            trackerState[t.id] = { status: 'not-submitted', submitted: false, score: '', feedback: '' };
+          } else {
+            const state = trackerState[t.id];
+            if (!state.status) {
+              if (state.score !== '') {
+                state.status = 'graded';
+              } else if (state.submitted) {
+                state.status = 'submitted';
+              } else {
+                state.status = 'not-submitted';
+              }
+            }
           }
         });
       });
@@ -1216,7 +1221,7 @@
         trackerState = {};
         courseData.forEach(milestone => {
           milestone.tasks.forEach(t => {
-            trackerState[t.id] = { submitted: false, score: '', feedback: '' };
+            trackerState[t.id] = { status: 'not-submitted', submitted: false, score: '', feedback: '' };
           });
         });
         saveTrackerState();
@@ -1232,32 +1237,25 @@
       document.getElementById(`view-${tabId}`).classList.add('active');
     }
 
-    function handleSubmissionToggle(taskId) {
-      const isChecked = document.getElementById(`sub-toggle-${taskId}`).checked;
-      trackerState[taskId].submitted = isChecked;
+    function cycleStatus(taskId) {
+      const state = trackerState[taskId];
       
-      const card = document.getElementById(`task-card-${taskId}`);
-      const statusBadge = document.getElementById(`status-badge-${taskId}`);
-      const scoreInput = document.getElementById(`score-input-${taskId}`);
-      
-      // Update UI elements
-      if (!isChecked) {
-        trackerState[taskId].score = '';
-        if (scoreInput) scoreInput.value = '';
-        card.className = 'task-card';
-        statusBadge.className = 'status-badge status-not-submitted';
-        statusBadge.innerHTML = '● Not Submitted';
+      if (state.status === 'not-submitted') {
+        state.status = 'submitted';
+        state.submitted = true;
+        state.score = '';
+      } else if (state.status === 'submitted') {
+        state.status = 'graded';
+        state.submitted = true;
+        const points = getTaskPoints(taskId);
+        state.score = points; // Default to max points on entering graded state
       } else {
-        if (scoreInput && scoreInput.value !== '') {
-          card.className = 'task-card graded';
-          statusBadge.className = 'status-badge status-graded';
-          statusBadge.innerHTML = '✓ Graded';
-        } else {
-          card.className = 'task-card submitted';
-          statusBadge.className = 'status-badge status-pending';
-          statusBadge.innerHTML = '○ Pending Grade';
-        }
+        state.status = 'not-submitted';
+        state.submitted = false;
+        state.score = '';
       }
+      
+      renderTracker();
       saveTrackerState();
     }
 
@@ -1272,43 +1270,15 @@
     }
 
     function handleScoreInput(taskId) {
-      const scoreInput = document.getElementById(`score-input-${taskId}`);
-      let val = scoreInput.value;
+      const scoreSelect = document.getElementById(`score-input-${taskId}`);
+      const val = scoreSelect.value;
       
       if (val === '') {
         trackerState[taskId].score = '';
       } else {
-        let num = parseFloat(val);
-        trackerState[taskId].score = num;
-        
-        // Auto-check submitted if score is entered
-        const subToggle = document.getElementById(`sub-toggle-${taskId}`);
-        if (subToggle && !subToggle.checked) {
-          subToggle.checked = true;
-          trackerState[taskId].submitted = true;
-        }
+        trackerState[taskId].score = parseFloat(val);
       }
       
-      // Update styling
-      const card = document.getElementById(`task-card-${taskId}`);
-      const statusBadge = document.getElementById(`status-badge-${taskId}`);
-      const subToggle = document.getElementById(`sub-toggle-${taskId}`);
-      
-      if (subToggle && subToggle.checked) {
-        if (trackerState[taskId].score !== '') {
-          card.className = 'task-card graded';
-          statusBadge.className = 'status-badge status-graded';
-          statusBadge.innerHTML = '✓ Graded';
-        } else {
-          card.className = 'task-card submitted';
-          statusBadge.className = 'status-badge status-pending';
-          statusBadge.innerHTML = '○ Pending Grade';
-        }
-      } else {
-        card.className = 'task-card';
-        statusBadge.className = 'status-badge status-not-submitted';
-        statusBadge.innerHTML = '● Not Submitted';
-      }
       saveTrackerState();
     }
 
@@ -1500,16 +1470,15 @@
                 <!-- Right performance input panel -->
                 <div class="input-panel">
                   <div class="input-group-row">
-                    <!-- Submission Switch -->
-                    <label class="switch-wrapper">
-                      <input type="checkbox" class="hidden-toggle" id="sub-toggle-${task.id}" ${state.submitted ? 'checked' : ''} onchange="handleSubmissionToggle(${task.id})">
-                      <div class="toggle-switch"></div>
-                      <span class="switch-label">Submitted</span>
-                    </label>
+                    <!-- Dynamic Status Button -->
+                    <button class="status-cycle-btn status-${state.status}" id="status-btn-${task.id}" onclick="cycleStatus(${task.id})">
+                      <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:currentColor; margin-right:0.4rem; ${state.status !== 'not-submitted' ? 'box-shadow: 0 0 8px currentColor;' : ''}"></span>
+                      ${state.status === 'not-submitted' ? 'Not Submitted' : state.status === 'submitted' ? 'Submitted' : 'Graded'}
+                    </button>
                     
                     <!-- Score entry -->
                     ${task.points > 0 ? `
-                      <div class="score-entry">
+                      <div class="score-entry" id="score-container-${task.id}" style="display: ${state.status === 'graded' ? 'flex' : 'none'};">
                         <span class="score-label">Score Earned:</span>
                         <div class="score-input-wrapper">
                           <select class="score-select" id="score-input-${task.id}" onchange="handleScoreInput(${task.id})">
