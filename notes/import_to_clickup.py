@@ -482,6 +482,66 @@ def clean_markdown_text(content):
     content = callout_re.sub(replace_callout, content)
     return content.lstrip()
 
+def classify_subtask(subtask_name):
+    name_lower = subtask_name.lower()
+    if any(k in name_lower for k in ["submit", "upload", "turn in", "post"]):
+        return 3  # Submission phase
+    elif any(k in name_lower for k in ["draft", "write", "compare", "analyze", "setup", "set up", "track", "prepare"]):
+        return 2  # Drafting phase
+    else:
+        return 1  # Reading/Research phase (default)
+
+def calculate_subtask_dates(parent_start_str, parent_due_str, subtasks):
+    import datetime
+    
+    start_dt = datetime.datetime.strptime(parent_start_str, "%m/%d/%Y")
+    due_dt = datetime.datetime.strptime(parent_due_str, "%m/%d/%Y")
+    
+    duration = (due_dt - start_dt).days + 1
+    
+    subtask_dates = []
+    
+    if duration <= 1:
+        for st in subtasks:
+            subtask_dates.append((parent_start_str, parent_due_str))
+        return subtask_dates
+        
+    classified = [classify_subtask(st) for st in subtasks]
+    has_submission = 3 in classified
+    
+    for idx, phase in enumerate(classified):
+        if phase == 1:
+            st_start = start_dt
+            # Reading phase: take up to 50% of the duration (rounded up, min 1)
+            days_to_add = max(1, int(duration * 0.5))
+            st_due = start_dt + datetime.timedelta(days=days_to_add)
+            if st_due >= due_dt:
+                st_due = due_dt - datetime.timedelta(days=1)
+        elif phase == 2:
+            # Drafting phase starts around 40% of duration
+            days_to_start = max(1, int(duration * 0.4))
+            st_start = start_dt + datetime.timedelta(days=days_to_start)
+            # If there's a submission subtask, draft is due 1 day before due_dt
+            if has_submission:
+                st_due = due_dt - datetime.timedelta(days=1)
+            else:
+                st_due = due_dt
+            if st_due < st_start:
+                st_due = st_start
+        else:
+            # Submission phase
+            st_start = due_dt - datetime.timedelta(days=1)
+            st_due = due_dt
+            if st_start < start_dt:
+                st_start = start_dt
+                
+        subtask_dates.append((
+            st_start.strftime("%m/%d/%Y"),
+            st_due.strftime("%m/%d/%Y")
+        ))
+        
+    return subtask_dates
+
 def get_all_doc_maps(workspace_id, headers, workspace_root, task_id_by_name, subtask_id_by_parent_and_name, default_parent_id):
     existing_docs = get_existing_docs(workspace_id, headers)
     md_files = find_all_markdown_files(workspace_root)
@@ -946,10 +1006,17 @@ def main():
             # Fetch existing subtasks under this parent task
             current_subtasks = existing_subtasks_by_parent.get(parent_task_id, [])
             
+            # Calculate subtask dates
+            subtask_dates_list = calculate_subtask_dates(t["start_date"], t["due_date"], t["subtasks"])
+            
             # Sync each required subtask
-            for st_name in t["subtasks"]:
+            for idx, st_name in enumerate(t["subtasks"]):
                 clean_st_name = get_clean_name(st_name)
                 st_desc = get_subtask_markdown(st_name, task_name)
+                
+                st_start_str, st_due_str = subtask_dates_list[idx]
+                st_start_ms = date_to_ms(st_start_str)
+                st_due_ms = date_to_ms(st_due_str)
                 
                 # Match existing subtask
                 matched_st = None
@@ -969,19 +1036,23 @@ def main():
                 subtask_id = None
                 if matched_st:
                     subtask_id = matched_st["id"]
-                    print(f"       [*] Updating existing subtask: '{clean_st_name}' (ID: {subtask_id})...")
+                    print(f"       [*] Updating existing subtask: '{clean_st_name}' (ID: {subtask_id}) [Start: {st_start_str}, Due: {st_due_str}]...")
                     sub_url = f"https://api.clickup.com/api/v2/task/{subtask_id}"
                     clickup_api_request(sub_url, "PUT", headers, {
                         "name": clean_st_name,
-                        "markdown_content": st_desc
+                        "markdown_content": st_desc,
+                        "start_date": st_start_ms,
+                        "due_date": st_due_ms
                     })
                 else:
-                    print(f"       [+] Creating new subtask: '{clean_st_name}'...")
+                    print(f"       [+] Creating new subtask: '{clean_st_name}' [Start: {st_start_str}, Due: {st_due_str}]...")
                     create_url = f"https://api.clickup.com/api/v2/list/{list_id}/task"
                     res = clickup_api_request(create_url, "POST", headers, {
                         "name": clean_st_name,
                         "parent": parent_task_id,
-                        "markdown_content": st_desc
+                        "markdown_content": st_desc,
+                        "start_date": st_start_ms,
+                        "due_date": st_due_ms
                     })
                     subtask_id = res.get("id")
                     
