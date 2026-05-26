@@ -1427,7 +1427,10 @@
         `;
 
         milestone.tasks.forEach(task => {
-          const state = trackerState[task.id] || { submitted: false, score: '', feedback: '' };
+          const state = trackerState[task.id] || { status: 'not-submitted', submitted: false, score: '', feedback: '' };
+          if (!state.status) {
+            state.status = state.score !== '' ? 'graded' : (state.submitted ? 'submitted' : 'not-submitted');
+          }
           
           let cardClass = 'task-card';
           let badgeClass = 'status-badge status-not-submitted';
