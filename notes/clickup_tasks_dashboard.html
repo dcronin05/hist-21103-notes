@@ -1237,6 +1237,15 @@
       document.getElementById(`view-${tabId}`).classList.add('active');
     }
 
+    function getTaskPoints(taskId) {
+      for (let m of courseData) {
+        for (let t of m.tasks) {
+          if (t.id === taskId) return t.points;
+        }
+      }
+      return 0;
+    }
+
     function cycleStatus(taskId) {
       const state = trackerState[taskId];
       
