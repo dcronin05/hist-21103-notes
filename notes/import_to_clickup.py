@@ -272,6 +272,33 @@ def find_all_markdown_files(workspace_root):
     return md_files
 
 def get_doc_title(rel_path):
+    if "readings/1619/" in rel_path:
+        # Custom 1619 Book page titles in chronological order
+        book_titles = {
+            "notes/readings/1619/preface.md": "1619: Book Overview & Preface",
+            "notes/readings/1619/copyright.md": "01. Copyright & Licensing",
+            "notes/readings/1619/dedication.md": "02. Dedication & Epigraph",
+            "notes/readings/1619/authors_note.md": "03. Author's Note",
+            "notes/readings/1619/introduction.md": "04. Introduction",
+            "notes/readings/1619/chapter_01.md": "05. Chapter 1 - Jamestown",
+            "notes/readings/1619/chapter_02.md": "06. Chapter 2 - The Great Reforms",
+            "notes/readings/1619/chapter_03.md": "07. Chapter 3 - First Africans",
+            "notes/readings/1619/chapter_04.md": "08. Chapter 4 - Commonwealth",
+            "notes/readings/1619/chapter_05.md": "09. Chapter 5 - Tumult and Liberty",
+            "notes/readings/1619/chapter_06.md": "10. Chapter 6 - Inequality and Freedom",
+            "notes/readings/1619/epilogue.md": "11. Epilogue",
+            "notes/readings/1619/acknowledgements.md": "12. Acknowledgments",
+            "notes/readings/1619/about_the_author.md": "13. About the Author",
+            "notes/readings/1619/endnotes.md": "14. Notes & References",
+            "notes/readings/1619/book_index.md": "15. Book Index"
+        }
+        if rel_path in book_titles:
+            return book_titles[rel_path]
+        base = os.path.basename(rel_path)
+        name_no_ext = os.path.splitext(base)[0]
+        clean_part = name_no_ext.replace("_", " ").title()
+        return f"1619 Book - {clean_part}"
+
     if rel_path in markdown_files:
         return markdown_files[rel_path]
     base = os.path.basename(rel_path)
@@ -281,9 +308,6 @@ def get_doc_title(rel_path):
         return "HIST 21103 Notes Index"
     elif rel_path == "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md":
         return "1619 Book Overview & Index"
-    elif "readings/1619/" in rel_path:
-        clean_part = name_no_ext.replace("_", " ").title()
-        return f"1619 Book - {clean_part}"
     elif "assignments/" in rel_path and "_prompt" in rel_path:
         clean_part = name_no_ext.replace("_", " ").title()
         return f"Assignment Prompt: {clean_part}"
@@ -617,8 +641,39 @@ def get_all_doc_maps(workspace_id, headers, workspace_root, task_id_by_name, sub
             print(f"       [!] Error creating parent page: {str(e)}")
             raise e
 
-    print(f"\n[~] Scanning and syncing {len(md_files)} Task-bound ClickUp Documents...")
-    for rel_path in md_files:
+    book_order = [
+        "notes/readings/1619/preface.md",
+        "notes/readings/1619/copyright.md",
+        "notes/readings/1619/dedication.md",
+        "notes/readings/1619/authors_note.md",
+        "notes/readings/1619/introduction.md",
+        "notes/readings/1619/chapter_01.md",
+        "notes/readings/1619/chapter_02.md",
+        "notes/readings/1619/chapter_03.md",
+        "notes/readings/1619/chapter_04.md",
+        "notes/readings/1619/chapter_05.md",
+        "notes/readings/1619/chapter_06.md",
+        "notes/readings/1619/epilogue.md",
+        "notes/readings/1619/acknowledgements.md",
+        "notes/readings/1619/about_the_author.md",
+        "notes/readings/1619/endnotes.md",
+        "notes/readings/1619/book_index.md"
+    ]
+    
+    other_files = [f for f in md_files if "readings/1619/" not in f]
+    book_files_in_md = [f for f in md_files if "readings/1619/" in f]
+    
+    sorted_book_files = []
+    for path in book_order:
+        if path in book_files_in_md:
+            sorted_book_files.append(path)
+            book_files_in_md.remove(path)
+    sorted_book_files.extend(book_files_in_md)
+    
+    ordered_md_files = other_files + sorted_book_files
+
+    print(f"\n[~] Scanning and syncing {len(ordered_md_files)} Task-bound ClickUp Documents...")
+    for rel_path in ordered_md_files:
         clean_title = get_doc_title(rel_path)
         
         # Check if this file belongs to the 1619 Book

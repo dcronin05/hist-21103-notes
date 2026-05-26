@@ -105,8 +105,17 @@ Instead of placing notes at the root of a workspace, attach them as "Task-bound 
         ```
     *   Note: To retrieve the `{page_id}` of the default page created during Doc instantiation, run a `GET` on `https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{doc_id}/pages`.
 
-### API Deletion Limitation
-The ClickUp REST API returns a `405 Method Not Allowed` for `DELETE` calls on Documents. **Programmatic document deletion is disabled**. Old/cluttered workspace documents must be manually deleted or archived by the user in the ClickUp UI.
+### Multi-Level Documents & Outline Ordering Quirks
+When creating nested subpages (using the `"parent_page_id"` parameter) to represent chapters or sections of a larger book or multi-part guide, be aware of how ClickUp builds its Document outline and Table of Contents (TOC):
+1. **Creation Sequence & Outline Insertion**: By default, ClickUp appends newly created nested pages to the end of the Document outline list based on the order in which they are processed and created via the API. Traversing files in a random order (e.g. from `os.walk` directly) will result in an out-of-order outline. Files **must** be sorted in chronological book order prior to API traversal.
+2. **Alphabetical Sorting Bypass (Sequential Numbering)**: ClickUp's auto-generated table of contents blocks and outline lists sort pages alphabetically or by manual drag-and-drop. To guarantee that subpages appear in correct chronological order regardless of display sorting preferences, prefix subpage names with a padded two-digit sequence (e.g., `01. Copyright & Licensing`, `02. Dedication`, ..., `10. Chapter 6`).
+3. **Parent Page Renaming**: When a Document is created with `create_page: true`, ClickUp automatically instantiates a default first page with a random name or the document's name. Always retrieve this first page's ID and rename it (e.g. to `"Book Overview & Preface"`) to serve as the top-level parent page for all subsequent subpages.
+
+### API Deletion & Renaming Limitations
+* **Deletion**: The ClickUp REST API returns a `405 Method Not Allowed` for `DELETE` calls on Documents (`/workspaces/{workspace_id}/docs/{doc_id}`).
+* **Renaming**: Similarly, attempts to rename a Document container itself via `PUT /workspaces/{workspace_id}/docs/{doc_id}` return a `405 Method Not Allowed`. While page titles and page content are fully editable via `PUT /pages`, the top-level Document container name cannot be programmatically changed once created. 
+* **Resolution**: Stale, duplicated, or incorrectly named top-level Documents must be manually deleted or renamed by the user within the ClickUp user interface.
+
 
 ---
 
