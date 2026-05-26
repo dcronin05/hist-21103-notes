@@ -4,6 +4,7 @@ import urllib.request
 import urllib.error
 import datetime
 import sys
+import os
 
 # Raw dataset matching the course plan
 tasks_data = [
@@ -228,29 +229,74 @@ def clickup_api_request(url, method="GET", headers=None, data=None):
         print(f"\n[ERROR] Network error: {str(e)}")
         raise e
 
-def get_subtask_details(st_name, parent_task_name):
-    st_lower = st_name.lower()
-    checklist = []
+# List of all course markdown files to be imported
+markdown_files = {
+    "notes/syllabus.md": "Course Syllabus",
+    "notes/modules/course_introduction_transcript.md": "Welcome Lecture Transcript",
+    "notes/readings/christopher_columbus_biography.md": "Christopher Columbus Biography (Traditional)",
+    "notes/readings/columbus_and_the_recovery_of_jerusalem.md": "Columbus and the Recovery of Jerusalem (Hamdani)",
+    "notes/readings/1619/introduction.md": "1619 Introduction",
+    "notes/readings/1619/chapter_01.md": "1619 Chapter 1 - Jamestown",
+    "notes/readings/1619/chapter_02.md": "1619 Chapter 2 - The Great Reforms",
+    "notes/readings/1619/chapter_03.md": "1619 Chapter 3 - First Africans",
+    "notes/readings/1619/chapter_04.md": "1619 Chapter 4 - Commonwealth",
+    "notes/readings/1619/chapter_05.md": "1619 Chapter 5 - Tumult and Liberty",
+    "notes/readings/1619/chapter_06.md": "1619 Chapter 6 - Inequality and Freedom",
+    "notes/readings/1619/epilogue.md": "1619 Epilogue",
+    "notes/assignments/columbus_essay_video_notes.md": "Columbus Essay Lecture Notes",
+    "notes/assignments/colonial_settlement_video_notes.md": "Colonial Settlement Lecture Notes",
+    "notes/assignments/great_reforms_video_notes.md": "Great Reforms Lecture Notes",
+    "notes/assignments/first_africans_video_notes.md": "First Africans Lecture Notes",
+    "notes/assignments/commonwealth_video_notes.md": "Commonwealth Lecture Notes",
+    "notes/assignments/tumult_and_liberty_video_notes.md": "Tumult and Liberty Lecture Notes",
+    "notes/assignments/american_revolution_video_notes.md": "American Revolution Lecture Notes",
+    "notes/assignments/inequality_and_freedom_video_notes.md": "Inequality and Freedom Lecture Notes",
+    "notes/assignments/articles_vs_constitution_video_notes.md": "Articles vs Constitution Lecture Notes",
+    "notes/assignments/creation_of_two_societies_video_notes.md": "Creation of Two Societies Lecture Notes",
+    "notes/assignments/debate_over_slavery_video_notes.md": "Debate over Slavery Lecture Notes",
+    "notes/assignments/civil_war_video_notes.md": "Civil War Lecture Notes"
+}
+
+def get_clean_name(name):
+    for path, clean in markdown_files.items():
+        if path in name or os.path.basename(path) in name:
+            action = "Read" if "read" in name.lower() else "Review"
+            return f"{action}: {clean}"
+    return name
+
+def get_subtask_markdown(st_name, parent_task_name):
+    clean_name = get_clean_name(st_name)
+    workspace_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
-    if st_lower.startswith("read "):
-        reading_name = st_name.replace("Read ", "")
-        description = f"Read and take detailed notes on the assigned source: **{reading_name}**.\n\nFocus on identifying the author's primary arguments, key historical events, and how this source answers the questions in the **{parent_task_name}** prompt."
+    # Check if there is a corresponding file path
+    matched_path = None
+    for rel_path in markdown_files.keys():
+        base_name = os.path.basename(rel_path)
+        if rel_path in st_name or base_name in st_name:
+            matched_path = os.path.join(workspace_root, rel_path)
+            break
+            
+    file_content = ""
+    if matched_path and os.path.exists(matched_path):
+        try:
+            with open(matched_path, "r", encoding="utf-8") as f:
+                file_content = f.read()
+        except Exception as e:
+            print(f"[!] Warning: Failed to read file {matched_path}: {str(e)}")
+            
+    # Subtask checklists
+    checklist = []
+    st_lower = st_name.lower()
+    description = ""
+    
+    if matched_path:
+        # It's a reading task
+        description = f"### Full Reading Content:\n---\n{file_content}\n---\n" if file_content else ""
         checklist = [
-            f"Locate and open {reading_name}",
-            "Highlight key arguments, quotes, and primary evidence",
-            "Draft a 1-paragraph summary of the source's main thesis",
-            "Identify at least 2 quotes to use in your essay"
+            f"Read the embedded text for {clean_name}",
+            "Highlight key arguments, dates, and historical figures",
+            "Select specific quotes/citations to support your essay"
         ]
-        
-    elif "video notes" in st_lower or "lecture notes" in st_lower or "lecture transcript" in st_lower:
-        description = f"Review the auto-generated video transcript and notes from Professor Jim Ross: **{st_name}**.\n\nThese notes summarize the core lecture concepts, historical context, and the professor's expectations for the assignment."
-        checklist = [
-            f"Open and read {st_name}",
-            "Review the key terms and historical concepts discussed",
-            "Note the specific guidance points emphasized by the professor",
-            "Integrate these lecture insights into your outline"
-        ]
-        
     elif "select 10 documents" in st_lower:
         description = "Select exactly 10 primary source documents (2 from each group A through E) to compare and contrast for Major Essay Two."
         checklist = [
@@ -261,7 +307,6 @@ def get_subtask_details(st_name, parent_task_name):
             "Select 2 documents from Group E (Official/Legal)",
             "Ensure you have exactly 10 documents selected before starting to write"
         ]
-        
     elif st_lower.startswith("draft ") or st_lower.startswith("write "):
         description = f"Draft the essay for **{parent_task_name}** according to the professor's prompt requirements."
         checklist = [
@@ -272,7 +317,6 @@ def get_subtask_details(st_name, parent_task_name):
             "Ensure citations are formatted correctly (e.g., standard page number citations)",
             "Write a conclusion that summarizes the main argument and reflects on the broader historical significance"
         ]
-        
     elif st_lower.startswith("submit ") or st_lower.startswith("upload "):
         description = f"Submit your final draft of **{parent_task_name}** to the course Blackboard portal."
         checklist = [
@@ -283,7 +327,6 @@ def get_subtask_details(st_name, parent_task_name):
             "Upload the file and click Submit",
             "Verify that you receive a submission receipt or confirmation email"
         ]
-        
     elif "clickup" in st_lower:
         description = "Set up your ClickUp list, milestones, statuses, and custom fields to keep your progress tracked throughout the 5-week course."
         checklist = [
@@ -292,7 +335,6 @@ def get_subtask_details(st_name, parent_task_name):
             "Create a custom number field called 'Points' to track your grade points",
             "Familiarize yourself with the task checklists and descriptions"
         ]
-        
     else:
         description = f"Complete the subtask: **{st_name}** for **{parent_task_name}**."
         checklist = [
@@ -303,9 +345,32 @@ def get_subtask_details(st_name, parent_task_name):
         
     # Format checklist as ClickUp Markdown checkboxes
     markdown_checklist = "\n\n### Subtask Checklist:\n" + "\n".join([f"- [ ] {item}" for item in checklist])
-    return description + markdown_checklist
+    return f"# {clean_name}\n\n{description}{markdown_checklist}"
+
+def clean_parent_description(desc):
+    if not desc:
+        return desc
+    # Replace file paths with simple text names
+    for rel_path, clean_name in markdown_files.items():
+        base_name = os.path.basename(rel_path)
+        paths_to_replace = [
+            rel_path,
+            rel_path.replace("notes/", ""),
+            "../" + rel_path.replace("notes/", ""),
+            "./" + rel_path.replace("notes/assignments/", ""),
+            "notes/readings/" + base_name,
+            "readings/" + base_name,
+            base_name
+        ]
+        for p in paths_to_replace:
+            if p in desc:
+                desc = desc.replace(p, f"**{clean_name}**")
+    return desc
 
 def clear_list_tasks(list_id, headers, force=False):
+    if not force:
+        return
+        
     print("\n[~] Fetching existing tasks to clear...")
     # Fetch all tasks in the list (including subtasks)
     url = f"https://api.clickup.com/api/v2/list/{list_id}/task?subtasks=true"
@@ -320,11 +385,10 @@ def clear_list_tasks(list_id, headers, force=False):
         return
         
     print(f"[!] Found {len(parent_tasks)} parent tasks in ClickUp list.")
-    if not force:
-        confirm = input("Are you sure you want to delete all existing tasks in this list? (y/n): ").strip().lower()
-        if confirm != 'y':
-            print("[~] Skipping clearing. Proceeding with import...")
-            return
+    confirm = input("Are you sure you want to delete all existing tasks in this list? (y/n): ").strip().lower()
+    if confirm != 'y':
+        print("[~] Skipping clearing. Proceeding with import...")
+        return
         
     print(f"[~] Deleting {len(parent_tasks)} parent tasks (and their subtasks)...")
     for t in parent_tasks:
@@ -364,10 +428,19 @@ def main():
         "Authorization": api_token
     }
     
-    # 2. Test Connection and Get Custom Fields
+    # 2. Fetch list details to extract workspace_id (team_id)
     print("\n[~] Connecting to ClickUp & fetching list information...")
     try:
-        # Get List Fields to find "Points" custom field ID
+        list_url = f"https://api.clickup.com/api/v2/list/{list_id}"
+        list_data = clickup_api_request(list_url, "GET", headers)
+        workspace_id = list_data.get("team_id")
+        print(f"[+] Connected successfully. Workspace ID: {workspace_id}")
+    except Exception as e:
+        print("[ERROR] Connection verification failed. Please double-check your API token and List ID.")
+        sys.exit(1)
+        
+    # Get Custom Fields
+    try:
         fields_url = f"https://api.clickup.com/api/v2/list/{list_id}/field"
         fields_data = clickup_api_request(fields_url, "GET", headers)
         
@@ -384,64 +457,140 @@ def main():
             print("    The script will continue and skip points uploads.")
             
     except Exception as e:
-        print("[ERROR] Connection verification failed. Please double-check your API token and List ID.")
+        print(f"[!] Warning: Failed to fetch custom fields: {str(e)}")
+        points_field_id = None
+        
+    # Clear List ONLY if user explicitly passed --clear flag
+    if force_clear:
+        try:
+            clear_list_tasks(list_id, headers, force=force_clear)
+        except Exception as e:
+            print(f"[!] Warning: Failed to clear list tasks: {str(e)}")
+            print("    Proceeding with import anyway...")
+            
+    # 3. Retrieve all existing tasks in ClickUp list to match in-place
+    print("\n[~] Querying existing tasks for in-place matching...")
+    try:
+        tasks_url = f"https://api.clickup.com/api/v2/list/{list_id}/task?subtasks=true"
+        existing_data = clickup_api_request(tasks_url, "GET", headers)
+        all_existing = existing_data.get("tasks", [])
+        
+        parent_tasks_list = [t for t in all_existing if t.get("parent") is None]
+        subtasks_list = [t for t in all_existing if t.get("parent") is not None]
+        
+        existing_parents = {t["name"].lower().strip(): t for t in parent_tasks_list}
+        
+        existing_subtasks_by_parent = {}
+        for t in subtasks_list:
+            parent_info = t["parent"]
+            parent_id = parent_info if isinstance(parent_info, str) else parent_info.get("id")
+            if parent_id not in existing_subtasks_by_parent:
+                existing_subtasks_by_parent[parent_id] = []
+            existing_subtasks_by_parent[parent_id].append(t)
+            
+        print(f"[+] Loaded {len(parent_tasks_list)} parent tasks and {len(subtasks_list)} subtasks from ClickUp.")
+    except Exception as e:
+        print(f"[ERROR] Failed to query existing tasks: {str(e)}")
         sys.exit(1)
         
-    # Clear List if user wants to prevent duplicates
-    try:
-        clear_list_tasks(list_id, headers, force=force_clear)
-    except Exception as e:
-        print(f"[!] Warning: Failed to clear list tasks: {str(e)}")
-        print("    Proceeding with import anyway...")
-        
-    # 3. Create Tasks Loop
-    print(f"\n[~] Ready to create {len(tasks_data)} parent tasks & their subtasks. Beginning import...\n")
+    # 4. Synchronize Tasks Loop
+    print(f"\n[~] Beginning in-place synchronization of {len(tasks_data)} assignments...\n")
     
     for i, t in enumerate(tasks_data, 1):
-        print(f"[{i}/{len(tasks_data)}] Creating task: '{t['name']}'...")
+        task_name = t["name"]
+        print(f"[{i}/{len(tasks_data)}] Syncing task: '{task_name}'...")
         
-        # Prepare task payload (omitted 'status' to let ClickUp default to the list open status)
+        # Clean parent description
+        parent_description = clean_parent_description(t["description"])
+        
+        start_ms = date_to_ms(t["start_date"])
+        due_ms = date_to_ms(t["due_date"])
+        
+        parent_key = task_name.lower().strip()
+        parent_task_id = None
+        
+        # Prepare task payload
         task_payload = {
-            "name": t["name"],
-            "markdown_content": t["description"],
-            "start_date": date_to_ms(t["start_date"]),
-            "due_date": date_to_ms(t["due_date"]),
+            "name": task_name,
+            "markdown_content": parent_description,
+            "start_date": start_ms,
+            "due_date": due_ms,
             "priority": t["priority"]
         }
         
         try:
-            # Create Parent Task
-            task_url = f"https://api.clickup.com/api/v2/list/{list_id}/task"
-            created_task = clickup_api_request(task_url, "POST", headers, task_payload)
-            task_id = created_task.get("id")
-            print(f"    -> Created Parent Task (ID: {task_id})")
-            
+            # Check if parent task already exists in ClickUp
+            if parent_key in existing_parents:
+                parent_task_id = existing_parents[parent_key]["id"]
+                print(f"    -> Parent task exists (ID: {parent_task_id}). Updating fields...")
+                task_url = f"https://api.clickup.com/api/v2/task/{parent_task_id}"
+                clickup_api_request(task_url, "PUT", headers, task_payload)
+            else:
+                print("    -> Parent task not found. Creating a new one...")
+                task_url = f"https://api.clickup.com/api/v2/list/{list_id}/task"
+                res = clickup_api_request(task_url, "POST", headers, task_payload)
+                parent_task_id = res.get("id")
+                print(f"    -> Created Parent Task (ID: {parent_task_id})")
+                
             # Update Points if Custom Field matches and points > 0
             if points_field_id and t["points"] > 0:
-                print(f"    -> Setting points to {t['points']}...")
-                cf_url = f"https://api.clickup.com/api/v2/task/{task_id}/field/{points_field_id}"
+                print(f"    -> Updating points custom field to {t['points']}...")
+                cf_url = f"https://api.clickup.com/api/v2/task/{parent_task_id}/field/{points_field_id}"
                 clickup_api_request(cf_url, "POST", headers, {"value": t["points"]})
                 
-            # Create Nested Subtasks (omitted 'status' to let ClickUp default to list open status)
+            # Fetch existing subtasks under this parent task
+            current_subtasks = existing_subtasks_by_parent.get(parent_task_id, [])
+            
+            # Sync each required subtask
             for st_name in t["subtasks"]:
-                st_desc = get_subtask_details(st_name, t["name"])
-                st_payload = {
-                    "name": st_name,
-                    "parent": task_id,
-                    "markdown_content": st_desc
-                }
-                clickup_api_request(task_url, "POST", headers, st_payload)
-                print(f"       + Created subtask: '{st_name}'")
+                clean_st_name = get_clean_name(st_name)
+                st_desc = get_subtask_markdown(st_name, task_name)
                 
+                # Try to find matching existing subtask
+                matched_st = None
+                for est in current_subtasks:
+                    est_name_lower = est["name"].lower().strip()
+                    # Match by exact clean name, raw name, or if a base filename matches both
+                    if est_name_lower == clean_st_name.lower().strip() or est_name_lower == st_name.lower().strip():
+                        matched_st = est
+                        break
+                    # Backup match: check if a unique base filename matches (e.g. syllabus.md)
+                    for rel_path in markdown_files.keys():
+                        base = os.path.basename(rel_path).lower()
+                        if base in est_name_lower and base in st_name.lower():
+                            matched_st = est
+                            break
+                    if matched_st:
+                        break
+                        
+                # Update or create the subtask
+                if matched_st:
+                    sub_id = matched_st["id"]
+                    print(f"       [*] Updating existing subtask: '{clean_st_name}' (ID: {sub_id})...")
+                    sub_url = f"https://api.clickup.com/api/v2/task/{sub_id}"
+                    clickup_api_request(sub_url, "PUT", headers, {
+                        "name": clean_st_name,
+                        "markdown_content": st_desc
+                    })
+                else:
+                    print(f"       [+] Creating new subtask: '{clean_st_name}'...")
+                    create_url = f"https://api.clickup.com/api/v2/list/{list_id}/task"
+                    clickup_api_request(create_url, "POST", headers, {
+                        "name": clean_st_name,
+                        "parent": parent_task_id,
+                        "markdown_content": st_desc
+                    })
+                    
             print("    -> Done!\n")
             
         except Exception as e:
-            print(f"\n[ERROR] Failed to import task '{t['name']}' due to an error. Aborting execution to prevent a partially imported state.")
-            sys.exit(1)
+            print(f"\n[ERROR] Failed to sync task '{task_name}' due to an error. Aborting execution.")
+            raise e
             
     print("\n====================================================")
-    print("       SUCCESS! All ClickUp tasks are imported!      ")
+    print("    SUCCESS! ClickUp tasks synchronized in-place!    ")
     print("====================================================")
 
 if __name__ == "__main__":
     main()
+
