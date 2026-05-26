@@ -548,57 +548,186 @@ def get_all_doc_maps(workspace_id, headers, workspace_root, task_id_by_name, sub
     
     doc_map = {}
     doc_id_map = {}
+    doc_page_id_map = {}
     
+    # 1. Handle the Unified 1619 Book Document
+    book_doc_title = "1619: Jamestown and the Forging of American Democracy"
+    book_parent_id = task_id_by_name.get("book essay 1: colonial settlement (horn intro & ch 1)", default_parent_id)
+    
+    book_doc_id = None
+    for d in existing_docs:
+        if d.get("name") and d["name"].lower().strip() == book_doc_title.lower().strip():
+            d_parent = d.get("parent", {})
+            d_parent_id = d_parent.get("id") if d_parent else None
+            if d_parent_id == book_parent_id:
+                book_doc_id = d["id"]
+                break
+                
+    if book_doc_id:
+        print(f"[+] Found existing Unified 1619 Book Document (ID: {book_doc_id})")
+    else:
+        print(f"[+] Unified 1619 Book Document not found. Creating parented to Book Essay 1 Task...")
+        url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
+        try:
+            payload = {
+                "name": book_doc_title,
+                "parent": {
+                    "id": book_parent_id,
+                    "type": 1
+                },
+                "create_page": True
+            }
+            res = clickup_api_request(url, "POST", headers, payload)
+            book_doc_id = res.get("id")
+            print(f"       [+] Created Unified Book Doc (ID: {book_doc_id})")
+        except Exception as e:
+            print(f"       [!] Error creating Unified Book Doc: {str(e)}")
+            raise e
+            
+    # Fetch all pages of the 1619 Book Document
+    book_pages = []
+    if book_doc_id:
+        pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{book_doc_id}/pages"
+        try:
+            res = clickup_api_request(pages_url, "GET", headers)
+            if isinstance(res, list):
+                book_pages = res
+            elif isinstance(res, dict) and "pages" in res:
+                book_pages = res["pages"]
+        except Exception as e:
+            print(f"       [!] Warning: Failed to fetch pages for 1619 Book Doc: {str(e)}")
+            
+    # The default first page will be renamed to "1619: Book Overview & Preface"
+    parent_page_id = None
+    if len(book_pages) > 0:
+        parent_page_id = book_pages[0]["id"]
+        print(f"[+] Parent page ID for 1619 Book Doc: {parent_page_id}")
+    else:
+        # If no page exists, create one
+        print("[!] No pages found in Book Doc. Creating parent page...")
+        pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{book_doc_id}/pages"
+        try:
+            res = clickup_api_request(pages_url, "POST", headers, {
+                "name": "1619: Book Overview & Preface",
+                "content": "",
+                "content_format": "text/md"
+            })
+            parent_page_id = res.get("id")
+        except Exception as e:
+            print(f"       [!] Error creating parent page: {str(e)}")
+            raise e
+
     print(f"\n[~] Scanning and syncing {len(md_files)} Task-bound ClickUp Documents...")
     for rel_path in md_files:
         clean_title = get_doc_title(rel_path)
         
-        # Determine parent task ID
-        parent_id, parent_desc = determine_doc_parent(
-            rel_path, task_id_by_name, subtask_id_by_parent_and_name, default_parent_id
-        )
-        
-        # Match by name AND parent_id
-        doc_id = None
-        for d in existing_docs:
-            if d["name"].lower().strip() == clean_title.lower().strip():
-                d_parent = d.get("parent", {})
-                d_parent_id = d_parent.get("id") if d_parent else None
-                if d_parent_id == parent_id:
-                    doc_id = d["id"]
-                    break
-                    
-        if doc_id:
-            print(f"    -> Doc '{clean_title}' already exists parented to {parent_desc} (ID: {doc_id}).")
-        else:
-            print(f"    -> Doc '{clean_title}' not found. Creating parented to {parent_desc}...")
-            url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
-            try:
-                payload = {
-                    "name": clean_title,
-                    "parent": {
-                        "id": parent_id,
-                        "type": 1
-                    },
-                    "create_page": True
-                }
-                res = clickup_api_request(url, "POST", headers, payload)
-                doc_id = res.get("id")
-                print(f"       [+] Created Doc (ID: {doc_id})")
-            except Exception as e:
-                print(f"       [!] Error creating Doc '{clean_title}': {str(e)}")
-                continue
-                
-        if doc_id:
-            doc_url = f"https://app.clickup.com/{workspace_id}/v/dc/{doc_id}"
-            doc_map[rel_path] = doc_url
-            doc_id_map[rel_path] = doc_id
+        # Check if this file belongs to the 1619 Book
+        if "readings/1619/" in rel_path:
+            # It's a 1619 Book subpage
+            doc_id = book_doc_id
+            page_id = None
             
-    return md_files, doc_map, doc_id_map
+            # Special Case: Preface is mapped directly to the parent page
+            if rel_path.endswith("preface.md"):
+                page_id = parent_page_id
+                print(f"    -> Mapping '{clean_title}' to parent page (ID: {page_id}).")
+            else:
+                # Match page by title inside book_pages
+                for p in book_pages:
+                    if p.get("name") and p["name"].lower().strip() == clean_title.lower().strip():
+                        page_id = p["id"]
+                        break
+                        
+                if page_id:
+                    print(f"    -> Subpage '{clean_title}' already exists in Book Document (Page ID: {page_id}).")
+                else:
+                    print(f"    -> Subpage '{clean_title}' not found. Creating nested subpage...")
+                    pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{book_doc_id}/pages"
+                    try:
+                        payload = {
+                            "name": clean_title,
+                            "parent_page_id": parent_page_id,
+                            "content": "",
+                            "content_format": "text/md"
+                        }
+                        res = clickup_api_request(pages_url, "POST", headers, payload)
+                        page_id = res.get("id")
+                        print(f"       [+] Created Subpage (Page ID: {page_id})")
+                        book_pages.append({"id": page_id, "name": clean_title})
+                    except Exception as e:
+                        print(f"       [!] Error creating Subpage '{clean_title}': {str(e)}")
+                        continue
+            
+            if page_id:
+                doc_url = f"https://app.clickup.com/{workspace_id}/v/dc/{book_doc_id}/p/{page_id}"
+                doc_map[rel_path] = doc_url
+                doc_id_map[rel_path] = book_doc_id
+                doc_page_id_map[rel_path] = page_id
+                
+        else:
+            # Standalone Document
+            parent_id, parent_desc = determine_doc_parent(
+                rel_path, task_id_by_name, subtask_id_by_parent_and_name, default_parent_id
+            )
+            
+            # Match by name AND parent_id
+            doc_id = None
+            for d in existing_docs:
+                if d.get("name") and d["name"].lower().strip() == clean_title.lower().strip():
+                    d_parent = d.get("parent", {})
+                    d_parent_id = d_parent.get("id") if d_parent else None
+                    if d_parent_id == parent_id:
+                        doc_id = d["id"]
+                        break
+                        
+            if doc_id:
+                print(f"    -> Doc '{clean_title}' already exists parented to {parent_desc} (ID: {doc_id}).")
+            else:
+                print(f"    -> Doc '{clean_title}' not found. Creating parented to {parent_desc}...")
+                url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
+                try:
+                    payload = {
+                        "name": clean_title,
+                        "parent": {
+                            "id": parent_id,
+                            "type": 1
+                        },
+                        "create_page": True
+                    }
+                    res = clickup_api_request(url, "POST", headers, payload)
+                    doc_id = res.get("id")
+                    print(f"       [+] Created Doc (ID: {doc_id})")
+                except Exception as e:
+                    print(f"       [!] Error creating Doc '{clean_title}': {str(e)}")
+                    continue
+                    
+            if doc_id:
+                # Standalone Doc default page ID query
+                page_id = None
+                pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{doc_id}/pages"
+                try:
+                    res = clickup_api_request(pages_url, "GET", headers)
+                    if isinstance(res, list) and len(res) > 0:
+                        page_id = res[0]["id"]
+                    elif isinstance(res, dict) and "pages" in res and len(res["pages"]) > 0:
+                        page_id = res["pages"][0]["id"]
+                except Exception as e:
+                    pass
+                
+                doc_url = f"https://app.clickup.com/{workspace_id}/v/dc/{doc_id}"
+                doc_map[rel_path] = doc_url
+                doc_id_map[rel_path] = doc_id
+                if page_id:
+                    doc_page_id_map[rel_path] = page_id
+                else:
+                    doc_page_id_map[rel_path] = f"first_page_of_{doc_id}"
+                    
+    return md_files, doc_map, doc_id_map, doc_page_id_map
 
-def update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, doc_id_map, doc_map, asset_map):
-    print(f"\n[~] Updating content for {len(doc_id_map)} Document pages...")
-    for rel_path, doc_id in doc_id_map.items():
+def update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, doc_id_map, doc_page_id_map, doc_map, asset_map):
+    print(f"\n[~] Updating content for {len(doc_page_id_map)} Document pages...")
+    for rel_path, page_id in doc_page_id_map.items():
+        doc_id = doc_id_map[rel_path]
         clean_title = get_doc_title(rel_path)
         full_path = os.path.join(workspace_root, rel_path)
         
@@ -611,27 +740,44 @@ def update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, do
             
         rewritten_content = rewrite_content_links(content, rel_path, doc_map, asset_map)
         
-        pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{doc_id}/pages"
-        try:
-            pages = clickup_api_request(pages_url, "GET", headers)
-            if isinstance(pages, list) and len(pages) > 0:
-                page_id = pages[0]["id"]
-                page_url = f"{pages_url}/{page_id}"
-                print(f"    -> Updating page for '{clean_title}' (Page ID: {page_id})...")
+        # If it's a 1619 preface, we also rename the parent page to the clean preface title
+        page_name_to_use = clean_title
+        if rel_path.endswith("preface.md"):
+            page_name_to_use = "1619: Book Overview & Preface"
+            
+        if page_id.startswith("first_page_of_"):
+            actual_doc_id = page_id.replace("first_page_of_", "")
+            pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{actual_doc_id}/pages"
+            try:
+                pages = clickup_api_request(pages_url, "GET", headers)
+                actual_page_id = None
+                if isinstance(pages, list) and len(pages) > 0:
+                    actual_page_id = pages[0]["id"]
+                elif isinstance(pages, dict) and "pages" in pages and len(pages["pages"]) > 0:
+                    actual_page_id = pages["pages"][0]["id"]
+                
+                if actual_page_id:
+                    page_url = f"{pages_url}/{actual_page_id}"
+                    print(f"    -> Updating page for '{clean_title}' (Page ID: {actual_page_id})...")
+                    clickup_api_request(page_url, "PUT", headers, {
+                        "name": page_name_to_use,
+                        "content": rewritten_content,
+                        "content_format": "text/md"
+                    })
+            except Exception as e:
+                print(f"    [!] Error in fallback page update: {str(e)}")
+        else:
+            pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{doc_id}/pages"
+            page_url = f"{pages_url}/{page_id}"
+            print(f"    -> Updating page for '{clean_title}' (Page ID: {page_id})...")
+            try:
                 clickup_api_request(page_url, "PUT", headers, {
-                    "name": clean_title,
+                    "name": page_name_to_use,
                     "content": rewritten_content,
                     "content_format": "text/md"
                 })
-            else:
-                print(f"    [!] No pages found for Doc '{clean_title}' (ID: {doc_id}). Creating new page...")
-                clickup_api_request(pages_url, "POST", headers, {
-                    "name": clean_title,
-                    "content": rewritten_content,
-                    "content_format": "text/md"
-                })
-        except Exception as e:
-            print(f"    [!] Error updating page content for Doc '{clean_title}': {str(e)}")
+            except Exception as e:
+                print(f"    [!] Error updating page content for page '{clean_title}': {str(e)}")
 
 def scan_and_upload_assets(workspace_root, md_files, workspace_id, headers, default_task_id, existing_parents):
     print("\n[~] Scanning course materials for relative asset links (images, media)...")
@@ -938,7 +1084,7 @@ def main():
         parent_tasks_list = [t for t in all_existing if t.get("parent") is None]
         subtasks_list = [t for t in all_existing if t.get("parent") is not None]
         
-        existing_parents = {t["name"].lower().strip(): t for t in parent_tasks_list}
+        existing_parents = {t["name"].lower().strip(): t for t in parent_tasks_list if t.get("name")}
         
         existing_subtasks_by_parent = {}
         for t in subtasks_list:
@@ -1021,7 +1167,10 @@ def main():
                 # Match existing subtask
                 matched_st = None
                 for est in current_subtasks:
-                    est_name_lower = est["name"].lower().strip()
+                    est_name = est.get("name")
+                    if not est_name:
+                        continue
+                    est_name_lower = est_name.lower().strip()
                     if est_name_lower == clean_st_name.lower().strip() or est_name_lower == st_name.lower().strip():
                         matched_st = est
                         break
@@ -1072,7 +1221,7 @@ def main():
     workspace_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
     # 5. PASS 2: Fetch/Create TASK-BOUND Documents and build URL maps
-    md_files, doc_map, doc_id_map = get_all_doc_maps(
+    md_files, doc_map, doc_id_map, doc_page_id_map = get_all_doc_maps(
         workspace_id, headers, workspace_root, task_id_by_name, subtask_id_by_parent_and_name, default_task_id
     )
     
@@ -1080,7 +1229,7 @@ def main():
     asset_map = scan_and_upload_assets(workspace_root, md_files, workspace_id, headers, default_task_id, existing_parents)
     
     # 7. PASS 2.9: Update ClickUp Document page contents with rewritten links
-    update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, doc_id_map, doc_map, asset_map)
+    update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, doc_id_map, doc_page_id_map, doc_map, asset_map)
     
     # 8. PASS 3: Rewrite and Update ClickUp Task & Subtask descriptions in-place
     print(f"\n[~] PASS 3: Updating ClickUp task and subtask descriptions with rewritten links...\n")
