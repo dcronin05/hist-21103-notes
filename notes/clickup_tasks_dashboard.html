@@ -648,21 +648,26 @@
       align-items: center;
     }
 
-    .score-num-input {
-      width: 80px;
+    .score-select {
+      width: 90px;
       background-color: rgba(0, 0, 0, 0.3);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 0.5rem 0.8rem;
+      padding: 0.5rem 1.8rem 0.5rem 0.8rem;
       color: white;
       font-size: 1.1rem;
       font-weight: 700;
-      text-align: center;
       outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca3af' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5H7z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 0.6rem center;
       transition: border-color 0.3s ease;
     }
 
-    .score-num-input:focus {
+    .score-select:focus {
       border-color: var(--primary-hover);
       box-shadow: 0 0 0 2px rgba(144, 97, 255, 0.25);
     }
@@ -1256,22 +1261,24 @@
       saveTrackerState();
     }
 
-    function handleScoreInput(taskId, maxPoints) {
+    function generateScoreOptions(maxPoints, selectedValue) {
+      let html = `<option value="">--</option>`;
+      for (let s = maxPoints; s >= 0; s -= 0.5) {
+        const isSelected = selectedValue !== '' && parseFloat(selectedValue) === s ? 'selected' : '';
+        const label = Number(s.toFixed(1));
+        html += `<option value="${label}" ${isSelected}>${label}</option>`;
+      }
+      return html;
+    }
+
+    function handleScoreInput(taskId) {
       const scoreInput = document.getElementById(`score-input-${taskId}`);
-      let val = scoreInput.value.trim();
+      let val = scoreInput.value;
       
       if (val === '') {
         trackerState[taskId].score = '';
       } else {
         let num = parseFloat(val);
-        if (isNaN(num)) {
-          num = 0;
-        } else if (num < 0) {
-          num = 0;
-        } else if (num > maxPoints) {
-          num = maxPoints;
-        }
-        scoreInput.value = num;
         trackerState[taskId].score = num;
         
         // Auto-check submitted if score is entered
@@ -1505,7 +1512,9 @@
                       <div class="score-entry">
                         <span class="score-label">Score Earned:</span>
                         <div class="score-input-wrapper">
-                          <input type="number" step="0.5" min="0" max="${task.points}" class="score-num-input" id="score-input-${task.id}" value="${state.score}" placeholder="--" oninput="handleScoreInput(${task.id}, ${task.points})">
+                          <select class="score-select" id="score-input-${task.id}" onchange="handleScoreInput(${task.id})">
+                            ${generateScoreOptions(task.points, state.score)}
+                          </select>
                           <span class="score-max">/ ${task.points}</span>
                         </div>
                       </div>
