@@ -256,6 +256,294 @@ markdown_files = {
     "notes/assignments/debate_over_slavery_video_notes.md": "Debate over Slavery Lecture Notes",
     "notes/assignments/civil_war_video_notes.md": "Civil War Lecture Notes"
 }
+import re
+
+def find_all_markdown_files(workspace_root):
+    md_files = []
+    notes_path = os.path.join(workspace_root, "notes")
+    for root, dirs, files in os.walk(notes_path):
+        if ".venv" in root or ".git" in root or "scratch" in root:
+            continue
+        for file in files:
+            if file.endswith(".md"):
+                full_path = os.path.join(root, file)
+                rel = os.path.relpath(full_path, workspace_root).replace("\\", "/")
+                md_files.append(rel)
+    return md_files
+
+def get_doc_title(rel_path):
+    if rel_path in markdown_files:
+        return markdown_files[rel_path]
+    base = os.path.basename(rel_path)
+    name_no_ext = os.path.splitext(base)[0]
+    
+    if rel_path == "notes/index.md":
+        return "HIST 21103 Notes Index"
+    elif rel_path == "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md":
+        return "1619 Book Overview & Index"
+    elif "readings/1619/" in rel_path:
+        clean_part = name_no_ext.replace("_", " ").title()
+        return f"1619 Book - {clean_part}"
+    elif "assignments/" in rel_path and "_prompt" in rel_path:
+        clean_part = name_no_ext.replace("_", " ").title()
+        return f"Assignment Prompt: {clean_part}"
+    else:
+        return name_no_ext.replace("_", " ").title()
+
+def get_existing_docs(workspace_id, headers):
+    url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
+    existing_docs = {}
+    cursor = ""
+    while True:
+        query_url = url
+        if cursor:
+            query_url += f"?cursor={cursor}"
+        try:
+            res = clickup_api_request(query_url, "GET", headers)
+            docs = res.get("docs", res.get("documents", []))
+            for doc in docs:
+                existing_docs[doc["name"].lower().strip()] = doc["id"]
+            cursor = res.get("next_cursor", "")
+            if not cursor:
+                break
+        except Exception as e:
+            print(f"[!] Warning: Failed to fetch existing docs page: {str(e)}")
+            break
+    return existing_docs
+
+def upload_attachment(task_id, file_path, headers):
+    boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW"
+    filename = os.path.basename(file_path)
+    
+    mime_type = "image/jpeg"
+    if file_path.lower().endswith(".gif"):
+        mime_type = "image/gif"
+    elif file_path.lower().endswith(".png"):
+        mime_type = "image/png"
+    elif file_path.lower().endswith(".mp4"):
+        mime_type = "video/mp4"
+    elif file_path.lower().endswith(".m4a"):
+        mime_type = "audio/mp4"
+    
+    try:
+        with open(file_path, "rb") as f:
+            file_bytes = f.read()
+    except Exception as e:
+        print(f"[!] Warning: Failed to read asset file {file_path}: {str(e)}")
+        return None
+        
+    part_header = (
+        f"--{boundary}\r\n"
+        f'Content-Disposition: form-data; name="attachment"; filename="{filename}"\r\n'
+        f"Content-Type: {mime_type}\r\n\r\n"
+    ).encode("utf-8")
+    
+    part_footer = f"\r\n--{boundary}--\r\n".encode("utf-8")
+    body = part_header + file_bytes + part_footer
+    
+    req_headers = headers.copy()
+    req_headers["Content-Type"] = f"multipart/form-data; boundary={boundary}"
+    
+    url = f"https://api.clickup.com/api/v2/task/{task_id}/attachment"
+    req = urllib.request.Request(url, data=body, headers=req_headers, method="POST")
+    try:
+        with urllib.request.urlopen(req) as response:
+            res_data = response.read().decode("utf-8")
+            return json.loads(res_data)
+    except Exception as e:
+        print(f"[!] Failed to upload attachment {filename}: {str(e)}")
+        return None
+
+LINK_RE = re.compile(r'(!??\[[^\]]*?\])\(([^)]*?)\)')
+
+def rewrite_content_links(content, source_rel_path, doc_map, asset_map):
+    if not source_rel_path:
+        return content
+    source_dir = os.path.dirname(source_rel_path)
+    
+    def replace_match(match):
+        label = match.group(1)
+        url = match.group(2).strip()
+        
+        if url.startswith(("http://", "https://", "mailto:", "about:")):
+            return f"{label}({url})"
+            
+        fragment = ""
+        if "#" in url:
+            url_part, fragment_part = url.split("#", 1)
+            url = url_part
+            fragment = "#" + fragment_part
+            
+        if not url:
+            return f"{label}({fragment})"
+            
+        joined = os.path.join(source_dir, url)
+        canonical = os.path.normpath(joined).replace("\\", "/")
+        
+        matches_paths = [canonical]
+        if canonical.startswith("notes/"):
+            matches_paths.append(canonical.replace("notes/", "", 1))
+        else:
+            matches_paths.append("notes/" + canonical)
+            
+        matched_url = None
+        for m in matches_paths:
+            if m in doc_map:
+                matched_url = doc_map[m]
+                break
+            if m in asset_map:
+                matched_url = asset_map[m]
+                break
+                
+        if matched_url:
+            return f"{label}({matched_url}{fragment})"
+            
+        if url.endswith(".md"):
+            print(f"       [!] Warning: Relative document link '{url}' in '{source_rel_path}' could not be resolved.")
+        return f"{label}({url}{fragment})"
+        
+    return LINK_RE.sub(replace_match, content)
+
+def get_all_doc_maps(workspace_id, headers, workspace_root):
+    existing_docs = get_existing_docs(workspace_id, headers)
+    md_files = find_all_markdown_files(workspace_root)
+    
+    doc_map = {}
+    doc_id_map = {}
+    
+    print(f"[~] Scanning and syncing {len(md_files)} ClickUp Documents...")
+    for rel_path in md_files:
+        clean_title = get_doc_title(rel_path)
+        title_key = clean_title.lower().strip()
+        
+        doc_id = None
+        if title_key in existing_docs:
+            doc_id = existing_docs[title_key]
+            print(f"    -> Doc '{clean_title}' already exists (ID: {doc_id}).")
+        else:
+            print(f"    -> Doc '{clean_title}' not found. Creating...")
+            url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
+            try:
+                res = clickup_api_request(url, "POST", headers, {"name": clean_title, "create_page": True})
+                doc_id = res.get("id")
+                print(f"       [+] Created Doc (ID: {doc_id})")
+            except Exception as e:
+                print(f"       [!] Error creating Doc '{clean_title}': {str(e)}")
+                continue
+                
+        if doc_id:
+            doc_url = f"https://app.clickup.com/{workspace_id}/v/dc/{doc_id}"
+            doc_map[rel_path] = doc_url
+            doc_id_map[rel_path] = doc_id
+            
+    return md_files, doc_map, doc_id_map
+
+def update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, doc_id_map, doc_map, asset_map):
+    print(f"\n[~] Updating content for {len(doc_id_map)} Document pages...")
+    for rel_path, doc_id in doc_id_map.items():
+        clean_title = get_doc_title(rel_path)
+        full_path = os.path.join(workspace_root, rel_path)
+        
+        try:
+            with open(full_path, "r", encoding="utf-8") as f:
+                content = f.read()
+        except Exception as e:
+            print(f"    [!] Error reading file '{rel_path}': {str(e)}")
+            continue
+            
+        rewritten_content = rewrite_content_links(content, rel_path, doc_map, asset_map)
+        
+        pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{doc_id}/pages"
+        try:
+            pages = clickup_api_request(pages_url, "GET", headers)
+            if isinstance(pages, list) and len(pages) > 0:
+                page_id = pages[0]["id"]
+                page_url = f"{pages_url}/{page_id}"
+                print(f"    -> Updating page for '{clean_title}' (Page ID: {page_id})...")
+                clickup_api_request(page_url, "PUT", headers, {
+                    "name": clean_title,
+                    "content": rewritten_content,
+                    "content_format": "text/md"
+                })
+            else:
+                print(f"    [!] No pages found for Doc '{clean_title}' (ID: {doc_id}). Creating new page...")
+                clickup_api_request(pages_url, "POST", headers, {
+                    "name": clean_title,
+                    "content": rewritten_content,
+                    "content_format": "text/md"
+                })
+        except Exception as e:
+            print(f"    [!] Error updating page content for Doc '{clean_title}': {str(e)}")
+
+def scan_and_upload_assets(workspace_root, md_files, workspace_id, headers, default_task_id, existing_parents):
+    print("\n[~] Scanning course materials for relative asset links (images, media)...")
+    
+    asset_paths = set()
+    for rel_path in md_files:
+        full_path = os.path.join(workspace_root, rel_path)
+        try:
+            with open(full_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            matches = LINK_RE.findall(content)
+            source_dir = os.path.dirname(rel_path)
+            for label, url in matches:
+                url = url.strip()
+                if not url.startswith(("http://", "https://", "mailto:", "about:")):
+                    if "#" in url:
+                        url = url.split("#", 1)[0]
+                    if not url:
+                        continue
+                    if not url.endswith(".md"):
+                        joined = os.path.join(source_dir, url)
+                        canonical = os.path.normpath(joined).replace("\\", "/")
+                        asset_paths.add(canonical)
+        except Exception as e:
+            pass
+            
+    print(f"[+] Found {len(asset_paths)} unique non-markdown relative asset links.")
+    
+    asset_map = {}
+    for asset in sorted(asset_paths):
+        full_asset_path = os.path.join(workspace_root, asset)
+        
+        if not os.path.exists(full_asset_path):
+            if asset.startswith("notes/"):
+                alt_asset = asset.replace("notes/", "", 1)
+            else:
+                alt_asset = "notes/" + asset
+            alt_path = os.path.join(workspace_root, alt_asset)
+            if os.path.exists(alt_path):
+                asset = alt_asset
+                full_asset_path = alt_path
+                
+        if not os.path.exists(full_asset_path):
+            print(f"    [!] Asset file '{asset}' does not exist on disk. Skipping.")
+            continue
+            
+        upload_task_id = default_task_id
+        asset_lower = asset.lower()
+        if "columbus" in asset_lower:
+            key = "essay one: columbus analysis"
+            if key in existing_parents:
+                upload_task_id = existing_parents[key]["id"]
+        elif "settlement" in asset_lower or "colonial" in asset_lower:
+            key = "book essay 1: colonial settlement (horn intro & ch 1)"
+            if key in existing_parents:
+                upload_task_id = existing_parents[key]["id"]
+                
+        print(f"    -> Uploading asset '{asset}' to task ID: {upload_task_id}...")
+        res = upload_attachment(upload_task_id, full_asset_path, headers)
+        if res and "url" in res:
+            asset_map[asset] = res["url"]
+            if asset.startswith("notes/"):
+                asset_map[asset.replace("notes/", "", 1)] = res["url"]
+            else:
+                asset_map["notes/" + asset] = res["url"]
+            print(f"       [+] Uploaded successfully. ClickUp URL: {res['url']}")
+        else:
+            print(f"       [!] Failed to upload asset '{asset}'.")
+            
+    return asset_map
 
 def get_clean_name(name):
     for path, clean in markdown_files.items():
@@ -429,12 +717,26 @@ def main():
     }
     
     # 2. Fetch list details to extract workspace_id (team_id)
+    # 2. Fetch list details and workspaces to extract workspace_id (team_id)
     print("\n[~] Connecting to ClickUp & fetching list information...")
     try:
+        # Check list access
         list_url = f"https://api.clickup.com/api/v2/list/{list_id}"
         list_data = clickup_api_request(list_url, "GET", headers)
-        workspace_id = list_data.get("team_id")
+        
+        # Get workspaces
+        teams_url = "https://api.clickup.com/api/v2/team"
+        teams_data = clickup_api_request(teams_url, "GET", headers)
+        teams = teams_data.get("teams", [])
+        if len(teams) > 0:
+            workspace_id = teams[0].get("id")
+        else:
+            workspace_id = None
+            
         print(f"[+] Connected successfully. Workspace ID: {workspace_id}")
+        if not workspace_id:
+            print("[ERROR] Workspace ID could not be found.")
+            sys.exit(1)
     except Exception as e:
         print("[ERROR] Connection verification failed. Please double-check your API token and List ID.")
         sys.exit(1)
@@ -493,15 +795,50 @@ def main():
         print(f"[ERROR] Failed to query existing tasks: {str(e)}")
         sys.exit(1)
         
-    # 4. Synchronize Tasks Loop
+    # 4. Establish a host task ID for uploading attachments
+    default_task_id = None
+    if existing_parents:
+        default_task_id = list(existing_parents.values())[0]["id"]
+    else:
+        first_task = tasks_data[0]
+        print(f"[~] Creating initial host parent task: '{first_task['name']}'...")
+        start_ms = date_to_ms(first_task["start_date"])
+        due_ms = date_to_ms(first_task["due_date"])
+        desc = clean_parent_description(first_task["description"])
+        payload = {
+            "name": first_task["name"],
+            "markdown_content": desc,
+            "start_date": start_ms,
+            "due_date": due_ms,
+            "priority": first_task["priority"]
+        }
+        create_url = f"https://api.clickup.com/api/v2/list/{list_id}/task"
+        res = clickup_api_request(create_url, "POST", headers, payload)
+        default_task_id = res.get("id")
+        existing_parents[first_task["name"].lower().strip()] = res
+        print(f"[+] Host parent task created (ID: {default_task_id})")
+
+    workspace_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
+    # 5. PASS 1: Fetch/Create ClickUp Documents and build URL maps
+    md_files, doc_map, doc_id_map = get_all_doc_maps(workspace_id, headers, workspace_root)
+    
+    # 6. PASS 1.5: Upload non-markdown assets and build URL maps
+    asset_map = scan_and_upload_assets(workspace_root, md_files, workspace_id, headers, default_task_id, existing_parents)
+    
+    # 7. PASS 1.9: Update ClickUp Document page contents with rewritten links
+    update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, doc_id_map, doc_map, asset_map)
+    
+    # 8. PASS 2: Synchronize Tasks Loop (with link rewriting)
     print(f"\n[~] Beginning in-place synchronization of {len(tasks_data)} assignments...\n")
     
     for i, t in enumerate(tasks_data, 1):
         task_name = t["name"]
         print(f"[{i}/{len(tasks_data)}] Syncing task: '{task_name}'...")
         
-        # Clean parent description
-        parent_description = clean_parent_description(t["description"])
+        # Clean and rewrite parent description
+        parent_description_cleaned = clean_parent_description(t["description"])
+        parent_description = rewrite_content_links(parent_description_cleaned, "notes/syllabus.md", doc_map, asset_map)
         
         start_ms = date_to_ms(t["start_date"])
         due_ms = date_to_ms(t["due_date"])
@@ -544,7 +881,20 @@ def main():
             # Sync each required subtask
             for st_name in t["subtasks"]:
                 clean_st_name = get_clean_name(st_name)
+                
+                # Retrieve raw subtask markdown
                 st_desc = get_subtask_markdown(st_name, task_name)
+                
+                # Identify if there is a corresponding relative path for link resolution
+                matched_rel_path = None
+                for rel_path in markdown_files.keys():
+                    base_name = os.path.basename(rel_path)
+                    if rel_path in st_name or base_name in st_name:
+                        matched_rel_path = rel_path
+                        break
+                
+                # Rewrite links in the subtask description
+                st_desc_rewritten = rewrite_content_links(st_desc, matched_rel_path, doc_map, asset_map)
                 
                 # Try to find matching existing subtask
                 matched_st = None
@@ -570,7 +920,7 @@ def main():
                     sub_url = f"https://api.clickup.com/api/v2/task/{sub_id}"
                     clickup_api_request(sub_url, "PUT", headers, {
                         "name": clean_st_name,
-                        "markdown_content": st_desc
+                        "markdown_content": st_desc_rewritten
                     })
                 else:
                     print(f"       [+] Creating new subtask: '{clean_st_name}'...")
@@ -578,7 +928,7 @@ def main():
                     clickup_api_request(create_url, "POST", headers, {
                         "name": clean_st_name,
                         "parent": parent_task_id,
-                        "markdown_content": st_desc
+                        "markdown_content": st_desc_rewritten
                     })
                     
             print("    -> Done!\n")
