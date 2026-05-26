@@ -1,0 +1,6 @@
+- `[x]` Redesign the HTML layout and styles in `clickup_tasks_dashboard.html`
+- `[x]` Replace copy-paste hub elements with score inputs, submission toggles, and feedback textareas
+- `[x]` Implement local storage persistence and dynamic score/grade recalculation javascript
+- `[x]` Clean up unused tabs, guides, and download CSV logic
+- `[x]` Verify that all values persist on refresh and grades compute correctly
+- `[x]` Create walkthrough.md to document the finalized tracker dashboard features

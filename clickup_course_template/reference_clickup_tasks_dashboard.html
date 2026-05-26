@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIST 21103 — Assignment Score & Feedback Tracker</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #090a10;
+      --bg-card: rgba(20, 24, 40, 0.7);
+      --primary: #9061ff;
+      --primary-hover: #a57eff;
+      --primary-gradient: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+      --success: #10b981;
+      --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --warning: #f59e0b;
+      --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      --danger: #ef4444;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+      --glass-bg: rgba(255, 255, 255, 0.02);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 10% 20%, rgba(143, 97, 255, 0.05) 0px, transparent 50%),
+        radial-gradient(at 90% 80%, rgba(99, 102, 241, 0.05) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2.5rem;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      position: relative;
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 3rem;
+      background: linear-gradient(135deg, rgba(143, 97, 255, 0.08) 0%, rgba(99, 102, 241, 0.04) 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    header h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--primary-hover) 0%, #c084fc 40%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Main Grid Dashboard */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.8rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+
+    .stat-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .stat-value {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-subtext {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .stat-accent-value {
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-success-value {
+      background: var(--success-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Circular Grade Gauge */
+    .gauge-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .circle-gauge {
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+
+    .circle-gauge svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .circle-bg {
+      fill: none;
+      stroke: var(--border);
+      stroke-width: 8;
+    }
+
+    .circle-progress {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.6s ease-in-out;
+    }
+
+    .gauge-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: white;
+    }
+
+    /* Progress Tracker Widget */
+    .tracker-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.8rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 3rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .tracker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .tracker-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .progress-percent {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary-hover);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 14px;
+      background-color: rgba(255, 255, 255, 0.03);
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4f46e5 0%, var(--primary) 50%, var(--success) 100%);
+      border-radius: 7px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Control Panel */
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .tabs {
+      display: flex;
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.35rem;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.8rem 1.8rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      color: var(--text);
+      background-color: rgba(144, 97, 255, 0.15);
+    }
+
+    .tab-btn.active {
+      border: 1px solid rgba(144, 97, 255, 0.3);
+      box-shadow: 0 4px 12px rgba(144, 97, 255, 0.1);
+    }
+
+    .btn-reset {
+      background-color: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      border-radius: 12px;
+      padding: 0.8rem 1.6rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-reset:hover {
+      background-color: var(--danger);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    /* Views */
+    .view-content {
+      display: none;
+    }
+
+    .view-content.active {
+      display: block;
+    }
+
+    /* Milestone Accordion */
+    .milestone-section {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .milestone-header {
+      background: rgba(144, 97, 255, 0.03);
+      padding: 1.6rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      transition: background-color 0.3s ease;
+    }
+
+    .milestone-header:hover {
+      background-color: rgba(144, 97, 255, 0.07);
+    }
+
+    .milestone-title-block h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary-hover);
+      margin-bottom: 0.2rem;
+    }
+
+    .milestone-meta {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .milestone-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .milestone-progress-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .milestone-points {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 0.4rem 1.1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .milestone-body {
+      padding: 1.8rem;
+    }
+
+    /* Task Card */
+    .task-card {
+      background-color: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 1.8rem;
+      padding: 1.8rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .task-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .task-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .task-card.submitted {
+      border-color: rgba(245, 158, 11, 0.3);
+      background-color: rgba(245, 158, 11, 0.01);
+    }
+
+    .task-card.graded {
+      border-color: rgba(16, 185, 129, 0.3);
+      background-color: rgba(16, 185, 129, 0.015);
+    }
+
+    /* Card Top Grid */
+    .task-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.5rem;
+      align-items: start;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .task-top {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .task-info-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .task-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .task-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .tag-points {
+      background-color: rgba(144, 97, 255, 0.1);
+      color: var(--primary-hover);
+      border: 1px solid rgba(144, 97, 255, 0.2);
+    }
+
+    .tag-priority {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .tag-dates {
+      background-color: rgba(96, 165, 250, 0.1);
+      color: #60a5fa;
+      border: 1px solid rgba(96, 165, 250, 0.2);
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.35rem 0.9rem;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-not-submitted {
+      background: rgba(156, 163, 175, 0.1);
+      color: var(--text-muted);
+      border: 1px solid rgba(156, 163, 175, 0.25);
+    }
+
+    .status-pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    .status-graded {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.85; }
+      50% { opacity: 0.65; }
+      100% { opacity: 0.85; }
+    }
+
+    /* Content Layout Split */
+    .content-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 992px) {
+      .content-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Side: Instructions */
+    .instructions-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .details-box {
+      background-color: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem;
+    }
+
+    .details-box h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.4rem;
+    }
+
+    .details-box pre {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+      max-height: 250px;
+      overflow-y: auto;
+      color: #e5e7eb;
+    }
+
+    .subtask-list {
+      list-style-type: none;
+      font-size: 0.95rem;
+    }
+
+    .subtask-list li {
+      margin-bottom: 0.4rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .subtask-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--primary-hover);
+      font-weight: 800;
+    }
+
+    /* Right Side: Score & Feedback Entries */
+    .input-panel {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      justify-content: flex-start;
+    }
+
+    .input-group-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Status Cycle Button */
+    .status-cycle-btn {
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 12px;
+      padding: 0.6rem 1.4rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      outline: none;
+    }
+
+    .status-cycle-btn:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    .status-cycle-btn.status-not-submitted {
+      background: rgba(156, 163, 175, 0.05);
+      color: var(--text-muted);
+      border-color: rgba(156, 163, 175, 0.2);
+    }
+
+    .status-cycle-btn.status-submitted {
+      background: rgba(245, 158, 11, 0.08);
+      color: var(--warning);
+      border-color: rgba(245, 158, 11, 0.25);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.1);
+    }
+
+    .status-cycle-btn.status-graded {
+      background: rgba(16, 185, 129, 0.08);
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.25);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+    }
+
+    /* Styled Score Input */
+    .score-entry {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .score-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .score-input-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .score-select {
+      width: 90px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.5rem 1.8rem 0.5rem 0.8rem;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca3af' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5H7z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 0.6rem center;
+      transition: border-color 0.3s ease;
+    }
+
+    .score-select:focus {
+      border-color: var(--primary-hover);
+      box-shadow: 0 0 0 2px rgba(144, 97, 255, 0.25);
+    }
+
+    .score-max {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-left: 0.3rem;
+    }
+
+    /* Feedback Input */
+    .feedback-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .feedback-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .feedback-textarea {
+      background-color: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.8rem;
+      color: var(--text);
+      font-size: 0.95rem;
+      min-height: 80px;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+    }
+
+    .feedback-textarea:focus {
+      border-color: var(--primary-hover);
+      box-shadow: 0 0 0 2px rgba(144, 97, 255, 0.25);
+    }
+
+    /* Gantt Chart View */
+    .gantt-chart {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      backdrop-filter: blur(10px);
+    }
+
+    .gantt-header {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.8rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      min-width: 900px;
+    }
+
+    .gantt-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.9rem;
+      min-width: 900px;
+    }
+
+    .gantt-col-name {
+      width: 280px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 1rem;
+    }
+
+    .gantt-timeline {
+      flex: 1;
+      height: 28px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 14px;
+      position: relative;
+      border: 1px solid var(--border);
+    }
+
+    .gantt-bar {
+      height: 100%;
+      border-radius: 14px;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .gantt-weeks {
+      display: flex;
+      margin-left: 280px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.8rem;
+      margin-bottom: 0.8rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      min-width: 900px;
+    }
+    
+    .gantt-week-col {
+      flex: 1;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>HIST 21103 Grade & Performance Tracker</h1>
+      <p>Organize, plan, and log your academic outcomes. Track your submissions, enter received points, log professor feedback, and dynamically evaluate your letter grade progress.</p>
+    </header>
+
+    <!-- Stat Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Card 1: Letter Grade Gauge -->
+      <div class="stat-card">
+        <span class="stat-label">Current Course Grade</span>
+        <div class="gauge-wrapper">
+          <div class="circle-gauge">
+            <svg>
+              <circle class="circle-bg" cx="40" cy="40" r="34"></circle>
+              <circle class="circle-progress" id="grade-progress-circle" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6"></circle>
+            </svg>
+            <div class="gauge-text" id="grade-letter">F</div>
+          </div>
+          <div>
+            <div class="stat-value stat-accent-value" id="grade-percentage">0%</div>
+            <span class="stat-subtext" id="grade-scale">Requires 270 pts to pass</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Earned Points -->
+      <div class="stat-card">
+        <span class="stat-label">Points Accumulated</span>
+        <div>
+          <div class="stat-value stat-success-value" id="points-earned">0</div>
+          <span class="stat-subtext">out of <strong>450</strong> max points possible</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Assignments Submitted -->
+      <div class="stat-card">
+        <span class="stat-label">Submissions Logged</span>
+        <div>
+          <div class="stat-value" id="submissions-count">0 / 13</div>
+          <span class="stat-subtext">assignments completed & turned in</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Grading Completion -->
+      <div class="stat-card">
+        <span class="stat-label">Graded Performance</span>
+        <div>
+          <div class="stat-value" id="graded-percentage">N/A</div>
+          <span class="stat-subtext" id="graded-summary">0 out of 0 graded tasks</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overall Progress Bar -->
+    <div class="tracker-card">
+      <div class="tracker-header">
+        <span class="tracker-title">Visual Grade Threshold Progress</span>
+        <span class="progress-percent" id="tracker-bar-percent">0% to Maximum</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="tracker-bar"></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted);">
+        <span>D threshold (270 pts)</span>
+        <span>C threshold (315 pts)</span>
+        <span>B threshold (360 pts)</span>
+        <span>A threshold (405 pts)</span>
+      </div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <div class="tabs">
+        <button class="tab-btn active" id="btn-tab-tracker" onclick="switchTab('tracker')">Assignment Logs</button>
+        <button class="tab-btn" id="btn-tab-gantt" onclick="switchTab('gantt')">Visual Score Map</button>
+      </div>
+      <button class="btn-reset" onclick="resetAllTrackerData()">
+        <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"></path>
+        </svg>
+        Reset All Inputs
+      </button>
+    </div>
+
+    <!-- VIEW: TRACKER -->
+    <div id="view-tracker" class="view-content active"></div>
+
+    <!-- VIEW: GANTT CHART -->
+    <div id="view-gantt" class="view-content">
+      <div class="gantt-chart">
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Visual Assignment Schedule (State Integrated)</h3>
+        
+        <!-- Weeks headers -->
+        <div class="gantt-weeks">
+          <div class="gantt-week-col">Week 1 (May 25 - 31)</div>
+          <div class="gantt-week-col">Week 2 (Jun 1 - 7)</div>
+          <div class="gantt-week-col">Week 3 (Jun 8 - 14)</div>
+          <div class="gantt-week-col">Week 4 (Jun 15 - 21)</div>
+          <div class="gantt-week-col">Week 5 (Jun 22 - 29)</div>
+        </div>
+
+        <div id="gantt-rows-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Course Milestones and Tasks Data
+    const courseData = [
+      {
+        milestone: "Milestone 1: Course Kickoff & Columbus (Week 1)",
+        dates: "May 25 - May 31, 2026",
+        points: 75,
+        tasks: [
+          {
+            id: 1,
+            name: "Syllabus Review & Course Orientation",
+            points: 0,
+            priority: "Normal",
+            startDate: "05/25/2026",
+            dueDate: "05/27/2026",
+            ganttLeft: 0,
+            ganttWidth: 8,
+            color: "rgba(143, 92, 255, 0.6)",
+            description: "Read the course syllabus, review communication and grading policies, and outline the calendar in ClickUp.\n\n### Checklist:\n- Read the full course syllabus.\n- Read the course introduction lecture transcript.\n- Mark the June 29 final course deadline.",
+            subtasks: [
+              "Read course syllabus notes/syllabus.md",
+              "Review welcome lecture notes/modules/course_introduction_transcript.md",
+              "Set up ClickUp tasks and milestone tracking"
+            ]
+          },
+          {
+            id: 2,
+            name: "Essay One: Columbus Analysis",
+            points: 50,
+            priority: "High",
+            startDate: "05/26/2026",
+            dueDate: "05/31/2026",
+            ganttLeft: 3,
+            ganttWidth: 14,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Contrast the traditional biography of Christopher Columbus with Abbas Hamdani's thesis on apocalyptic crusader motivations.\n\n### Requirements:\n- Length: 2-3 pages, double-spaced.\n- Font: Times New Roman, 12pt.\n- Value: 50 points.\n\n### Checklist:\n- Read Christopher Columbus Biography (Traditional Narrative).\n- Read 'Columbus and the Recovery of Jerusalem' by Abbas Hamdani.\n- Study the professor's video lecture transcript.\n- Write comparative narrative.\n- Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/christopher_columbus_biography.md",
+              "Read article notes/readings/columbus_and_the_recovery_of_jerusalem.md",
+              "Review Columbus lecture notes/assignments/columbus_essay_video_notes.md",
+              "Draft comparative analysis",
+              "Submit Essay One on Blackboard portal"
+            ]
+          },
+          {
+            id: 3,
+            name: "Book Essay 1: Colonial Settlement (Horn Intro & Ch 1)",
+            points: 25,
+            priority: "Normal",
+            startDate: "05/28/2026",
+            dueDate: "06/02/2026",
+            ganttLeft: 9,
+            ganttWidth: 14,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a book response analyzing James Horn's Introduction & Chapter 1 on Jamestown.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- Read Introduction to 1619.\n- Read Chapter 1 (Jamestown).\n- Study Dr. Ross's Colonial Settlement Video Notes.\n- Write response essay.\n- Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/introduction.md",
+              "Read reading notes/readings/1619/chapter_01.md",
+              "Review video notes/assignments/colonial_settlement_video_notes.md",
+              "Draft Jamestown response essay",
+              "Submit Book Essay 1 on Blackboard"
+            ]
+          }
+        ]
+      },
+      {
+        milestone: "Milestone 2: Virginia Foundations (Week 2)",
+        dates: "Jun 1 - Jun 7, 2026",
+        points: 50,
+        tasks: [
+          {
+            id: 4,
+            name: "Book Essay 2: The Great Reforms (Horn Ch 2)",
+            points: 25,
+            priority: "Normal",
+            startDate: "06/01/2026",
+            dueDate: "06/06/2026",
+            ganttLeft: 20,
+            ganttWidth: 14,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a short response analyzing Sir Edwin Sandys's 1619 reforms regarding liberty, property, and governance.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- Read Horn Chapter 2 (The Great Reforms).\n- Study Great Reforms Video Notes.\n- Draft response essay.\n- Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/chapter_02.md",
+              "Review video notes/assignments/great_reforms_video_notes.md",
+              "Draft Edwin Sandys reform response",
+              "Submit Book Essay 2 on Blackboard"
+            ]
+          },
+          {
+            id: 5,
+            name: "Book Essay 3: First Africans (Horn Ch 3)",
+            points: 25,
+            priority: "Normal",
+            startDate: "06/03/2026",
+            dueDate: "06/09/2026",
+            ganttLeft: 26,
+            ganttWidth: 17,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a response to Horn's Chapter 3 regarding the arrival of first Africans and early labor conditions.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- Read Horn Chapter 3 (First Africans).\n- Study First Africans Video Notes.\n- Draft response essay.\n- Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/chapter_03.md",
+              "Review video notes/assignments/first_africans_video_notes.md",
+              "Draft First Africans response",
+              "Submit Book Essay 3 on Blackboard"
+            ]
+          }
+        ]
+      },
+      {
+        milestone: "Milestone 3: Expansion & Revolution (Week 3)",
+        dates: "Jun 8 - Jun 14, 2026",
+        points: 100,
+        tasks: [
+          {
+            id: 6,
+            name: "Book Essay 4: Commonwealth (Horn Ch 4)",
+            points: 25,
+            priority: "Normal",
+            startDate: "06/08/2026",
+            dueDate: "06/12/2026",
+            ganttLeft: 40,
+            ganttWidth: 12,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a short response to Horn's Chapter 4 regarding the Christian Commonwealth model in early VA.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- Read Horn Chapter 4 (Commonwealth).\n- Study Commonwealth Video Notes.\n- Draft response essay.\n- Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/chapter_04.md",
+              "Review video notes/assignments/commonwealth_video_notes.md",
+              "Draft Christian Commonwealth response",
+              "Submit Book Essay 4 on Blackboard"
+            ]
+          },
+          {
+            id: 7,
+            name: "Book Essay 5: Tumult and Liberty (Horn Ch 5)",
+            points: 25,
+            priority: "Normal",
+            startDate: "06/10/2026",
+            dueDate: "06/14/2026",
+            ganttLeft: 46,
+            ganttWidth: 12,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a response to Horn's Chapter 5 regarding the 1622 massacre and the shift in Native relations.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- Read Horn Chapter 5 (Tumult and Liberty).\n- Study Tumult & Liberty Video Notes.\n- Draft response essay.\n- Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/chapter_05.md",
+              "Review video notes/assignments/tumult_and_liberty_video_notes.md",
+              "Draft 1622 Massacre response",
+              "Submit Book Essay 5 on Blackboard"
+            ]
+          },
+          {
+            id: 8,
+            name: "Major Essay Two: Voices of the American Revolution",
+            points: 50,
+            priority: "High",
+            startDate: "06/08/2026",
+            dueDate: "06/14/2026",
+            ganttLeft: 40,
+            ganttWidth: 18,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Write a comparative/contrast narrative using exactly 10 primary source documents (2 from each group A through E).\n\n### Requirements:\n- Length: 3-5 pages.\n- Font: 12-point font, double-spaced.\n- Value: 50 points.\n\n### Checklist:\n- Read 2 documents from Group A (Religious).\n- Read 2 documents from Group B (Loyalist).\n- Read 2 documents from Group C (Rebel).\n- Read 2 documents from Group D (African American).\n- Read 2 documents from Group E (Official/Legal).\n- Study American Revolution Video Notes.\n- Submit on Blackboard.",
+            subtasks: [
+              "Select 10 documents from assignment prompt groups A-E",
+              "Review video notes/assignments/american_revolution_video_notes.md",
+              "Draft comparative Revolution narrative",
+              "Submit Major Essay Two on Blackboard"
+            ]
+          }
+        ]
+      },
+      {
+        milestone: "Milestone 4: Constitutional & Sectional Division (Week 4)",
+        dates: "Jun 15 - Jun 21, 2026",
+        points: 125,
+        tasks: [
+          {
+            id: 9,
+            name: "Book Essay 6: Inequality and Freedom (Horn Ch 6 & Epilogue)",
+            points: 25,
+            priority: "Normal",
+            startDate: "06/15/2026",
+            dueDate: "06/19/2026",
+            ganttLeft: 60,
+            ganttWidth: 12,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a response to Horn's Chapter 6 and Epilogue regarding inequality, freedom, and the legacy of 1619.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- Read Horn Chapter 6 (Inequality and Freedom) and Epilogue.\n- Study Inequality & Freedom Video Notes.\n- Draft response essay.\n- Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/chapter_06.md",
+              "Read reading notes/readings/1619/epilogue.md",
+              "Review video notes/assignments/inequality_and_freedom_video_notes.md",
+              "Draft 1619 legacy response",
+              "Submit Book Essay 6 on Blackboard"
+            ]
+          },
+          {
+            id: 10,
+            name: "Major Essay Three: Articles vs. Constitution",
+            points: 50,
+            priority: "High",
+            startDate: "06/15/2026",
+            dueDate: "06/21/2026",
+            ganttLeft: 60,
+            ganttWidth: 18,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Address power distribution, structures, and the missing Bill of Rights in a comparative essay on the Articles and U.S. Constitution.\n\n### Requirements:\n- Length: 2-3 pages.\n- Font: Times New Roman, 12pt, double-spaced.\n- Value: 50 points.\n\n### Checklist:\n- Read Articles of Confederation (1776).\n- Read The U.S. Constitution (1787).\n- Study Articles vs. Constitution Video Notes.\n- Draft essay.\n- Submit on Blackboard.",
+            subtasks: [
+              "Read source text 'Articles of Confederation, 1776'",
+              "Read source text 'Original 1787 U.S. Constitution'",
+              "Review video notes/assignments/articles_vs_constitution_video_notes.md",
+              "Draft comparative essay",
+              "Submit Major Essay Three on Blackboard"
+            ]
+          },
+          {
+            id: 11,
+            name: "Major Essay Four: Creation of Two Societies",
+            points: 50,
+            priority: "High",
+            startDate: "06/17/2026",
+            dueDate: "06/21/2026",
+            ganttLeft: 66,
+            ganttWidth: 12,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Compare the Free Labor (North) and Slave Labor (South) systems, economies, and political structures based on Bruce Levine's book.\n\n### Requirements:\n- Length: 2-3 pages.\n- Font: Times New Roman, 12pt, double-spaced.\n- Value: 50 points.\n\n### Checklist:\n- Read Chapters 1 and 2 from Bruce Levine's book.\n- Study Creation of Two Societies Video Notes.\n- Draft comparison essay.\n- Submit on Blackboard.",
+            subtasks: [
+              "Read Bruce Levine's Chapters 1 & 2 PDF",
+              "Review video notes/assignments/creation_of_two_societies_video_notes.md",
+              "Draft Free Labor vs. Slave Labor analysis",
+              "Submit Major Essay Four on Blackboard"
+            ]
+          }
+        ]
+      },
+      {
+        milestone: "Milestone 5: Slavery & Civil War (Week 5)",
+        dates: "Jun 22 - Jun 29, 2026",
+        points: 100,
+        tasks: [
+          {
+            id: 12,
+            name: "Major Essay Five: Debate over Slavery (Proslavery Ideology)",
+            points: 50,
+            priority: "High",
+            startDate: "06/22/2026",
+            dueDate: "06/26/2026",
+            ganttLeft: 80,
+            ganttWidth: 12,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Explain the core beliefs and theological/social justifications of proslavery ideology in the 1830s.\n\n### Requirements:\n- Length: 2-3 pages.\n- Font: Times New Roman, 12pt, double-spaced.\n- Value: 50 points.\n\n### Checklist:\n- Read article by Jack Maddex OR Drew Gilpin Faust.\n- Study Debate over Slavery Video Notes.\n- Draft theological defense analysis.\n- Submit on Blackboard.",
+            subtasks: [
+              "Select and read article (Maddex PDF or Faust PDF)",
+              "Review video notes/assignments/debate_over_slavery_video_notes.md",
+              "Draft proslavery theology response",
+              "Submit Major Essay Five on Blackboard"
+            ]
+          },
+          {
+            id: 13,
+            name: "Major Essay Six: W.E.B. Du Bois on the Civil War",
+            points: 50,
+            priority: "High",
+            startDate: "06/24/2026",
+            dueDate: "06/29/2026",
+            ganttLeft: 86,
+            ganttWidth: 14,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Evaluate W.E.B. Du Bois's 1935 essay and his 'general strike' thesis regarding the causes/significance of the Civil War.\n\n### Requirements:\n- Length: 2-3 pages.\n- Font: Times New Roman, 12pt, double-spaced.\n- Value: 50 points.\n\n### Checklist:\n- Read W.E.B. Du Bois's essay.\n- Study Civil War Video Notes.\n- Draft historiographical essay.\n- Submit on Blackboard.",
+            subtasks: [
+              "Read W.E.B. Du Bois's source PDF",
+              "Review video notes/assignments/civil_war_video_notes.md",
+              "Draft general strike analysis",
+              "Submit Major Essay Six on Blackboard"
+            ]
+          }
+        ]
+      }
+    ];
+
+    // Tracker state schema: { [taskId]: { submitted: boolean, score: number, feedback: string } }
+    let trackerState = {};
+
+    window.onload = function() {
+      loadTrackerState();
+      renderTracker();
+      renderGantt();
+      recalculateDashboard();
+    };
+
+    function loadTrackerState() {
+      const saved = localStorage.getItem('hist_21103_grade_tracker');
+      if (saved) {
+        try {
+          trackerState = JSON.parse(saved);
+        } catch (e) {
+          trackerState = {};
+        }
+      }
+      
+      // Initialize defaults for missing tasks & migrate old formats
+      courseData.forEach(milestone => {
+        milestone.tasks.forEach(t => {
+          if (!trackerState[t.id]) {
+            trackerState[t.id] = { status: 'not-submitted', submitted: false, score: '', feedback: '' };
+          } else {
+            const state = trackerState[t.id];
+            if (!state.status) {
+              if (state.score !== '') {
+                state.status = 'graded';
+              } else if (state.submitted) {
+                state.status = 'submitted';
+              } else {
+                state.status = 'not-submitted';
+              }
+            }
+          }
+        });
+      });
+    }
+
+    function saveTrackerState() {
+      localStorage.setItem('hist_21103_grade_tracker', JSON.stringify(trackerState));
+      recalculateDashboard();
+      updateGanttColors();
+    }
+
+    function resetAllTrackerData() {
+      if (confirm("Are you sure you want to reset all scores, submissions, and feedback? This cannot be undone.")) {
+        trackerState = {};
+        courseData.forEach(milestone => {
+          milestone.tasks.forEach(t => {
+            trackerState[t.id] = { status: 'not-submitted', submitted: false, score: '', feedback: '' };
+          });
+        });
+        saveTrackerState();
+        renderTracker();
+      }
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.view-content').forEach(view => view.classList.remove('active'));
+      
+      document.getElementById(`btn-tab-${tabId}`).classList.add('active');
+      document.getElementById(`view-${tabId}`).classList.add('active');
+    }
+
+    function getTaskPoints(taskId) {
+      for (let m of courseData) {
+        for (let t of m.tasks) {
+          if (t.id === taskId) return t.points;
+        }
+      }
+      return 0;
+    }
+
+    function cycleStatus(taskId) {
+      const state = trackerState[taskId];
+      
+      if (state.status === 'not-submitted') {
+        state.status = 'submitted';
+        state.submitted = true;
+        state.score = '';
+      } else if (state.status === 'submitted') {
+        state.status = 'graded';
+        state.submitted = true;
+        const points = getTaskPoints(taskId);
+        state.score = points; // Default to max points on entering graded state
+      } else {
+        state.status = 'not-submitted';
+        state.submitted = false;
+        state.score = '';
+      }
+      
+      renderTracker();
+      saveTrackerState();
+    }
+
+    function generateScoreOptions(maxPoints, selectedValue) {
+      let html = `<option value="">--</option>`;
+      for (let s = maxPoints; s >= 0; s -= 0.5) {
+        const isSelected = selectedValue !== '' && parseFloat(selectedValue) === s ? 'selected' : '';
+        const label = Number(s.toFixed(1));
+        html += `<option value="${label}" ${isSelected}>${label}</option>`;
+      }
+      return html;
+    }
+
+    function handleScoreInput(taskId) {
+      const scoreSelect = document.getElementById(`score-input-${taskId}`);
+      const val = scoreSelect.value;
+      
+      if (val === '') {
+        trackerState[taskId].score = '';
+      } else {
+        trackerState[taskId].score = parseFloat(val);
+      }
+      
+      saveTrackerState();
+    }
+
+    function handleFeedbackInput(taskId) {
+      const textarea = document.getElementById(`feedback-input-${taskId}`);
+      trackerState[taskId].feedback = textarea.value;
+      saveTrackerState();
+    }
+
+    function getLetterGrade(pct) {
+      if (pct >= 90) return 'A';
+      if (pct >= 80) return 'B';
+      if (pct >= 70) return 'C';
+      if (pct >= 60) return 'D';
+      return 'F';
+    }
+
+    function getGradeScaleMsg(earned) {
+      if (earned >= 405) return 'Secured an A Grade!';
+      if (earned >= 360) return `${405 - earned} pts to A Grade`;
+      if (earned >= 315) return `${360 - earned} pts to B Grade`;
+      if (earned >= 270) return `${315 - earned} pts to C Grade`;
+      return `${270 - earned} pts to pass (D Grade)`;
+    }
+
+    function recalculateDashboard() {
+      let totalEarned = 0;
+      let totalMaxPoints = 450;
+      let totalSubmitted = 0;
+      let totalGradedCount = 0;
+      let totalGradedPoints = 0;
+      let gradedMaxPoints = 0;
+
+      courseData.forEach(milestone => {
+        let milestonePointsEarned = 0;
+        let milestoneSubmittedCount = 0;
+
+        milestone.tasks.forEach(t => {
+          const state = trackerState[t.id];
+          if (state) {
+            if (state.submitted) {
+              totalSubmitted++;
+              milestoneSubmittedCount++;
+            }
+            if (state.score !== '' && t.points > 0) {
+              totalEarned += state.score;
+              milestonePointsEarned += state.score;
+              totalGradedCount++;
+              totalGradedPoints += state.score;
+              gradedMaxPoints += t.points;
+            } else if (state.submitted && t.points === 0) {
+              // Orientation (0-pts) marked complete
+              milestoneSubmittedCount++;
+            }
+          }
+        });
+
+        // Update Milestone header subtext in tracker
+        const mSubText = document.getElementById(`milestone-sub-${milestone.tasks[0].id}`);
+        if (mSubText) {
+          const gradedTasksInMilestone = milestone.tasks.filter(t => trackerState[t.id].score !== '' && t.points > 0).length;
+          const totalTasksInMilestone = milestone.tasks.length;
+          mSubText.innerText = `${milestoneSubmittedCount} / ${totalTasksInMilestone} Completed`;
+        }
+      });
+
+      // Overall calculations
+      const percentOfTotal = Math.round((totalEarned / totalMaxPoints) * 100);
+      const letter = getLetterGrade(percentOfTotal);
+      const scaleMsg = getGradeScaleMsg(totalEarned);
+
+      // Card 1: Letter Grade & Percentages
+      document.getElementById('grade-letter').innerText = letter;
+      document.getElementById('grade-percentage').innerText = `${percentOfTotal}%`;
+      document.getElementById('grade-scale').innerText = scaleMsg;
+
+      // Update Gauge SVG Circle
+      // Circumference = 2 * PI * 34 = 213.6
+      const strokeOffset = 213.6 - (213.6 * percentOfTotal) / 100;
+      const progressCircle = document.getElementById('grade-progress-circle');
+      progressCircle.style.strokeDashoffset = Math.max(0, strokeOffset);
+
+      if (letter === 'A' || letter === 'B') {
+        progressCircle.style.stroke = 'var(--success)';
+      } else if (letter === 'C' || letter === 'D') {
+        progressCircle.style.stroke = 'var(--warning)';
+      } else {
+        progressCircle.style.stroke = 'var(--danger)';
+      }
+
+      // Card 2: Accumulated Points
+      document.getElementById('points-earned').innerText = totalEarned;
+
+      // Card 3: Submissions
+      document.getElementById('submissions-count').innerText = `${totalSubmitted} / 13`;
+
+      // Card 4: Graded Work Performance
+      const gradedPctElem = document.getElementById('graded-percentage');
+      const gradedSummaryElem = document.getElementById('graded-summary');
+      if (gradedMaxPoints > 0) {
+        const gradedPct = Math.round((totalGradedPoints / gradedMaxPoints) * 100);
+        gradedPctElem.innerText = `${gradedPct}%`;
+        gradedSummaryElem.innerHTML = `Avg on <strong>${totalGradedCount}</strong> graded tasks (${totalGradedPoints}/${gradedMaxPoints} pts)`;
+      } else {
+        gradedPctElem.innerText = 'N/A';
+        gradedSummaryElem.innerText = '0 graded tasks logged';
+      }
+
+      // Progress Tracker Bar
+      document.getElementById('tracker-bar').style.width = `${percentOfTotal}%`;
+      document.getElementById('tracker-bar-percent').innerText = `${percentOfTotal}% completed towards 450 pts`;
+    }
+
+    function toggleMilestoneBody(mIdx) {
+      const body = document.getElementById(`milestone-body-${mIdx}`);
+      body.style.display = body.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function renderTracker() {
+      const container = document.getElementById('view-tracker');
+      let html = '';
+
+      courseData.forEach((milestone, mIdx) => {
+        html += `
+          <div class="milestone-section">
+            <div class="milestone-header" onclick="toggleMilestoneBody(${mIdx})">
+              <div class="milestone-title-block">
+                <h3>${milestone.milestone}</h3>
+                <span class="milestone-meta" id="milestone-sub-${milestone.tasks[0].id}">0 / ${milestone.tasks.length} Completed</span>
+              </div>
+              <div class="milestone-right">
+                <span class="milestone-meta">${milestone.dates}</span>
+                <div class="milestone-points">${milestone.points} pts max</div>
+              </div>
+            </div>
+            <div class="milestone-body" id="milestone-body-${mIdx}">
+        `;
+
+        milestone.tasks.forEach(task => {
+          const state = trackerState[task.id] || { status: 'not-submitted', submitted: false, score: '', feedback: '' };
+          if (!state.status) {
+            state.status = state.score !== '' ? 'graded' : (state.submitted ? 'submitted' : 'not-submitted');
+          }
+          
+          let cardClass = 'task-card';
+          let badgeClass = 'status-badge status-not-submitted';
+          let badgeText = '● Not Submitted';
+          
+          if (state.submitted) {
+            if (state.score !== '') {
+              cardClass = 'task-card graded';
+              badgeClass = 'status-badge status-graded';
+              badgeText = '✓ Graded';
+            } else {
+              cardClass = 'task-card submitted';
+              badgeClass = 'status-badge status-pending';
+              badgeText = '○ Pending Grade';
+            }
+          }
+
+          html += `
+            <div class="${cardClass}" id="task-card-${task.id}">
+              <div class="task-top">
+                <div class="task-info-block">
+                  <span class="task-title">${task.name}</span>
+                  <div class="task-meta-row">
+                    <span class="tag tag-points">${task.points} Max Points</span>
+                    <span class="tag tag-priority">${task.priority} Priority</span>
+                    <span class="tag tag-dates">${task.startDate} - ${task.dueDate}</span>
+                  </div>
+                </div>
+                <div>
+                  <span class="${badgeClass}" id="status-badge-${task.id}">${badgeText}</span>
+                </div>
+              </div>
+              
+              <div class="content-layout">
+                <!-- Left instructions and subtasks -->
+                <div class="instructions-panel">
+                  <div class="details-box">
+                    <h4>Description & Requirements</h4>
+                    <pre>${task.description}</pre>
+                  </div>
+                  <div class="details-box">
+                    <h4>Task Sub-Steps</h4>
+                    <ul class="subtask-list">
+                      ${task.subtasks.map(s => `<li>${s}</li>`).join('')}
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Right performance input panel -->
+                <div class="input-panel">
+                  <div class="input-group-row">
+                    <!-- Dynamic Status Button -->
+                    <button class="status-cycle-btn status-${state.status}" id="status-btn-${task.id}" onclick="cycleStatus(${task.id})">
+                      <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:currentColor; margin-right:0.4rem; ${state.status !== 'not-submitted' ? 'box-shadow: 0 0 8px currentColor;' : ''}"></span>
+                      ${state.status === 'not-submitted' ? 'Not Submitted' : state.status === 'submitted' ? 'Submitted' : 'Graded'}
+                    </button>
+                    
+                    <!-- Score entry -->
+                    ${task.points > 0 ? `
+                      <div class="score-entry" id="score-container-${task.id}" style="display: ${state.status === 'graded' ? 'flex' : 'none'};">
+                        <span class="score-label">Score Earned:</span>
+                        <div class="score-input-wrapper">
+                          <select class="score-select" id="score-input-${task.id}" onchange="handleScoreInput(${task.id})">
+                            ${generateScoreOptions(task.points, state.score)}
+                          </select>
+                          <span class="score-max">/ ${task.points}</span>
+                        </div>
+                      </div>
+                    ` : `
+                      <span class="score-label" style="font-weight: 700; color: var(--success);">Orientation Complete</span>
+                    `}
+                  </div>
+
+                  <!-- Feedback section -->
+                  <div class="feedback-group">
+                    <span class="feedback-label">Instructor Feedback & Grading Notes</span>
+                    <textarea class="feedback-textarea" id="feedback-input-${task.id}" placeholder="Type score deductions, corrections, or grading comments here..." oninput="handleFeedbackInput(${task.id})">${state.feedback || ''}</textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        html += `
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function renderGantt() {
+      const container = document.getElementById('gantt-rows-container');
+      let html = '';
+
+      courseData.forEach(milestone => {
+        milestone.tasks.forEach(task => {
+          html += `
+            <div class="gantt-row">
+              <div class="gantt-col-name" title="${task.name}">${task.name}</div>
+              <div class="gantt-timeline">
+                <div class="gantt-bar" id="gantt-bar-${task.id}" style="left: ${task.ganttLeft}%; width: ${task.ganttWidth}%; background: ${task.color};">
+                  ${task.points} pts
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      });
+
+      container.innerHTML = html;
+      updateGanttColors();
+    }
+
+    function updateGanttColors() {
+      courseData.forEach(milestone => {
+        milestone.tasks.forEach(t => {
+          const bar = document.getElementById(`gantt-bar-${t.id}`);
+          if (bar) {
+            const state = trackerState[t.id];
+            if (state) {
+              if (state.submitted) {
+                if (state.score !== '') {
+                  // Graded: Green theme
+                  bar.style.background = 'var(--success-gradient)';
+                  bar.innerText = `Graded: ${state.score}/${t.points} pts`;
+                } else {
+                  // Submitted: Orange theme
+                  bar.style.background = 'var(--warning-gradient)';
+                  bar.innerText = t.points > 0 ? `Pending (${t.points} pts)` : 'Completed';
+                }
+              } else {
+                // Default style
+                bar.style.background = t.color;
+                bar.innerText = `${t.points} pts`;
+              }
+            }
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
