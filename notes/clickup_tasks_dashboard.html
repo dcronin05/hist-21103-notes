@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIST 21103 — ClickUp Task Planner</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0f111a;
+      --bg-card: #181b28;
+      --primary: #8f5cff;
+      --primary-hover: #a67eff;
+      --secondary: #4a3aff;
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #2d3142;
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2.5rem;
+      background: linear-gradient(135deg, rgba(143, 92, 255, 0.1) 0%, rgba(74, 58, 255, 0.1) 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--primary) 0%, #a67eff 50%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Actions Bar */
+    .actions-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .tabs {
+      display: flex;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.3rem;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      color: var(--text);
+      background-color: rgba(143, 92, 255, 0.2);
+    }
+
+    .tab-btn.active {
+      border: 1px solid rgba(143, 92, 255, 0.4);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(143, 92, 255, 0.3);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background-color: var(--accent);
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    /* Point Tracker Widget */
+    .tracker-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tracker-info {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .tracker-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 12px;
+      background-color: var(--bg-dark);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--secondary) 0%, var(--primary) 100%);
+      transition: width 0.5s ease;
+    }
+
+    .tracker-stat {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-align: right;
+      min-width: 120px;
+    }
+
+    /* Views */
+    .view-content {
+      display: none;
+    }
+
+    .view-content.active {
+      display: block;
+    }
+
+    /* Milestone Accordion */
+    .milestone-section {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .milestone-header {
+      background: rgba(143, 92, 255, 0.05);
+      padding: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      transition: background-color 0.3s ease;
+    }
+
+    .milestone-header:hover {
+      background-color: rgba(143, 92, 255, 0.1);
+    }
+
+    .milestone-title-block h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary-hover);
+      margin-bottom: 0.2rem;
+    }
+
+    .milestone-meta {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .milestone-points {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .milestone-body {
+      padding: 1.5rem;
+    }
+
+    /* Task Card */
+    .task-card {
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .task-card:hover {
+      border-color: rgba(143, 92, 255, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .task-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .task-title-area {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .task-checkbox {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .task-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .task-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .tag-points {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .tag-priority {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .tag-dates {
+      background-color: rgba(96, 165, 250, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(96, 165, 250, 0.3);
+    }
+
+    /* Copy Actions Grid */
+    .copy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px dashed var(--border);
+    }
+
+    .copy-block {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.5rem;
+      min-height: 100px;
+    }
+
+    .copy-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .copy-value {
+      font-size: 0.9rem;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 500;
+    }
+
+    .copy-btn {
+      background: rgba(143, 92, 255, 0.1);
+      border: 1px solid rgba(143, 92, 255, 0.3);
+      color: var(--primary-hover);
+      border-radius: 6px;
+      padding: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+
+    .copy-btn:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .copy-btn.copied {
+      background-color: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* Subtasks and Description Preview */
+    .details-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .details-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .details-box {
+      background-color: rgba(24, 27, 40, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .details-box h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.3rem;
+    }
+
+    .details-box pre {
+      font-family: monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      max-height: 150px;
+      overflow-y: auto;
+      color: #e5e7eb;
+    }
+
+    .subtask-list {
+      list-style-type: none;
+      font-size: 0.9rem;
+    }
+
+    .subtask-list li {
+      margin-bottom: 0.3rem;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+
+    .subtask-list li::before {
+      content: "↳";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+    }
+
+    /* Setup Guide */
+    .guide-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    .guide-card h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--primary-hover);
+    }
+
+    .guide-step {
+      margin-bottom: 1.5rem;
+      padding-left: 1rem;
+      border-left: 3px solid var(--primary);
+    }
+
+    .guide-step h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .guide-step p {
+      color: var(--text-muted);
+    }
+
+    /* Gantt Chart View */
+    .gantt-chart {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+
+    .gantt-header {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      min-width: 800px;
+    }
+
+    .gantt-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      min-width: 800px;
+    }
+
+    .gantt-col-name {
+      width: 250px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .gantt-timeline {
+      flex: 1;
+      height: 24px;
+      background-color: var(--bg-dark);
+      border-radius: 12px;
+      position: relative;
+      border: 1px solid var(--border);
+    }
+
+    .gantt-bar {
+      height: 100%;
+      border-radius: 12px;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    /* Weeks header mapping */
+    .gantt-weeks {
+      display: flex;
+      margin-left: 250px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      min-width: 800px;
+    }
+    
+    .gantt-week-col {
+      flex: 1;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>HIST 21103 Task Planner</h1>
+      <p>Course milestone & copy-paste setup engine for ClickUp. Plan out the entire semester, estimate your grade points, or download the CSV template to import directly into your Workspace.</p>
+    </header>
+
+    <!-- Point Progress Tracker -->
+    <div class="tracker-card">
+      <div class="tracker-info">
+        <div class="tracker-title">
+          <span>Target Score Accumulator</span>
+          <span id="progress-percent">0%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="tracker-bar"></div>
+        </div>
+      </div>
+      <div class="tracker-stat">
+        <span id="accumulated-points">0</span> / 450 <span style="font-size: 1rem; color: var(--text-muted); display: block; font-weight: 500;">Points Planned</span>
+      </div>
+    </div>
+
+    <!-- Actions Bar -->
+    <div class="actions-bar">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('tasks')">Task List & Copy Hub</button>
+        <button class="tab-btn" onclick="switchTab('gantt')">Visual Course Schedule</button>
+        <button class="tab-btn" onclick="switchTab('guide')">ClickUp Setup Guide</button>
+      </div>
+      <button class="btn btn-secondary" onclick="exportToCSV()">
+        <svg style="margin-right: 0.5rem; width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path>
+        </svg>
+        Download ClickUp CSV
+      </button>
+    </div>
+
+    <!-- VIEW: TASKS -->
+    <div id="view-tasks" class="view-content active"></div>
+
+    <!-- VIEW: GANTT CHART -->
+    <div id="view-gantt" class="view-content">
+      <div class="gantt-chart">
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Visual Task Schedule (5-Week Course View)</h3>
+        
+        <!-- Weeks headers -->
+        <div class="gantt-weeks">
+          <div class="gantt-week-col">Week 1 (May 25 - 31)</div>
+          <div class="gantt-week-col">Week 2 (Jun 1 - 7)</div>
+          <div class="gantt-week-col">Week 3 (Jun 8 - 14)</div>
+          <div class="gantt-week-col">Week 4 (Jun 15 - 21)</div>
+          <div class="gantt-week-col">Week 5 (Jun 22 - 29)</div>
+        </div>
+
+        <div id="gantt-rows-container"></div>
+      </div>
+    </div>
+
+    <!-- VIEW: SETUP GUIDE -->
+    <div id="view-guide" class="view-content">
+      <div class="guide-card">
+        <h2>How to Setup clickup for HIST 21103</h2>
+        
+        <div class="guide-step">
+          <h3>Step 1: Download the CSV File</h3>
+          <p>Click the green <strong>"Download ClickUp CSV"</strong> button above. This exports the entire course timeline, points, descriptions, and subtask configurations into a cleanly formatted spreadsheet.</p>
+        </div>
+
+        <div class="guide-step">
+          <h3>Step 2: Navigate to clickup Settings</h3>
+          <p>In ClickUp, click your workspace profile avatar, go to <strong>Settings</strong>, select <strong>Imports/Exports</strong>, and click <strong>Start Import</strong>.</p>
+        </div>
+
+        <div class="guide-step">
+          <h3>Step 3: Select Spreadsheet Import</h3>
+          <p>Select the <strong>Excel or CSV</strong> option and upload the downloaded file (<code>hist_21103_clickup_tasks.csv</code>).</p>
+        </div>
+
+        <div class="guide-step">
+          <h3>Step 4: Map the Column Fields</h3>
+          <p>Map the spreadsheet columns to ClickUp standard fields as follows:</p>
+          <ul style="margin-left: 2rem; margin-top: 0.5rem; margin-bottom: 0.5rem; list-style-type: square;">
+            <li><code>Task Name</code> &rarr; **Task Name**</li>
+            <li><code>Description</code> &rarr; **Description**</li>
+            <li><code>Start Date</code> &rarr; **Start Date**</li>
+            <li><code>Due Date</code> &rarr; **Due Date**</li>
+            <li><code>Priority</code> &rarr; **Priority**</li>
+            <li><code>Points</code> &rarr; **Custom Field (Number)**</li>
+          </ul>
+        </div>
+
+        <div class="guide-step">
+          <h3>Step 5: Alternative - Copy & Paste Method</h3>
+          <p>If you prefer a manual setup, use the <strong>Task List</strong> tab. Click any "Copy" button to instantly save a task property to your clipboard and paste it directly into ClickUp. In ClickUp, you can paste the subtasks list as a single block to create separate subtasks automatically!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Course Milestones and Tasks Data
+    const courseData = [
+      {
+        milestone: "Milestone 1: Course Kickoff & Columbus (Week 1)",
+        dates: "May 25 - May 31, 2026",
+        points: 75,
+        tasks: [
+          {
+            id: 1,
+            name: "Syllabus Review & Course Orientation",
+            points: 0,
+            priority: "Normal",
+            startDate: "05/25/2026",
+            dueDate: "05/27/2026",
+            ganttLeft: 0,
+            ganttWidth: 8,
+            color: "rgba(143, 92, 255, 0.6)",
+            description: "Read the course syllabus, review communication and grading policies, and outline the calendar in ClickUp.\n\n### Checklist:\n- [ ] Read the full course syllabus.\n- [ ] Read the course introduction lecture transcript.\n- [ ] Mark the June 29 final course deadline.",
+            subtasks: [
+              "Read course syllabus notes/syllabus.md",
+              "Review welcome lecture notes/modules/course_introduction_transcript.md",
+              "Set up ClickUp tasks and milestone tracking"
+            ]
+          },
+          {
+            id: 2,
+            name: "Essay One: Columbus Analysis",
+            points: 50,
+            priority: "High",
+            startDate: "05/26/2026",
+            dueDate: "05/31/2026",
+            ganttLeft: 3,
+            ganttWidth: 14,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Contrast the traditional biography of Christopher Columbus with Abbas Hamdani's thesis on apocalyptic crusader motivations.\n\n### Requirements:\n- Length: 2-3 pages, double-spaced.\n- Font: Times New Roman, 12pt.\n- Value: 50 points.\n\n### Checklist:\n- [ ] Read Christopher Columbus Biography (Traditional Narrative).\n- [ ] Read 'Columbus and the Recovery of Jerusalem' by Abbas Hamdani.\n- [ ] Study the professor's video lecture transcript.\n- [ ] Write comparative narrative.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/christopher_columbus_biography.md",
+              "Read article notes/readings/columbus_and_the_recovery_of_jerusalem.md",
+              "Review Columbus lecture notes/assignments/columbus_essay_video_notes.md",
+              "Draft comparative analysis",
+              "Submit Essay One on Blackboard portal"
+            ]
+          },
+          {
+            id: 3,
+            name: "Book Essay 1: Colonial Settlement (Horn Intro & Ch 1)",
+            points: 25,
+            priority: "Normal",
+            startDate: "05/28/2026",
+            dueDate: "06/02/2026",
+            ganttLeft: 9,
+            ganttWidth: 14,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a book response analyzing James Horn's Introduction & Chapter 1 on Jamestown.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- [ ] Read Introduction to 1619.\n- [ ] Read Chapter 1 (Jamestown).\n- [ ] Study Dr. Ross's Colonial Settlement Video Notes.\n- [ ] Write response essay.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/introduction.md",
+              "Read reading notes/readings/1619/chapter_01.md",
+              "Review video notes/assignments/colonial_settlement_video_notes.md",
+              "Draft Jamestown response essay",
+              "Submit Book Essay 1 on Blackboard"
+            ]
+          }
+        ]
+      },
+      {
+        milestone: "Milestone 2: Virginia Foundations (Week 2)",
+        dates: "Jun 1 - Jun 7, 2026",
+        points: 50,
+        tasks: [
+          {
+            id: 4,
+            name: "Book Essay 2: The Great Reforms (Horn Ch 2)",
+            points: 25,
+            priority: "Normal",
+            startDate: "06/01/2026",
+            dueDate: "06/06/2026",
+            ganttLeft: 20,
+            ganttWidth: 14,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a short response analyzing Sir Edwin Sandys's 1619 reforms regarding liberty, property, and governance.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- [ ] Read Horn Chapter 2 (The Great Reforms).\n- [ ] Study Great Reforms Video Notes.\n- [ ] Draft response essay.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/chapter_02.md",
+              "Review video notes/assignments/great_reforms_video_notes.md",
+              "Draft Edwin Sandys reform response",
+              "Submit Book Essay 2 on Blackboard"
+            ]
+          },
+          {
+            id: 5,
+            name: "Book Essay 3: First Africans (Horn Ch 3)",
+            points: 25,
+            priority: "Normal",
+            startDate: "06/03/2026",
+            dueDate: "06/09/2026",
+            ganttLeft: 26,
+            ganttWidth: 17,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a response to Horn's Chapter 3 regarding the arrival of first Africans and early labor conditions.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- [ ] Read Horn Chapter 3 (First Africans).\n- [ ] Study First Africans Video Notes.\n- [ ] Draft response essay.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/chapter_03.md",
+              "Review video notes/assignments/first_africans_video_notes.md",
+              "Draft First Africans response",
+              "Submit Book Essay 3 on Blackboard"
+            ]
+          }
+        ]
+      },
+      {
+        milestone: "Milestone 3: Expansion & Revolution (Week 3)",
+        dates: "Jun 8 - Jun 14, 2026",
+        points: 100,
+        tasks: [
+          {
+            id: 6,
+            name: "Book Essay 4: Commonwealth (Horn Ch 4)",
+            points: 25,
+            priority: "Normal",
+            startDate: "06/08/2026",
+            dueDate: "06/12/2026",
+            ganttLeft: 40,
+            ganttWidth: 12,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a short response to Horn's Chapter 4 regarding the Christian Commonwealth model in early VA.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- [ ] Read Horn Chapter 4 (Commonwealth).\n- [ ] Study Commonwealth Video Notes.\n- [ ] Draft response essay.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/chapter_04.md",
+              "Review video notes/assignments/commonwealth_video_notes.md",
+              "Draft Christian Commonwealth response",
+              "Submit Book Essay 4 on Blackboard"
+            ]
+          },
+          {
+            id: 7,
+            name: "Book Essay 5: Tumult and Liberty (Horn Ch 5)",
+            points: 25,
+            priority: "Normal",
+            startDate: "06/10/2026",
+            dueDate: "06/14/2026",
+            ganttLeft: 46,
+            ganttWidth: 12,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a response to Horn's Chapter 5 regarding the 1622 massacre and the shift in Native relations.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- [ ] Read Horn Chapter 5 (Tumult and Liberty).\n- [ ] Study Tumult & Liberty Video Notes.\n- [ ] Draft response essay.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/chapter_05.md",
+              "Review video notes/assignments/tumult_and_liberty_video_notes.md",
+              "Draft 1622 Massacre response",
+              "Submit Book Essay 5 on Blackboard"
+            ]
+          },
+          {
+            id: 8,
+            name: "Major Essay Two: Voices of the American Revolution",
+            points: 50,
+            priority: "High",
+            startDate: "06/08/2026",
+            dueDate: "06/14/2026",
+            ganttLeft: 40,
+            ganttWidth: 18,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Write a comparative/contrast narrative using exactly 10 primary source documents (2 from each group A through E).\n\n### Requirements:\n- Length: 3-5 pages.\n- Font: 12-point font, double-spaced.\n- Value: 50 points.\n\n### Checklist:\n- [ ] Read 2 documents from Group A (Religious).\n- [ ] Read 2 documents from Group B (Loyalist).\n- [ ] Read 2 documents from Group C (Rebel).\n- [ ] Read 2 documents from Group D (African American).\n- [ ] Read 2 documents from Group E (Official/Legal).\n- [ ] Study American Revolution Video Notes.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Select 10 documents from assignment prompt groups A-E",
+              "Review video notes/assignments/american_revolution_video_notes.md",
+              "Draft comparative Revolution narrative",
+              "Submit Major Essay Two on Blackboard"
+            ]
+          }
+        ]
+      },
+      {
+        milestone: "Milestone 4: Constitutional & Sectional Division (Week 4)",
+        dates: "Jun 15 - Jun 21, 2026",
+        points: 125,
+        tasks: [
+          {
+            id: 9,
+            name: "Book Essay 6: Inequality and Freedom (Horn Ch 6 & Epilogue)",
+            points: 25,
+            priority: "Normal",
+            startDate: "06/15/2026",
+            dueDate: "06/19/2026",
+            ganttLeft: 60,
+            ganttWidth: 12,
+            color: "rgba(16, 185, 129, 0.6)",
+            description: "Write a response to Horn's Chapter 6 and Epilogue regarding inequality, freedom, and the legacy of 1619.\n\n### Requirements:\n- Length: 1-2 pages.\n- Value: 25 points.\n\n### Checklist:\n- [ ] Read Horn Chapter 6 (Inequality and Freedom) and Epilogue.\n- [ ] Study Inequality & Freedom Video Notes.\n- [ ] Draft response essay.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Read reading notes/readings/1619/chapter_06.md",
+              "Read reading notes/readings/1619/epilogue.md",
+              "Review video notes/assignments/inequality_and_freedom_video_notes.md",
+              "Draft 1619 legacy response",
+              "Submit Book Essay 6 on Blackboard"
+            ]
+          },
+          {
+            id: 10,
+            name: "Major Essay Three: Articles vs. Constitution",
+            points: 50,
+            priority: "High",
+            startDate: "06/15/2026",
+            dueDate: "06/21/2026",
+            ganttLeft: 60,
+            ganttWidth: 18,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Address power distribution, structures, and the missing Bill of Rights in a comparative essay on the Articles and U.S. Constitution.\n\n### Requirements:\n- Length: 2-3 pages.\n- Font: Times New Roman, 12pt, double-spaced.\n- Value: 50 points.\n\n### Checklist:\n- [ ] Read Articles of Confederation (1776).\n- [ ] Read The U.S. Constitution (1787).\n- [ ] Study Articles vs. Constitution Video Notes.\n- [ ] Draft essay.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Read source text 'Articles of Confederation, 1776'",
+              "Read source text 'Original 1787 U.S. Constitution'",
+              "Review video notes/assignments/articles_vs_constitution_video_notes.md",
+              "Draft comparative essay",
+              "Submit Major Essay Three on Blackboard"
+            ]
+          },
+          {
+            id: 11,
+            name: "Major Essay Four: Creation of Two Societies",
+            points: 50,
+            priority: "High",
+            startDate: "06/17/2026",
+            dueDate: "06/21/2026",
+            ganttLeft: 66,
+            ganttWidth: 12,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Compare the Free Labor (North) and Slave Labor (South) systems, economies, and political structures based on Bruce Levine's book.\n\n### Requirements:\n- Length: 2-3 pages.\n- Font: Times New Roman, 12pt, double-spaced.\n- Value: 50 points.\n\n### Checklist:\n- [ ] Read Chapters 1 and 2 from Bruce Levine's book.\n- [ ] Study Creation of Two Societies Video Notes.\n- [ ] Draft comparison essay.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Read Bruce Levine's Chapters 1 & 2 PDF",
+              "Review video notes/assignments/creation_of_two_societies_video_notes.md",
+              "Draft Free Labor vs. Slave Labor analysis",
+              "Submit Major Essay Four on Blackboard"
+            ]
+          }
+        ]
+      },
+      {
+        milestone: "Milestone 5: Slavery & Civil War (Week 5)",
+        dates: "Jun 22 - Jun 29, 2026",
+        points: 100,
+        tasks: [
+          {
+            id: 12,
+            name: "Major Essay Five: Debate over Slavery (Proslavery Ideology)",
+            points: 50,
+            priority: "High",
+            startDate: "06/22/2026",
+            dueDate: "06/26/2026",
+            ganttLeft: 80,
+            ganttWidth: 12,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Explain the core beliefs and theological/social justifications of proslavery ideology in the 1830s.\n\n### Requirements:\n- Length: 2-3 pages.\n- Font: Times New Roman, 12pt, double-spaced.\n- Value: 50 points.\n\n### Checklist:\n- [ ] Read article by Jack Maddex OR Drew Gilpin Faust.\n- [ ] Study Debate over Slavery Video Notes.\n- [ ] Draft theological defense analysis.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Select and read article (Maddex PDF or Faust PDF)",
+              "Review video notes/assignments/debate_over_slavery_video_notes.md",
+              "Draft proslavery theology response",
+              "Submit Major Essay Five on Blackboard"
+            ]
+          },
+          {
+            id: 13,
+            name: "Major Essay Six: W.E.B. Du Bois on the Civil War",
+            points: 50,
+            priority: "High",
+            startDate: "06/24/2026",
+            dueDate: "06/29/2026",
+            ganttLeft: 86,
+            ganttWidth: 14,
+            color: "rgba(74, 58, 255, 0.7)",
+            description: "Evaluate W.E.B. Du Bois's 1935 essay and his 'general strike' thesis regarding the causes/significance of the Civil War.\n\n### Requirements:\n- Length: 2-3 pages.\n- Font: Times New Roman, 12pt, double-spaced.\n- Value: 50 points.\n\n### Checklist:\n- [ ] Read W.E.B. Du Bois's essay.\n- [ ] Study Civil War Video Notes.\n- [ ] Draft historiographical essay.\n- [ ] Submit on Blackboard.",
+            subtasks: [
+              "Read W.E.B. Du Bois's source PDF",
+              "Review video notes/assignments/civil_war_video_notes.md",
+              "Draft general strike analysis",
+              "Submit Major Essay Six on Blackboard"
+            ]
+          }
+        ]
+      }
+    ];
+
+    // Points tracking state
+    let checkedTasks = {};
+
+    // Initial render
+    window.onload = function() {
+      renderTasks();
+      renderGantt();
+      updatePoints();
+    };
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.view-content').forEach(view => view.classList.remove('active'));
+      
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.innerText.toLowerCase().includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+      
+      document.getElementById(`view-${tabId}`).classList.add('active');
+    }
+
+    function toggleTask(taskId, points) {
+      const checkbox = document.getElementById(`task-check-${taskId}`);
+      if (checkbox.checked) {
+        checkedTasks[taskId] = points;
+      } else {
+        delete checkedTasks[taskId];
+      }
+      updatePoints();
+    }
+
+    function updatePoints() {
+      let sum = 0;
+      for (let id in checkedTasks) {
+        sum += checkedTasks[id];
+      }
+      document.getElementById('accumulated-points').innerText = sum;
+      const pct = Math.round((sum / 450) * 100);
+      document.getElementById('progress-percent').innerText = `${pct}%`;
+      document.getElementById('tracker-bar').style.width = `${pct}%`;
+    }
+
+    function copyToClipboard(text, btnElement) {
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btnElement.innerHTML;
+        btnElement.classList.add('copied');
+        btnElement.innerHTML = `
+          <svg style="width: 14px; height: 14px; margin-right: 0.2rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
+          </svg>
+          Copied!
+        `;
+        setTimeout(() => {
+          btnElement.classList.remove('copied');
+          btnElement.innerHTML = originalText;
+        }, 1500);
+      }).catch(err => {
+        alert("Failed to copy: " + err);
+      });
+    }
+
+    function renderTasks() {
+      const container = document.getElementById('view-tasks');
+      let html = '';
+
+      courseData.forEach((milestone, mIdx) => {
+        html += `
+          <div class="milestone-section">
+            <div class="milestone-header" onclick="toggleMilestoneBody(${mIdx})">
+              <div class="milestone-title-block">
+                <h3>${milestone.milestone}</h3>
+                <span class="milestone-meta">${milestone.dates}</span>
+              </div>
+              <div class="milestone-points">${milestone.points} pts total</div>
+            </div>
+            <div class="milestone-body" id="milestone-body-${mIdx}">
+        `;
+
+        milestone.tasks.forEach(task => {
+          const subtasksText = task.subtasks.join('\n');
+          html += `
+            <div class="task-card">
+              <div class="task-top">
+                <div class="task-title-area">
+                  <input type="checkbox" class="task-checkbox" id="task-check-${task.id}" onchange="toggleTask(${task.id}, ${task.points})">
+                  <span class="task-title">${task.name}</span>
+                </div>
+                <div class="task-tags">
+                  <span class="tag tag-points">${task.points} Points</span>
+                  <span class="tag tag-priority">${task.priority} Priority</span>
+                  <span class="tag tag-dates">${task.startDate} - ${task.dueDate}</span>
+                </div>
+              </div>
+              
+              <div class="details-row">
+                <div class="details-box">
+                  <h4>Task Description</h4>
+                  <pre id="desc-${task.id}">${task.description}</pre>
+                </div>
+                <div class="details-box">
+                  <h4>Subtasks List (Copy block)</h4>
+                  <ul class="subtask-list">
+                    ${task.subtasks.map(s => `<li>${s}</li>`).join('')}
+                  </ul>
+                </div>
+              </div>
+
+              <!-- ClickUp Copy Buttons -->
+              <div class="copy-grid">
+                <div class="copy-block">
+                  <span class="copy-label">Task Name</span>
+                  <span class="copy-value">${task.name}</span>
+                  <button class="copy-btn" onclick="copyToClipboard('${task.name.replace(/'/g, "\\'")}', this)">
+                    Copy Name
+                  </button>
+                </div>
+                <div class="copy-block">
+                  <span class="copy-label">Start Date</span>
+                  <span class="copy-value">${task.startDate}</span>
+                  <button class="copy-btn" onclick="copyToClipboard('${task.startDate}', this)">
+                    Copy Start
+                  </button>
+                </div>
+                <div class="copy-block">
+                  <span class="copy-label">Due Date</span>
+                  <span class="copy-value">${task.dueDate}</span>
+                  <button class="copy-btn" onclick="copyToClipboard('${task.dueDate}', this)">
+                    Copy Due
+                  </button>
+                </div>
+                <div class="copy-block">
+                  <span class="copy-label">Description</span>
+                  <span class="copy-value">${task.description.substring(0, 30)}...</span>
+                  <button class="copy-btn" onclick="copyToClipboard(\`${task.description}\`, this)">
+                    Copy Description
+                  </button>
+                </div>
+                <div class="copy-block">
+                  <span class="copy-label">Subtasks List</span>
+                  <span class="copy-value">${task.subtasks.length} items</span>
+                  <button class="copy-btn" onclick="copyToClipboard(\`${subtasksText}\`, this)">
+                    Copy Subtasks
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        html += `
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function toggleMilestoneBody(mIdx) {
+      const body = document.getElementById(`milestone-body-${mIdx}`);
+      if (body.style.display === 'none') {
+        body.style.display = 'block';
+      } else {
+        body.style.display = 'none';
+      }
+    }
+
+    function renderGantt() {
+      const container = document.getElementById('gantt-rows-container');
+      let html = '';
+
+      courseData.forEach(milestone => {
+        milestone.tasks.forEach(task => {
+          html += `
+            <div class="gantt-row">
+              <div class="gantt-col-name" title="${task.name}">${task.name}</div>
+              <div class="gantt-timeline">
+                <div class="gantt-bar" style="left: ${task.ganttLeft}%; width: ${task.ganttWidth}%; background-color: ${task.color};">
+                  ${task.points} pts
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      });
+
+      container.innerHTML = html;
+    }
+
+    function escapeCSV(val) {
+      if (val === null || val === undefined) return '';
+      let str = String(val);
+      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        str = str.replace(/"/g, '""');
+        str = `"${str}"`;
+      }
+      return str;
+    }
+
+    function exportToCSV() {
+      const headers = ["Task Name", "Description", "Start Date", "Due Date", "Priority", "Status", "Points", "Subtasks"];
+      const csvRows = [headers];
+
+      courseData.forEach(milestone => {
+        milestone.tasks.forEach(task => {
+          // Standard CSV columns
+          const row = [
+            task.name,
+            task.description,
+            task.startDate,
+            task.dueDate,
+            task.priority,
+            "To Do",
+            task.points,
+            task.subtasks.join('|') // ClickUp separator
+          ];
+          csvRows.push(row.map(escapeCSV));
+        });
+      });
+
+      const csvContent = "data:text/csv;charset=utf-8,\uFEFF" 
+        + csvRows.join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "hist_21103_clickup_tasks.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
