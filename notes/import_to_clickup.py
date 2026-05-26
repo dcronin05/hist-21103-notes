@@ -292,7 +292,7 @@ def get_doc_title(rel_path):
 
 def get_existing_docs(workspace_id, headers):
     url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
-    existing_docs = {}
+    existing_docs = []
     cursor = ""
     while True:
         query_url = url
@@ -301,8 +301,7 @@ def get_existing_docs(workspace_id, headers):
         try:
             res = clickup_api_request(query_url, "GET", headers)
             docs = res.get("docs", res.get("documents", []))
-            for doc in docs:
-                existing_docs[doc["name"].lower().strip()] = doc["id"]
+            existing_docs.extend(docs)
             cursor = res.get("next_cursor", "")
             if not cursor:
                 break
@@ -404,27 +403,126 @@ def rewrite_content_links(content, source_rel_path, doc_map, asset_map):
         
     return LINK_RE.sub(replace_match, content)
 
-def get_all_doc_maps(workspace_id, headers, workspace_root):
+def determine_doc_parent(rel_path, task_id_by_name, subtask_id_by_parent_and_name, default_parent_id):
+    rel_path_clean = rel_path.lower().strip()
+    
+    # 1. Match subtask readings
+    for t in tasks_data:
+        parent_name = t["name"].lower().strip()
+        for st_name in t["subtasks"]:
+            base_name = os.path.basename(rel_path)
+            if rel_path in st_name or base_name in st_name:
+                clean_st = get_clean_name(st_name).lower().strip()
+                key = (parent_name, clean_st)
+                if key in subtask_id_by_parent_and_name:
+                    return subtask_id_by_parent_and_name[key], f"Subtask '{get_clean_name(st_name)}' under '{t['name']}'"
+                    
+    # 2. Match assignment prompts
+    if "assignments/essay_" in rel_path_clean and "_prompt" in rel_path_clean:
+        mapping = {
+            "essay_01": "essay one: columbus analysis",
+            "essay_02": "book essay 1: colonial settlement (horn intro & ch 1)",
+            "essay_03": "book essay 2: the great reforms (horn ch 2)",
+            "essay_04": "book essay 3: first Africans (horn ch 3)",
+            "essay_05": "book essay 4: commonwealth (horn ch 4)",
+            "essay_06": "book essay 5: tumult and liberty (horn ch 5)",
+            "essay_07": "book essay 6: inequality and freedom (horn ch 6 & epilogue)",
+            "essay_08": "major essay two: voices of the american revolution",
+            "essay_09": "major essay three: articles vs. constitution",
+            "essay_10": "major essay four: creation of two societies",
+            "essay_11": "major essay five: debate over slavery (proslavery ideology)",
+            "essay_12": "major essay six: w.e.b. du bois on the civil war"
+        }
+        for prefix, task_key in mapping.items():
+            if prefix in rel_path_clean:
+                if task_key in task_id_by_name:
+                    return task_id_by_name[task_key], f"Parent Task '{task_key}' (Prompt)"
+                    
+    # 3. Specific file paths
+    if rel_path_clean == "notes/index.md" or rel_path_clean == "index.md":
+        key = "syllabus review & course orientation"
+        if key in task_id_by_name:
+            return task_id_by_name[key], "Syllabus Review Parent Task (Index)"
+            
+    # 4. 1619 helper docs (copyright, preface, dedication, index etc.)
+    if "readings/1619/" in rel_path_clean:
+        key = "book essay 1: colonial settlement (horn intro & ch 1)"
+        if key in task_id_by_name:
+            return task_id_by_name[key], "Book Essay 1 Task (1619 Helper)"
+            
+    return default_parent_id, "Default Parent Task"
+
+def clean_markdown_text(content):
+    if not content:
+        return content
+    # Strip frontmatter: check if the string starts with ---
+    if content.startswith("---"):
+        parts = content.split("---", 2)
+        if len(parts) >= 3:
+            content = parts[2]
+            
+    # Clean callouts: convert lines containing > [!NOTE], etc.
+    import re
+    callout_re = re.compile(r'^>\s*\[!(NOTE|IMPORTANT|TIP|CAUTION|WARNING)\]', re.IGNORECASE | re.MULTILINE)
+    
+    def replace_callout(match):
+        c_type = match.group(1).upper()
+        if c_type == "NOTE":
+            return "> ℹ️ **NOTE:**"
+        elif c_type == "IMPORTANT":
+            return "> ⚠️ **IMPORTANT:**"
+        elif c_type == "TIP":
+            return "> 💡 **TIP:**"
+        elif c_type == "CAUTION":
+            return "> ⚠️ **CAUTION:**"
+        elif c_type == "WARNING":
+            return "> 🛑 **WARNING:**"
+        return f"> **{c_type}:**"
+        
+    content = callout_re.sub(replace_callout, content)
+    return content.lstrip()
+
+def get_all_doc_maps(workspace_id, headers, workspace_root, task_id_by_name, subtask_id_by_parent_and_name, default_parent_id):
     existing_docs = get_existing_docs(workspace_id, headers)
     md_files = find_all_markdown_files(workspace_root)
     
     doc_map = {}
     doc_id_map = {}
     
-    print(f"[~] Scanning and syncing {len(md_files)} ClickUp Documents...")
+    print(f"\n[~] Scanning and syncing {len(md_files)} Task-bound ClickUp Documents...")
     for rel_path in md_files:
         clean_title = get_doc_title(rel_path)
-        title_key = clean_title.lower().strip()
         
+        # Determine parent task ID
+        parent_id, parent_desc = determine_doc_parent(
+            rel_path, task_id_by_name, subtask_id_by_parent_and_name, default_parent_id
+        )
+        
+        # Match by name AND parent_id
         doc_id = None
-        if title_key in existing_docs:
-            doc_id = existing_docs[title_key]
-            print(f"    -> Doc '{clean_title}' already exists (ID: {doc_id}).")
+        for d in existing_docs:
+            if d["name"].lower().strip() == clean_title.lower().strip():
+                d_parent = d.get("parent", {})
+                d_parent_id = d_parent.get("id") if d_parent else None
+                if d_parent_id == parent_id:
+                    doc_id = d["id"]
+                    break
+                    
+        if doc_id:
+            print(f"    -> Doc '{clean_title}' already exists parented to {parent_desc} (ID: {doc_id}).")
         else:
-            print(f"    -> Doc '{clean_title}' not found. Creating...")
+            print(f"    -> Doc '{clean_title}' not found. Creating parented to {parent_desc}...")
             url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
             try:
-                res = clickup_api_request(url, "POST", headers, {"name": clean_title, "create_page": True})
+                payload = {
+                    "name": clean_title,
+                    "parent": {
+                        "id": parent_id,
+                        "type": 1
+                    },
+                    "create_page": True
+                }
+                res = clickup_api_request(url, "POST", headers, payload)
                 doc_id = res.get("id")
                 print(f"       [+] Created Doc (ID: {doc_id})")
             except Exception as e:
@@ -446,7 +544,7 @@ def update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, do
         
         try:
             with open(full_path, "r", encoding="utf-8") as f:
-                content = f.read()
+                content = clean_markdown_text(f.read())
         except Exception as e:
             print(f"    [!] Error reading file '{rel_path}': {str(e)}")
             continue
@@ -568,7 +666,7 @@ def get_subtask_markdown(st_name, parent_task_name):
     if matched_path and os.path.exists(matched_path):
         try:
             with open(matched_path, "r", encoding="utf-8") as f:
-                file_content = f.read()
+                file_content = clean_markdown_text(f.read())
         except Exception as e:
             print(f"[!] Warning: Failed to read file {matched_path}: {str(e)}")
             
@@ -795,50 +893,19 @@ def main():
         print(f"[ERROR] Failed to query existing tasks: {str(e)}")
         sys.exit(1)
         
-    # 4. Establish a host task ID for uploading attachments
-    default_task_id = None
-    if existing_parents:
-        default_task_id = list(existing_parents.values())[0]["id"]
-    else:
-        first_task = tasks_data[0]
-        print(f"[~] Creating initial host parent task: '{first_task['name']}'...")
-        start_ms = date_to_ms(first_task["start_date"])
-        due_ms = date_to_ms(first_task["due_date"])
-        desc = clean_parent_description(first_task["description"])
-        payload = {
-            "name": first_task["name"],
-            "markdown_content": desc,
-            "start_date": start_ms,
-            "due_date": due_ms,
-            "priority": first_task["priority"]
-        }
-        create_url = f"https://api.clickup.com/api/v2/list/{list_id}/task"
-        res = clickup_api_request(create_url, "POST", headers, payload)
-        default_task_id = res.get("id")
-        existing_parents[first_task["name"].lower().strip()] = res
-        print(f"[+] Host parent task created (ID: {default_task_id})")
-
-    workspace_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # 4. PASS 1: Synchronize all parent tasks and subtasks in ClickUp
+    # This loop establishes the tasks and subtasks first and records their IDs
+    print(f"\n[~] PASS 1: Synchronizing all ClickUp tasks and subtasks in-place...\n")
     
-    # 5. PASS 1: Fetch/Create ClickUp Documents and build URL maps
-    md_files, doc_map, doc_id_map = get_all_doc_maps(workspace_id, headers, workspace_root)
-    
-    # 6. PASS 1.5: Upload non-markdown assets and build URL maps
-    asset_map = scan_and_upload_assets(workspace_root, md_files, workspace_id, headers, default_task_id, existing_parents)
-    
-    # 7. PASS 1.9: Update ClickUp Document page contents with rewritten links
-    update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, doc_id_map, doc_map, asset_map)
-    
-    # 8. PASS 2: Synchronize Tasks Loop (with link rewriting)
-    print(f"\n[~] Beginning in-place synchronization of {len(tasks_data)} assignments...\n")
+    task_id_by_name = {}
+    subtask_id_by_parent_and_name = {}
     
     for i, t in enumerate(tasks_data, 1):
         task_name = t["name"]
-        print(f"[{i}/{len(tasks_data)}] Syncing task: '{task_name}'...")
+        print(f"[{i}/{len(tasks_data)}] PASS 1: Syncing task: '{task_name}'...")
         
-        # Clean and rewrite parent description
-        parent_description_cleaned = clean_parent_description(t["description"])
-        parent_description = rewrite_content_links(parent_description_cleaned, "notes/syllabus.md", doc_map, asset_map)
+        # We update/create tasks with their raw clean description (without link rewriting yet)
+        parent_description = clean_parent_description(t["description"])
         
         start_ms = date_to_ms(t["start_date"])
         due_ms = date_to_ms(t["due_date"])
@@ -846,7 +913,6 @@ def main():
         parent_key = task_name.lower().strip()
         parent_task_id = None
         
-        # Prepare task payload
         task_payload = {
             "name": task_name,
             "markdown_content": parent_description,
@@ -856,7 +922,7 @@ def main():
         }
         
         try:
-            # Check if parent task already exists in ClickUp
+            # Check if parent task already exists
             if parent_key in existing_parents:
                 parent_task_id = existing_parents[parent_key]["id"]
                 print(f"    -> Parent task exists (ID: {parent_task_id}). Updating fields...")
@@ -869,6 +935,8 @@ def main():
                 parent_task_id = res.get("id")
                 print(f"    -> Created Parent Task (ID: {parent_task_id})")
                 
+            task_id_by_name[parent_key] = parent_task_id
+            
             # Update Points if Custom Field matches and points > 0
             if points_field_id and t["points"] > 0:
                 print(f"    -> Updating points custom field to {t['points']}...")
@@ -881,30 +949,15 @@ def main():
             # Sync each required subtask
             for st_name in t["subtasks"]:
                 clean_st_name = get_clean_name(st_name)
-                
-                # Retrieve raw subtask markdown
                 st_desc = get_subtask_markdown(st_name, task_name)
                 
-                # Identify if there is a corresponding relative path for link resolution
-                matched_rel_path = None
-                for rel_path in markdown_files.keys():
-                    base_name = os.path.basename(rel_path)
-                    if rel_path in st_name or base_name in st_name:
-                        matched_rel_path = rel_path
-                        break
-                
-                # Rewrite links in the subtask description
-                st_desc_rewritten = rewrite_content_links(st_desc, matched_rel_path, doc_map, asset_map)
-                
-                # Try to find matching existing subtask
+                # Match existing subtask
                 matched_st = None
                 for est in current_subtasks:
                     est_name_lower = est["name"].lower().strip()
-                    # Match by exact clean name, raw name, or if a base filename matches both
                     if est_name_lower == clean_st_name.lower().strip() or est_name_lower == st_name.lower().strip():
                         matched_st = est
                         break
-                    # Backup match: check if a unique base filename matches (e.g. syllabus.md)
                     for rel_path in markdown_files.keys():
                         base = os.path.basename(rel_path).lower()
                         if base in est_name_lower and base in st_name.lower():
@@ -913,29 +966,95 @@ def main():
                     if matched_st:
                         break
                         
-                # Update or create the subtask
+                subtask_id = None
                 if matched_st:
-                    sub_id = matched_st["id"]
-                    print(f"       [*] Updating existing subtask: '{clean_st_name}' (ID: {sub_id})...")
-                    sub_url = f"https://api.clickup.com/api/v2/task/{sub_id}"
+                    subtask_id = matched_st["id"]
+                    print(f"       [*] Updating existing subtask: '{clean_st_name}' (ID: {subtask_id})...")
+                    sub_url = f"https://api.clickup.com/api/v2/task/{subtask_id}"
                     clickup_api_request(sub_url, "PUT", headers, {
                         "name": clean_st_name,
-                        "markdown_content": st_desc_rewritten
+                        "markdown_content": st_desc
                     })
                 else:
                     print(f"       [+] Creating new subtask: '{clean_st_name}'...")
                     create_url = f"https://api.clickup.com/api/v2/list/{list_id}/task"
-                    clickup_api_request(create_url, "POST", headers, {
+                    res = clickup_api_request(create_url, "POST", headers, {
                         "name": clean_st_name,
                         "parent": parent_task_id,
-                        "markdown_content": st_desc_rewritten
+                        "markdown_content": st_desc
                     })
+                    subtask_id = res.get("id")
+                    
+                if subtask_id:
+                    key = (parent_key, clean_st_name.lower().strip())
+                    subtask_id_by_parent_and_name[key] = subtask_id
                     
             print("    -> Done!\n")
             
         except Exception as e:
-            print(f"\n[ERROR] Failed to sync task '{task_name}' due to an error. Aborting execution.")
+            print(f"\n[ERROR] Failed to sync task '{task_name}' in Pass 1. Aborting.")
             raise e
+
+    # Determine default parent task ID for Documents
+    default_task_id = list(task_id_by_name.values())[0]
+
+    workspace_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
+    # 5. PASS 2: Fetch/Create TASK-BOUND Documents and build URL maps
+    md_files, doc_map, doc_id_map = get_all_doc_maps(
+        workspace_id, headers, workspace_root, task_id_by_name, subtask_id_by_parent_and_name, default_task_id
+    )
+    
+    # 6. PASS 2.5: Upload non-markdown assets and build URL maps
+    asset_map = scan_and_upload_assets(workspace_root, md_files, workspace_id, headers, default_task_id, existing_parents)
+    
+    # 7. PASS 2.9: Update ClickUp Document page contents with rewritten links
+    update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, doc_id_map, doc_map, asset_map)
+    
+    # 8. PASS 3: Rewrite and Update ClickUp Task & Subtask descriptions in-place
+    print(f"\n[~] PASS 3: Updating ClickUp task and subtask descriptions with rewritten links...\n")
+    
+    for i, t in enumerate(tasks_data, 1):
+        task_name = t["name"]
+        parent_key = task_name.lower().strip()
+        parent_task_id = task_id_by_name.get(parent_key)
+        
+        if not parent_task_id:
+            continue
+            
+        print(f"[{i}/{len(tasks_data)}] PASS 3: Updating task descriptions: '{task_name}'...")
+        
+        # Rewrite parent description links
+        parent_description_cleaned = clean_parent_description(t["description"])
+        parent_description = rewrite_content_links(parent_description_cleaned, "notes/syllabus.md", doc_map, asset_map)
+        
+        try:
+            task_url = f"https://api.clickup.com/api/v2/task/{parent_task_id}"
+            clickup_api_request(task_url, "PUT", headers, {"markdown_content": parent_description})
+            
+            # Update subtasks
+            for st_name in t["subtasks"]:
+                clean_st_name = get_clean_name(st_name)
+                st_desc = get_subtask_markdown(st_name, task_name)
+                
+                matched_rel_path = None
+                for rel_path in markdown_files.keys():
+                    base_name = os.path.basename(rel_path)
+                    if rel_path in st_name or base_name in st_name:
+                        matched_rel_path = rel_path
+                        break
+                        
+                st_desc_rewritten = rewrite_content_links(st_desc, matched_rel_path, doc_map, asset_map)
+                
+                key = (parent_key, clean_st_name.lower().strip())
+                sub_id = subtask_id_by_parent_and_name.get(key)
+                if sub_id:
+                    sub_url = f"https://api.clickup.com/api/v2/task/{sub_id}"
+                    clickup_api_request(sub_url, "PUT", headers, {"markdown_content": st_desc_rewritten})
+                    
+            print("    -> Done!\n")
+        except Exception as e:
+            print(f"[!] Warning: Failed to update description in Pass 3: {str(e)}")
             
     print("\n====================================================")
     print("    SUCCESS! ClickUp tasks synchronized in-place!    ")
