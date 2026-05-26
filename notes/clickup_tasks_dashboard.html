@@ -18,6 +18,7 @@
       --secondary: #4a3aff;
       --accent: #10b981;
       --accent-hover: #059669;
+      --warning: #f59e0b;
       --text: #f3f4f6;
       --text-muted: #9ca3af;
       --border: #2d3142;
@@ -270,6 +271,11 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
 
+    .task-card.synced {
+      border-color: var(--accent);
+      background-color: rgba(24, 27, 40, 0.4);
+    }
+
     .task-top {
       display: flex;
       justify-content: space-between;
@@ -300,6 +306,7 @@
 
     .task-tags {
       display: flex;
+      align-items: center;
       gap: 0.5rem;
       flex-wrap: wrap;
     }
@@ -329,6 +336,57 @@
       border: 1px solid rgba(96, 165, 250, 0.3);
     }
 
+    /* Sync Indicator */
+    .sync-area {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      transition: all 0.3s ease;
+    }
+
+    .sync-checkbox {
+      accent-color: var(--accent);
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Import Status Badges */
+    .badge-csv {
+      background-color: rgba(16, 185, 129, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 600;
+      display: inline-block;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    
+    .badge-manual {
+      background-color: rgba(245, 158, 11, 0.12);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 600;
+      display: inline-block;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
     /* Copy Actions Grid */
     .copy-grid {
       display: grid;
@@ -348,7 +406,13 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 0.5rem;
-      min-height: 100px;
+      min-height: 110px;
+    }
+
+    .copy-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .copy-label {
@@ -938,11 +1002,15 @@
       }
     ];
 
-    // Points tracking state
+    // Points tracking state (targets points calculation)
     let checkedTasks = {};
+    
+    // Synced tasks to ClickUp tracking state
+    let syncedTasks = {};
 
     // Initial render
     window.onload = function() {
+      loadSyncState();
       renderTasks();
       renderGantt();
       updatePoints();
@@ -977,6 +1045,49 @@
       const pct = Math.round((sum / 450) * 100);
       document.getElementById('progress-percent').innerText = `${pct}%`;
       document.getElementById('tracker-bar').style.width = `${pct}%`;
+    }
+
+    function loadSyncState() {
+      courseData.forEach(milestone => {
+        milestone.tasks.forEach(task => {
+          const synced = localStorage.getItem(`clickup_sync_${task.id}`);
+          if (synced === 'true') {
+            syncedTasks[task.id] = true;
+            checkedTasks[task.id] = task.points; // Automatically count as planned if already synced
+          }
+        });
+      });
+    }
+
+    function toggleSync(taskId) {
+      const checkbox = document.getElementById(`task-sync-${taskId}`);
+      const card = checkbox.closest('.task-card');
+      
+      if (checkbox.checked) {
+        localStorage.setItem(`clickup_sync_${taskId}`, 'true');
+        syncedTasks[taskId] = true;
+        card.classList.add('synced');
+        
+        // Also auto-check the planner checkbox
+        const planCheck = document.getElementById(`task-check-${taskId}`);
+        if (planCheck && !planCheck.checked) {
+          planCheck.checked = true;
+          toggleTask(taskId, getTaskPoints(taskId));
+        }
+      } else {
+        localStorage.removeItem(`clickup_sync_${taskId}`);
+        delete syncedTasks[taskId];
+        card.classList.remove('synced');
+      }
+    }
+
+    function getTaskPoints(taskId) {
+      for (let m of courseData) {
+        for (let t of m.tasks) {
+          if (t.id === taskId) return t.points;
+        }
+      }
+      return 0;
     }
 
     function copyToClipboard(text, btnElement) {
@@ -1017,14 +1128,23 @@
 
         milestone.tasks.forEach(task => {
           const subtasksText = task.subtasks.join('\n');
+          const isSynced = syncedTasks[task.id] === true;
+          const cardClass = isSynced ? 'task-card synced' : 'task-card';
+          const planChecked = isSynced || checkedTasks[task.id] !== undefined ? 'checked' : '';
+          const syncChecked = isSynced ? 'checked' : '';
+
           html += `
-            <div class="task-card">
+            <div class="${cardClass}">
               <div class="task-top">
                 <div class="task-title-area">
-                  <input type="checkbox" class="task-checkbox" id="task-check-${task.id}" onchange="toggleTask(${task.id}, ${task.points})">
+                  <input type="checkbox" class="task-checkbox" id="task-check-${task.id}" ${planChecked} onchange="toggleTask(${task.id}, ${task.points})">
                   <span class="task-title">${task.name}</span>
                 </div>
                 <div class="task-tags">
+                  <div class="sync-area">
+                    <input type="checkbox" class="sync-checkbox" id="task-sync-${task.id}" ${syncChecked} onchange="toggleSync(${task.id})">
+                    <label for="task-sync-${task.id}">Synced to ClickUp</label>
+                  </div>
                   <span class="tag tag-points">${task.points} Points</span>
                   <span class="tag tag-priority">${task.priority} Priority</span>
                   <span class="tag tag-dates">${task.startDate} - ${task.dueDate}</span>
@@ -1033,11 +1153,11 @@
               
               <div class="details-row">
                 <div class="details-box">
-                  <h4>Task Description</h4>
+                  <h4>Task Description <span class="badge-csv">CSV IMPORTED</span></h4>
                   <pre id="desc-${task.id}">${task.description}</pre>
                 </div>
                 <div class="details-box">
-                  <h4>Subtasks List (Copy block)</h4>
+                  <h4>Subtasks List <span class="badge-manual">MANUAL SETUP</span></h4>
                   <ul class="subtask-list">
                     ${task.subtasks.map(s => `<li>${s}</li>`).join('')}
                   </ul>
@@ -1047,35 +1167,50 @@
               <!-- ClickUp Copy Buttons -->
               <div class="copy-grid">
                 <div class="copy-block">
-                  <span class="copy-label">Task Name</span>
+                  <div class="copy-header">
+                    <span class="copy-label">Task Name</span>
+                    <span class="badge-csv">CSV</span>
+                  </div>
                   <span class="copy-value">${task.name}</span>
                   <button class="copy-btn" onclick="copyToClipboard('${task.name.replace(/'/g, "\\'")}', this)">
                     Copy Name
                   </button>
                 </div>
                 <div class="copy-block">
-                  <span class="copy-label">Start Date</span>
+                  <div class="copy-header">
+                    <span class="copy-label">Start Date</span>
+                    <span class="badge-csv">CSV</span>
+                  </div>
                   <span class="copy-value">${task.startDate}</span>
                   <button class="copy-btn" onclick="copyToClipboard('${task.startDate}', this)">
                     Copy Start
                   </button>
                 </div>
                 <div class="copy-block">
-                  <span class="copy-label">Due Date</span>
+                  <div class="copy-header">
+                    <span class="copy-label">Due Date</span>
+                    <span class="badge-csv">CSV</span>
+                  </div>
                   <span class="copy-value">${task.dueDate}</span>
                   <button class="copy-btn" onclick="copyToClipboard('${task.dueDate}', this)">
                     Copy Due
                   </button>
                 </div>
                 <div class="copy-block">
-                  <span class="copy-label">Description</span>
+                  <div class="copy-header">
+                    <span class="copy-label">Description</span>
+                    <span class="badge-csv">CSV</span>
+                  </div>
                   <span class="copy-value">${task.description.substring(0, 30)}...</span>
                   <button class="copy-btn" onclick="copyToClipboard(\`${task.description}\`, this)">
                     Copy Description
                   </button>
                 </div>
                 <div class="copy-block">
-                  <span class="copy-label">Subtasks List</span>
+                  <div class="copy-header">
+                    <span class="copy-label">Subtasks List</span>
+                    <span class="badge-manual">MANUAL</span>
+                  </div>
                   <span class="copy-value">${task.subtasks.length} items</span>
                   <button class="copy-btn" onclick="copyToClipboard(\`${subtasksText}\`, this)">
                     Copy Subtasks
@@ -1142,7 +1277,6 @@
 
       courseData.forEach(milestone => {
         milestone.tasks.forEach(task => {
-          // Standard CSV columns
           const row = [
             task.name,
             task.description,
@@ -1151,21 +1285,22 @@
             task.priority,
             "To Do",
             task.points,
-            task.subtasks.join('|') // ClickUp separator
+            task.subtasks.join('|')
           ];
           csvRows.push(row.map(escapeCSV));
         });
       });
 
-      const csvContent = "data:text/csv;charset=utf-8,\uFEFF" 
-        + csvRows.join("\n");
-      const encodedUri = encodeURI(csvContent);
+      const csvContent = csvRows.map(r => r.join(",")).join("\n");
+      const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
+      link.setAttribute("href", url);
       link.setAttribute("download", "hist_21103_clickup_tasks.csv");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     }
   </script>
 </body>
