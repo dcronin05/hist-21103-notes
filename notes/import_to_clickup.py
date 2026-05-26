@@ -204,6 +204,16 @@ def date_to_ms(date_str):
     dt = dt.replace(hour=8, minute=0, second=0, microsecond=0)
     return int(dt.timestamp() * 1000)
 
+def add_task_comment(task_id, headers, message):
+    try:
+        comment_url = f"https://api.clickup.com/api/v2/task/{task_id}/comment"
+        clickup_api_request(comment_url, "POST", headers, {
+            "comment_text": message,
+            "notify_all": False
+        })
+    except Exception as e:
+        print(f"[!] Warning: Failed to add comment to task {task_id}: {str(e)}")
+
 def clickup_api_request(url, method="GET", headers=None, data=None):
     if headers is None:
         headers = {}
@@ -280,46 +290,46 @@ def get_doc_title(rel_path):
         "notes/readings/christopher_columbus_biography.md": "Christopher Columbus Biography (Traditional)",
         "notes/readings/columbus_and_the_recovery_of_jerusalem.md": "Columbus and the Recovery of Jerusalem (Hamdani)",
         "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md": "1619: Jamestown and the Forging of American Democracy",
-        "notes/readings/1619/preface.md": "00. Preface",
-        "notes/readings/1619/copyright.md": "01. Copyright & Licensing",
-        "notes/readings/1619/dedication.md": "02. Dedication & Epigraph",
-        "notes/readings/1619/authors_note.md": "03. Author's Note",
-        "notes/readings/1619/introduction.md": "04. Introduction",
-        "notes/readings/1619/chapter_01.md": "05. Chapter 1 - Jamestown",
-        "notes/readings/1619/chapter_02.md": "06. Chapter 2 - The Great Reforms",
-        "notes/readings/1619/chapter_03.md": "07. Chapter 3 - First Africans",
-        "notes/readings/1619/chapter_04.md": "08. Chapter 4 - Commonwealth",
-        "notes/readings/1619/chapter_05.md": "09. Chapter 5 - Tumult and Liberty",
-        "notes/readings/1619/chapter_06.md": "10. Chapter 6 - Inequality and Freedom",
-        "notes/readings/1619/epilogue.md": "11. Epilogue",
-        "notes/readings/1619/acknowledgements.md": "12. Acknowledgments",
-        "notes/readings/1619/about_the_author.md": "13. About the Author",
-        "notes/readings/1619/endnotes.md": "14. Notes & References",
-        "notes/readings/1619/book_index.md": "15. Book Index",
-        "notes/assignments/columbus_essay_video_notes.md": "01a. Columbus Essay Lecture Notes",
-        "notes/assignments/essay_01_columbus_prompt.md": "01b. Assignment Prompt: Columbus Essay",
-        "notes/assignments/colonial_settlement_video_notes.md": "02a. Colonial Settlement Lecture Notes",
-        "notes/assignments/essay_02_colonial_settlement_prompt.md": "02b. Assignment Prompt: Book Essay 1 (Jamestown)",
-        "notes/assignments/great_reforms_video_notes.md": "03a. Great Reforms Lecture Notes",
-        "notes/assignments/essay_03_great_reforms_prompt.md": "03b. Assignment Prompt: Book Essay 2 (Edwin Sandys)",
-        "notes/assignments/first_africans_video_notes.md": "04a. First Africans Lecture Notes",
-        "notes/assignments/essay_04_first_africans_prompt.md": "04b. Assignment Prompt: Book Essay 3 (First Africans)",
-        "notes/assignments/commonwealth_video_notes.md": "05a. Commonwealth Lecture Notes",
-        "notes/assignments/essay_05_commonwealth_prompt.md": "05b. Assignment Prompt: Book Essay 4 (Christian Commonwealth)",
-        "notes/assignments/tumult_and_liberty_video_notes.md": "06a. Tumult and Liberty Lecture Notes",
-        "notes/assignments/essay_06_tumult_and_liberty_prompt.md": "06b. Assignment Prompt: Book Essay 5 (1622 Massacre)",
-        "notes/assignments/american_revolution_video_notes.md": "07a. American Revolution Lecture Notes",
-        "notes/assignments/essay_08_american_revolution_prompt.md": "07b. Assignment Prompt: Major Essay Two (Revolution)",
-        "notes/assignments/inequality_and_freedom_video_notes.md": "08a. Inequality and Freedom Lecture Notes",
-        "notes/assignments/essay_07_inequality_and_freedom_prompt.md": "08b. Assignment Prompt: Book Essay 6 (Inequality/Freedom)",
-        "notes/assignments/articles_vs_constitution_video_notes.md": "09a. Articles vs Constitution Lecture Notes",
-        "notes/assignments/essay_09_articles_vs_constitution_prompt.md": "09b. Assignment Prompt: Major Essay Three (Constitution)",
-        "notes/assignments/creation_of_two_societies_video_notes.md": "10a. Creation of Two Societies Lecture Notes",
-        "notes/assignments/essay_10_creation_of_two_societies_prompt.md": "10b. Assignment Prompt: Major Essay Four (Two Societies)",
-        "notes/assignments/debate_over_slavery_video_notes.md": "11a. Debate over Slavery Lecture Notes",
-        "notes/assignments/essay_11_debate_over_slavery_prompt.md": "11b. Assignment Prompt: Major Essay Five (Proslavery)",
-        "notes/assignments/civil_war_video_notes.md": "12a. Civil War Lecture Notes",
-        "notes/assignments/essay_12_civil_war_prompt.md": "12b. Assignment Prompt: Major Essay Six (Civil War)"
+        "notes/readings/1619/preface.md": "Preface",
+        "notes/readings/1619/copyright.md": "Copyright & Licensing",
+        "notes/readings/1619/dedication.md": "Dedication & Epigraph",
+        "notes/readings/1619/authors_note.md": "Author's Note",
+        "notes/readings/1619/introduction.md": "Introduction",
+        "notes/readings/1619/chapter_01.md": "Chapter 1 - Jamestown",
+        "notes/readings/1619/chapter_02.md": "Chapter 2 - The Great Reforms",
+        "notes/readings/1619/chapter_03.md": "Chapter 3 - First Africans",
+        "notes/readings/1619/chapter_04.md": "Chapter 4 - Commonwealth",
+        "notes/readings/1619/chapter_05.md": "Chapter 5 - Tumult and Liberty",
+        "notes/readings/1619/chapter_06.md": "Chapter 6 - Inequality and Freedom",
+        "notes/readings/1619/epilogue.md": "Epilogue",
+        "notes/readings/1619/acknowledgements.md": "Acknowledgments",
+        "notes/readings/1619/about_the_author.md": "About the Author",
+        "notes/readings/1619/endnotes.md": "Notes & References",
+        "notes/readings/1619/book_index.md": "Book Index",
+        "notes/assignments/columbus_essay_video_notes.md": "Columbus Essay Lecture Notes",
+        "notes/assignments/essay_01_columbus_prompt.md": "Assignment Prompt: Columbus Essay",
+        "notes/assignments/colonial_settlement_video_notes.md": "Colonial Settlement Lecture Notes",
+        "notes/assignments/essay_02_colonial_settlement_prompt.md": "Assignment Prompt: Book Essay 1 (Jamestown)",
+        "notes/assignments/great_reforms_video_notes.md": "Great Reforms Lecture Notes",
+        "notes/assignments/essay_03_great_reforms_prompt.md": "Assignment Prompt: Book Essay 2 (Edwin Sandys)",
+        "notes/assignments/first_africans_video_notes.md": "First Africans Lecture Notes",
+        "notes/assignments/essay_04_first_africans_prompt.md": "Assignment Prompt: Book Essay 3 (First Africans)",
+        "notes/assignments/commonwealth_video_notes.md": "Commonwealth Lecture Notes",
+        "notes/assignments/essay_05_commonwealth_prompt.md": "Assignment Prompt: Book Essay 4 (Christian Commonwealth)",
+        "notes/assignments/tumult_and_liberty_video_notes.md": "Tumult and Liberty Lecture Notes",
+        "notes/assignments/essay_06_tumult_and_liberty_prompt.md": "Assignment Prompt: Book Essay 5 (1622 Massacre)",
+        "notes/assignments/american_revolution_video_notes.md": "American Revolution Lecture Notes",
+        "notes/assignments/essay_08_american_revolution_prompt.md": "Assignment Prompt: Major Essay Two (Revolution)",
+        "notes/assignments/inequality_and_freedom_video_notes.md": "Inequality and Freedom Lecture Notes",
+        "notes/assignments/essay_07_inequality_and_freedom_prompt.md": "Assignment Prompt: Book Essay 6 (Inequality/Freedom)",
+        "notes/assignments/articles_vs_constitution_video_notes.md": "Articles vs Constitution Lecture Notes",
+        "notes/assignments/essay_09_articles_vs_constitution_prompt.md": "Assignment Prompt: Major Essay Three (Constitution)",
+        "notes/assignments/creation_of_two_societies_video_notes.md": "Creation of Two Societies Lecture Notes",
+        "notes/assignments/essay_10_creation_of_two_societies_prompt.md": "Assignment Prompt: Major Essay Four (Two Societies)",
+        "notes/assignments/debate_over_slavery_video_notes.md": "Debate over Slavery Lecture Notes",
+        "notes/assignments/essay_11_debate_over_slavery_prompt.md": "Assignment Prompt: Major Essay Five (Proslavery)",
+        "notes/assignments/civil_war_video_notes.md": "Civil War Lecture Notes",
+        "notes/assignments/essay_12_civil_war_prompt.md": "Assignment Prompt: Major Essay Six (Civil War)"
     }
     if rel_path in wiki_titles:
         return wiki_titles[rel_path]
@@ -580,8 +590,40 @@ def calculate_subtask_dates(parent_start_str, parent_due_str, subtasks):
     return subtask_dates
 
 def get_all_doc_maps(workspace_id, headers, workspace_root, task_id_by_name, subtask_id_by_parent_and_name, default_parent_id):
-    wiki_doc_id = "8ccuja0-5251"
-    
+    print("\n[~] Searching for Course Wiki Document...")
+    docs_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
+    try:
+        cursor = ""
+        wiki_doc_id = None
+        while True:
+            query_url = docs_url if not cursor else f"{docs_url}?cursor={cursor}"
+            res = clickup_api_request(query_url, "GET", headers)
+            docs = res.get("docs", res.get("documents", []))
+            for d in docs:
+                if d.get("type") == 2:
+                    wiki_doc_id = d.get("id")
+                    break
+            if wiki_doc_id:
+                break
+            cursor = res.get("next_cursor", "")
+            if not cursor:
+                break
+                
+        if not wiki_doc_id:
+            print("    -> No Wiki found. Creating new Course Wiki Document...")
+            res = clickup_api_request(docs_url, "POST", headers, {
+                "name": "HIST 21103 Course Wiki",
+                "type": 2,
+                "create_page": True
+            })
+            wiki_doc_id = res.get("id")
+            print(f"    -> Created Wiki (ID: {wiki_doc_id})")
+        else:
+            print(f"    -> Found existing Wiki (ID: {wiki_doc_id})")
+    except Exception as e:
+        print(f"[ERROR] Failed to find or create Wiki Document: {str(e)}")
+        raise e
+
     # 1. Fetch all existing pages of the Wiki Document
     pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{wiki_doc_id}/pages"
     try:
@@ -625,66 +667,81 @@ def get_all_doc_maps(workspace_id, headers, workspace_root, task_id_by_name, sub
     
     # Define Wiki outline structure in exact chronological order
     wiki_structure = [
-        # Category pages (parented to overview)
-        ("cat1", "01. Course Syllabus & Info", "overview"),
-        ("cat2", "02. Course Readings", "overview"),
-        ("cat3", "03. Lecture Notes & Assignment Prompts", "overview"),
+        # Top-Level Syllabus
+        ("notes/syllabus.md", "Course Syllabus", None),
+        ("notes/modules/course_introduction_transcript.md", "Welcome Lecture Transcript", "notes/syllabus.md"),
+        ("notes/clickup_api_integration_guide.md", "ClickUp API Integration Guide", "notes/syllabus.md"),
         
-        # Category 1 contents (parented to cat1)
-        ("notes/syllabus.md", "Course Syllabus", "cat1"),
-        ("notes/modules/course_introduction_transcript.md", "Welcome Lecture Transcript", "cat1"),
-        ("notes/clickup_api_integration_guide.md", "ClickUp API Integration Guide", "cat1"),
+        # 1619 Top-level Book (Has Content)
+        ("notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md", "1619: Jamestown and the Forging of American Democracy", None),
         
-        # Category 2 contents (parented to cat2)
-        ("notes/readings/christopher_columbus_biography.md", "Christopher Columbus Biography (Traditional)", "cat2"),
-        ("notes/readings/columbus_and_the_recovery_of_jerusalem.md", "Columbus and the Recovery of Jerusalem (Hamdani)", "cat2"),
+        # 1619 Book front and back matter
+        ("notes/readings/1619/preface.md", "Preface", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/copyright.md", "Copyright & Licensing", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/dedication.md", "Dedication & Epigraph", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/authors_note.md", "Author's Note", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/acknowledgements.md", "Acknowledgments", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/about_the_author.md", "About the Author", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/endnotes.md", "Notes & References", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/book_index.md", "Book Index", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
         
-        # 1619 Sub-parent (parented to cat2)
-        ("notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md", "1619: Jamestown and the Forging of American Democracy", "cat2"),
+        # Columbus Essay Group
+        ("notes/assignments/columbus_essay_video_notes.md", "Columbus Essay Lecture Notes", None),
+        ("notes/readings/christopher_columbus_biography.md", "Christopher Columbus Biography (Traditional)", "notes/assignments/columbus_essay_video_notes.md"),
+        ("notes/readings/columbus_and_the_recovery_of_jerusalem.md", "Columbus and the Recovery of Jerusalem (Hamdani)", "notes/assignments/columbus_essay_video_notes.md"),
+        ("notes/assignments/essay_01_columbus_prompt.md", "Assignment Prompt: Columbus Essay", "notes/assignments/columbus_essay_video_notes.md"),
         
-        # 1619 Book contents (parented to the 1619 sub-parent above)
-        ("notes/readings/1619/preface.md", "00. Preface", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/copyright.md", "01. Copyright & Licensing", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/dedication.md", "02. Dedication & Epigraph", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/authors_note.md", "03. Author's Note", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/introduction.md", "04. Introduction", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/chapter_01.md", "05. Chapter 1 - Jamestown", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/chapter_02.md", "06. Chapter 2 - The Great Reforms", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/chapter_03.md", "07. Chapter 3 - First Africans", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/chapter_04.md", "08. Chapter 4 - Commonwealth", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/chapter_05.md", "09. Chapter 5 - Tumult and Liberty", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/chapter_06.md", "10. Chapter 6 - Inequality and Freedom", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/epilogue.md", "11. Epilogue", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/acknowledgements.md", "12. Acknowledgments", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/about_the_author.md", "13. About the Author", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/endnotes.md", "14. Notes & References", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
-        ("notes/readings/1619/book_index.md", "15. Book Index", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        # Colonial Settlement (Book Essay 1) Group
+        ("notes/assignments/colonial_settlement_video_notes.md", "Colonial Settlement Lecture Notes", None),
+        ("notes/readings/1619/introduction.md", "Introduction", "notes/assignments/colonial_settlement_video_notes.md"),
+        ("notes/readings/1619/chapter_01.md", "Chapter 1 - Jamestown", "notes/assignments/colonial_settlement_video_notes.md"),
+        ("notes/assignments/essay_02_colonial_settlement_prompt.md", "Assignment Prompt: Book Essay 1 (Jamestown)", "notes/assignments/colonial_settlement_video_notes.md"),
         
-        # Category 3 contents (parented to cat3)
-        ("notes/assignments/columbus_essay_video_notes.md", "01a. Columbus Essay Lecture Notes", "cat3"),
-        ("notes/assignments/essay_01_columbus_prompt.md", "01b. Assignment Prompt: Columbus Essay", "cat3"),
-        ("notes/assignments/colonial_settlement_video_notes.md", "02a. Colonial Settlement Lecture Notes", "cat3"),
-        ("notes/assignments/essay_02_colonial_settlement_prompt.md", "02b. Assignment Prompt: Book Essay 1 (Jamestown)", "cat3"),
-        ("notes/assignments/great_reforms_video_notes.md", "03a. Great Reforms Lecture Notes", "cat3"),
-        ("notes/assignments/essay_03_great_reforms_prompt.md", "03b. Assignment Prompt: Book Essay 2 (Edwin Sandys)", "cat3"),
-        ("notes/assignments/first_africans_video_notes.md", "04a. First Africans Lecture Notes", "cat3"),
-        ("notes/assignments/essay_04_first_africans_prompt.md", "04b. Assignment Prompt: Book Essay 3 (First Africans)", "cat3"),
-        ("notes/assignments/commonwealth_video_notes.md", "05a. Commonwealth Lecture Notes", "cat3"),
-        ("notes/assignments/essay_05_commonwealth_prompt.md", "05b. Assignment Prompt: Book Essay 4 (Christian Commonwealth)", "cat3"),
-        ("notes/assignments/tumult_and_liberty_video_notes.md", "06a. Tumult and Liberty Lecture Notes", "cat3"),
-        ("notes/assignments/essay_06_tumult_and_liberty_prompt.md", "06b. Assignment Prompt: Book Essay 5 (1622 Massacre)", "cat3"),
-        ("notes/assignments/american_revolution_video_notes.md", "07a. American Revolution Lecture Notes", "cat3"),
-        ("notes/assignments/essay_08_american_revolution_prompt.md", "07b. Assignment Prompt: Major Essay Two (Revolution)", "cat3"),
-        ("notes/assignments/inequality_and_freedom_video_notes.md", "08a. Inequality and Freedom Lecture Notes", "cat3"),
-        ("notes/assignments/essay_07_inequality_and_freedom_prompt.md", "08b. Assignment Prompt: Book Essay 6 (Inequality/Freedom)", "cat3"),
-        ("notes/assignments/articles_vs_constitution_video_notes.md", "09a. Articles vs Constitution Lecture Notes", "cat3"),
-        ("notes/assignments/essay_09_articles_vs_constitution_prompt.md", "09b. Assignment Prompt: Major Essay Three (Constitution)", "cat3"),
-        ("notes/assignments/creation_of_two_societies_video_notes.md", "10a. Creation of Two Societies Lecture Notes", "cat3"),
-        ("notes/assignments/essay_10_creation_of_two_societies_prompt.md", "10b. Assignment Prompt: Major Essay Four (Two Societies)", "cat3"),
-        ("notes/assignments/debate_over_slavery_video_notes.md", "11a. Debate over Slavery Lecture Notes", "cat3"),
-        ("notes/assignments/essay_11_debate_over_slavery_prompt.md", "11b. Assignment Prompt: Major Essay Five (Proslavery)", "cat3"),
-        ("notes/assignments/civil_war_video_notes.md", "12a. Civil War Lecture Notes", "cat3"),
-        ("notes/assignments/essay_12_civil_war_prompt.md", "12b. Assignment Prompt: Major Essay Six (Civil War)", "cat3")
+        # Great Reforms (Book Essay 2) Group
+        ("notes/assignments/great_reforms_video_notes.md", "Great Reforms Lecture Notes", None),
+        ("notes/readings/1619/chapter_02.md", "Chapter 2 - The Great Reforms", "notes/assignments/great_reforms_video_notes.md"),
+        ("notes/assignments/essay_03_great_reforms_prompt.md", "Assignment Prompt: Book Essay 2 (Edwin Sandys)", "notes/assignments/great_reforms_video_notes.md"),
+        
+        # First Africans (Book Essay 3) Group
+        ("notes/assignments/first_africans_video_notes.md", "First Africans Lecture Notes", None),
+        ("notes/readings/1619/chapter_03.md", "Chapter 3 - First Africans", "notes/assignments/first_africans_video_notes.md"),
+        ("notes/assignments/essay_04_first_africans_prompt.md", "Assignment Prompt: Book Essay 3 (First Africans)", "notes/assignments/first_africans_video_notes.md"),
+        
+        # Commonwealth (Book Essay 4) Group
+        ("notes/assignments/commonwealth_video_notes.md", "Commonwealth Lecture Notes", None),
+        ("notes/readings/1619/chapter_04.md", "Chapter 4 - Commonwealth", "notes/assignments/commonwealth_video_notes.md"),
+        ("notes/assignments/essay_05_commonwealth_prompt.md", "Assignment Prompt: Book Essay 4 (Christian Commonwealth)", "notes/assignments/commonwealth_video_notes.md"),
+        
+        # Tumult and Liberty (Book Essay 5) Group
+        ("notes/assignments/tumult_and_liberty_video_notes.md", "Tumult and Liberty Lecture Notes", None),
+        ("notes/readings/1619/chapter_05.md", "Chapter 5 - Tumult and Liberty", "notes/assignments/tumult_and_liberty_video_notes.md"),
+        ("notes/assignments/essay_06_tumult_and_liberty_prompt.md", "Assignment Prompt: Book Essay 5 (1622 Massacre)", "notes/assignments/tumult_and_liberty_video_notes.md"),
+        
+        # American Revolution (Major Essay Two) Group
+        ("notes/assignments/american_revolution_video_notes.md", "American Revolution Lecture Notes", None),
+        ("notes/assignments/essay_08_american_revolution_prompt.md", "Assignment Prompt: Major Essay Two (Revolution)", "notes/assignments/american_revolution_video_notes.md"),
+        
+        # Inequality and Freedom (Book Essay 6) Group
+        ("notes/assignments/inequality_and_freedom_video_notes.md", "Inequality and Freedom Lecture Notes", None),
+        ("notes/readings/1619/chapter_06.md", "Chapter 6 - Inequality and Freedom", "notes/assignments/inequality_and_freedom_video_notes.md"),
+        ("notes/readings/1619/epilogue.md", "Epilogue", "notes/assignments/inequality_and_freedom_video_notes.md"),
+        ("notes/assignments/essay_07_inequality_and_freedom_prompt.md", "Assignment Prompt: Book Essay 6 (Inequality/Freedom)", "notes/assignments/inequality_and_freedom_video_notes.md"),
+        
+        # Articles vs Constitution (Major Essay Three) Group
+        ("notes/assignments/articles_vs_constitution_video_notes.md", "Articles vs Constitution Lecture Notes", None),
+        ("notes/assignments/essay_09_articles_vs_constitution_prompt.md", "Assignment Prompt: Major Essay Three (Constitution)", "notes/assignments/articles_vs_constitution_video_notes.md"),
+        
+        # Creation of Two Societies (Major Essay Four) Group
+        ("notes/assignments/creation_of_two_societies_video_notes.md", "Creation of Two Societies Lecture Notes", None),
+        ("notes/assignments/essay_10_creation_of_two_societies_prompt.md", "Assignment Prompt: Major Essay Four (Two Societies)", "notes/assignments/creation_of_two_societies_video_notes.md"),
+        
+        # Debate over Slavery (Major Essay Five) Group
+        ("notes/assignments/debate_over_slavery_video_notes.md", "Debate over Slavery Lecture Notes", None),
+        ("notes/assignments/essay_11_debate_over_slavery_prompt.md", "Assignment Prompt: Major Essay Five (Proslavery)", "notes/assignments/debate_over_slavery_video_notes.md"),
+        
+        # Civil War (Major Essay Six) Group
+        ("notes/assignments/civil_war_video_notes.md", "Civil War Lecture Notes", None),
+        ("notes/assignments/essay_12_civil_war_prompt.md", "Assignment Prompt: Major Essay Six (Civil War)", "notes/assignments/civil_war_video_notes.md")
     ]
     
     # 2. Map notes/index.md to overview page ID
@@ -696,15 +753,18 @@ def get_all_doc_maps(workspace_id, headers, workspace_root, task_id_by_name, sub
     print(f"\n[~] Rebuilding Wiki page tree structure for {len(wiki_structure)} elements...")
     for key_or_path, page_title, parent_key in wiki_structure:
         # Resolve parent ID
-        resolved_parent_id = resolved_ids.get(parent_key)
-        if not resolved_parent_id:
-            # Check if parent_key is a file path in resolved_ids
-            if parent_key in resolved_ids:
-                resolved_parent_id = resolved_ids[parent_key]
-                
-        if not resolved_parent_id:
-            print(f"       [!] Warning: Parent key '{parent_key}' not resolved. Defaulting to overview.")
-            resolved_parent_id = overview_page_id
+        if parent_key is None:
+            resolved_parent_id = None
+        else:
+            resolved_parent_id = resolved_ids.get(parent_key)
+            if not resolved_parent_id:
+                # Check if parent_key is a file path in resolved_ids
+                if parent_key in resolved_ids:
+                    resolved_parent_id = resolved_ids[parent_key]
+                    
+            if not resolved_parent_id:
+                print(f"       [!] Warning: Parent key '{parent_key}' not resolved. Defaulting to overview.")
+                resolved_parent_id = overview_page_id
             
         page_id = None
         # Match page in existing wiki_pages
@@ -722,10 +782,12 @@ def get_all_doc_maps(workspace_id, headers, workspace_root, task_id_by_name, sub
             try:
                 payload = {
                     "name": page_title,
-                    "parent_page_id": resolved_parent_id,
                     "content": "",
                     "content_format": "text/md"
                 }
+                if resolved_parent_id:
+                    payload["parent_page_id"] = resolved_parent_id
+                    
                 res = clickup_api_request(pages_url, "POST", headers, payload)
                 page_id = res.get("id")
                 print(f"       [+] Created Page (Page ID: {page_id})")
@@ -1274,6 +1336,7 @@ def main():
         try:
             task_url = f"https://api.clickup.com/api/v2/task/{parent_task_id}"
             clickup_api_request(task_url, "PUT", headers, {"markdown_content": parent_description})
+            add_task_comment(parent_task_id, headers, "Automated Update: Parent task description markdown links have been synced and rewritten.")
             
             # Update subtasks
             for st_name in t["subtasks"]:
@@ -1294,6 +1357,7 @@ def main():
                 if sub_id:
                     sub_url = f"https://api.clickup.com/api/v2/task/{sub_id}"
                     clickup_api_request(sub_url, "PUT", headers, {"markdown_content": st_desc_rewritten})
+                    add_task_comment(sub_id, headers, "Automated Update: Subtask description markdown links have been synced and rewritten.")
                     
             print("    -> Done!\n")
         except Exception as e:
