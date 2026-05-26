@@ -272,47 +272,60 @@ def find_all_markdown_files(workspace_root):
     return md_files
 
 def get_doc_title(rel_path):
-    if "readings/1619/" in rel_path:
-        # Custom 1619 Book page titles in chronological order
-        book_titles = {
-            "notes/readings/1619/preface.md": "1619: Book Overview & Preface",
-            "notes/readings/1619/copyright.md": "01. Copyright & Licensing",
-            "notes/readings/1619/dedication.md": "02. Dedication & Epigraph",
-            "notes/readings/1619/authors_note.md": "03. Author's Note",
-            "notes/readings/1619/introduction.md": "04. Introduction",
-            "notes/readings/1619/chapter_01.md": "05. Chapter 1 - Jamestown",
-            "notes/readings/1619/chapter_02.md": "06. Chapter 2 - The Great Reforms",
-            "notes/readings/1619/chapter_03.md": "07. Chapter 3 - First Africans",
-            "notes/readings/1619/chapter_04.md": "08. Chapter 4 - Commonwealth",
-            "notes/readings/1619/chapter_05.md": "09. Chapter 5 - Tumult and Liberty",
-            "notes/readings/1619/chapter_06.md": "10. Chapter 6 - Inequality and Freedom",
-            "notes/readings/1619/epilogue.md": "11. Epilogue",
-            "notes/readings/1619/acknowledgements.md": "12. Acknowledgments",
-            "notes/readings/1619/about_the_author.md": "13. About the Author",
-            "notes/readings/1619/endnotes.md": "14. Notes & References",
-            "notes/readings/1619/book_index.md": "15. Book Index"
-        }
-        if rel_path in book_titles:
-            return book_titles[rel_path]
-        base = os.path.basename(rel_path)
-        name_no_ext = os.path.splitext(base)[0]
-        clean_part = name_no_ext.replace("_", " ").title()
-        return f"1619 Book - {clean_part}"
-
-    if rel_path in markdown_files:
-        return markdown_files[rel_path]
+    wiki_titles = {
+        "notes/index.md": "HIST 21103 Course Wiki Overview",
+        "notes/syllabus.md": "Course Syllabus",
+        "notes/modules/course_introduction_transcript.md": "Welcome Lecture Transcript",
+        "notes/clickup_api_integration_guide.md": "ClickUp API Integration Guide",
+        "notes/readings/christopher_columbus_biography.md": "Christopher Columbus Biography (Traditional)",
+        "notes/readings/columbus_and_the_recovery_of_jerusalem.md": "Columbus and the Recovery of Jerusalem (Hamdani)",
+        "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md": "1619: Jamestown and the Forging of American Democracy",
+        "notes/readings/1619/preface.md": "00. Preface",
+        "notes/readings/1619/copyright.md": "01. Copyright & Licensing",
+        "notes/readings/1619/dedication.md": "02. Dedication & Epigraph",
+        "notes/readings/1619/authors_note.md": "03. Author's Note",
+        "notes/readings/1619/introduction.md": "04. Introduction",
+        "notes/readings/1619/chapter_01.md": "05. Chapter 1 - Jamestown",
+        "notes/readings/1619/chapter_02.md": "06. Chapter 2 - The Great Reforms",
+        "notes/readings/1619/chapter_03.md": "07. Chapter 3 - First Africans",
+        "notes/readings/1619/chapter_04.md": "08. Chapter 4 - Commonwealth",
+        "notes/readings/1619/chapter_05.md": "09. Chapter 5 - Tumult and Liberty",
+        "notes/readings/1619/chapter_06.md": "10. Chapter 6 - Inequality and Freedom",
+        "notes/readings/1619/epilogue.md": "11. Epilogue",
+        "notes/readings/1619/acknowledgements.md": "12. Acknowledgments",
+        "notes/readings/1619/about_the_author.md": "13. About the Author",
+        "notes/readings/1619/endnotes.md": "14. Notes & References",
+        "notes/readings/1619/book_index.md": "15. Book Index",
+        "notes/assignments/columbus_essay_video_notes.md": "01a. Columbus Essay Lecture Notes",
+        "notes/assignments/essay_01_columbus_prompt.md": "01b. Assignment Prompt: Columbus Essay",
+        "notes/assignments/colonial_settlement_video_notes.md": "02a. Colonial Settlement Lecture Notes",
+        "notes/assignments/essay_02_colonial_settlement_prompt.md": "02b. Assignment Prompt: Book Essay 1 (Jamestown)",
+        "notes/assignments/great_reforms_video_notes.md": "03a. Great Reforms Lecture Notes",
+        "notes/assignments/essay_03_great_reforms_prompt.md": "03b. Assignment Prompt: Book Essay 2 (Edwin Sandys)",
+        "notes/assignments/first_africans_video_notes.md": "04a. First Africans Lecture Notes",
+        "notes/assignments/essay_04_first_africans_prompt.md": "04b. Assignment Prompt: Book Essay 3 (First Africans)",
+        "notes/assignments/commonwealth_video_notes.md": "05a. Commonwealth Lecture Notes",
+        "notes/assignments/essay_05_commonwealth_prompt.md": "05b. Assignment Prompt: Book Essay 4 (Christian Commonwealth)",
+        "notes/assignments/tumult_and_liberty_video_notes.md": "06a. Tumult and Liberty Lecture Notes",
+        "notes/assignments/essay_06_tumult_and_liberty_prompt.md": "06b. Assignment Prompt: Book Essay 5 (1622 Massacre)",
+        "notes/assignments/american_revolution_video_notes.md": "07a. American Revolution Lecture Notes",
+        "notes/assignments/essay_08_american_revolution_prompt.md": "07b. Assignment Prompt: Major Essay Two (Revolution)",
+        "notes/assignments/inequality_and_freedom_video_notes.md": "08a. Inequality and Freedom Lecture Notes",
+        "notes/assignments/essay_07_inequality_and_freedom_prompt.md": "08b. Assignment Prompt: Book Essay 6 (Inequality/Freedom)",
+        "notes/assignments/articles_vs_constitution_video_notes.md": "09a. Articles vs Constitution Lecture Notes",
+        "notes/assignments/essay_09_articles_vs_constitution_prompt.md": "09b. Assignment Prompt: Major Essay Three (Constitution)",
+        "notes/assignments/creation_of_two_societies_video_notes.md": "10a. Creation of Two Societies Lecture Notes",
+        "notes/assignments/essay_10_creation_of_two_societies_prompt.md": "10b. Assignment Prompt: Major Essay Four (Two Societies)",
+        "notes/assignments/debate_over_slavery_video_notes.md": "11a. Debate over Slavery Lecture Notes",
+        "notes/assignments/essay_11_debate_over_slavery_prompt.md": "11b. Assignment Prompt: Major Essay Five (Proslavery)",
+        "notes/assignments/civil_war_video_notes.md": "12a. Civil War Lecture Notes",
+        "notes/assignments/essay_12_civil_war_prompt.md": "12b. Assignment Prompt: Major Essay Six (Civil War)"
+    }
+    if rel_path in wiki_titles:
+        return wiki_titles[rel_path]
     base = os.path.basename(rel_path)
     name_no_ext = os.path.splitext(base)[0]
-    
-    if rel_path == "notes/index.md":
-        return "HIST 21103 Notes Index"
-    elif rel_path == "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md":
-        return "1619 Book Overview & Index"
-    elif "assignments/" in rel_path and "_prompt" in rel_path:
-        clean_part = name_no_ext.replace("_", " ").title()
-        return f"Assignment Prompt: {clean_part}"
-    else:
-        return name_no_ext.replace("_", " ").title()
+    return name_no_ext.replace("_", " ").title()
 
 def get_existing_docs(workspace_id, headers):
     url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
@@ -567,217 +580,172 @@ def calculate_subtask_dates(parent_start_str, parent_due_str, subtasks):
     return subtask_dates
 
 def get_all_doc_maps(workspace_id, headers, workspace_root, task_id_by_name, subtask_id_by_parent_and_name, default_parent_id):
-    existing_docs = get_existing_docs(workspace_id, headers)
-    md_files = find_all_markdown_files(workspace_root)
+    wiki_doc_id = "8ccuja0-5251"
+    
+    # 1. Fetch all existing pages of the Wiki Document
+    pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{wiki_doc_id}/pages"
+    try:
+        res = clickup_api_request(pages_url, "GET", headers)
+        wiki_pages = res if isinstance(res, list) else res.get("pages", [])
+    except Exception as e:
+        print(f"[ERROR] Failed to fetch Wiki pages: {str(e)}")
+        raise e
+        
+    # Locate the default/overview page (parent_page_id is None or empty)
+    overview_page_id = None
+    for p in wiki_pages:
+        if not p.get("parent_page_id"):
+            overview_page_id = p["id"]
+            break
+            
+    if not overview_page_id and len(wiki_pages) > 0:
+        overview_page_id = wiki_pages[0]["id"]
+        
+    if not overview_page_id:
+        print("[!] No pages found in Wiki Doc. Creating parent page...")
+        try:
+            res = clickup_api_request(pages_url, "POST", headers, {
+                "name": "HIST 21103 Course Wiki Overview",
+                "content": "",
+                "content_format": "text/md"
+            })
+            overview_page_id = res.get("id")
+            wiki_pages = [{"id": overview_page_id, "name": "HIST 21103 Course Wiki Overview", "parent_page_id": None}]
+        except Exception as e:
+            print(f"[!] Error creating parent page: {str(e)}")
+            raise e
+            
+    print(f"[+] Found Wiki Overview Page ID: {overview_page_id}")
+    
+    resolved_ids = {"overview": overview_page_id}
     
     doc_map = {}
     doc_id_map = {}
     doc_page_id_map = {}
     
-    # 1. Handle the Unified 1619 Book Document
-    book_doc_title = "1619: Jamestown and the Forging of American Democracy"
-    book_parent_id = task_id_by_name.get("book essay 1: colonial settlement (horn intro & ch 1)", default_parent_id)
-    
-    book_doc_id = None
-    for d in existing_docs:
-        if d.get("name") and d["name"].lower().strip() == book_doc_title.lower().strip():
-            d_parent = d.get("parent", {})
-            d_parent_id = d_parent.get("id") if d_parent else None
-            if d_parent_id == book_parent_id:
-                book_doc_id = d["id"]
-                break
-                
-    if book_doc_id:
-        print(f"[+] Found existing Unified 1619 Book Document (ID: {book_doc_id})")
-    else:
-        print(f"[+] Unified 1619 Book Document not found. Creating parented to Book Essay 1 Task...")
-        url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
-        try:
-            payload = {
-                "name": book_doc_title,
-                "parent": {
-                    "id": book_parent_id,
-                    "type": 1
-                },
-                "create_page": True
-            }
-            res = clickup_api_request(url, "POST", headers, payload)
-            book_doc_id = res.get("id")
-            print(f"       [+] Created Unified Book Doc (ID: {book_doc_id})")
-        except Exception as e:
-            print(f"       [!] Error creating Unified Book Doc: {str(e)}")
-            raise e
-            
-    # Fetch all pages of the 1619 Book Document
-    book_pages = []
-    if book_doc_id:
-        pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{book_doc_id}/pages"
-        try:
-            res = clickup_api_request(pages_url, "GET", headers)
-            if isinstance(res, list):
-                book_pages = res
-            elif isinstance(res, dict) and "pages" in res:
-                book_pages = res["pages"]
-        except Exception as e:
-            print(f"       [!] Warning: Failed to fetch pages for 1619 Book Doc: {str(e)}")
-            
-    # The default first page will be renamed to "1619: Book Overview & Preface"
-    parent_page_id = None
-    if len(book_pages) > 0:
-        parent_page_id = book_pages[0]["id"]
-        print(f"[+] Parent page ID for 1619 Book Doc: {parent_page_id}")
-    else:
-        # If no page exists, create one
-        print("[!] No pages found in Book Doc. Creating parent page...")
-        pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{book_doc_id}/pages"
-        try:
-            res = clickup_api_request(pages_url, "POST", headers, {
-                "name": "1619: Book Overview & Preface",
-                "content": "",
-                "content_format": "text/md"
-            })
-            parent_page_id = res.get("id")
-        except Exception as e:
-            print(f"       [!] Error creating parent page: {str(e)}")
-            raise e
-
-    book_order = [
-        "notes/readings/1619/preface.md",
-        "notes/readings/1619/copyright.md",
-        "notes/readings/1619/dedication.md",
-        "notes/readings/1619/authors_note.md",
-        "notes/readings/1619/introduction.md",
-        "notes/readings/1619/chapter_01.md",
-        "notes/readings/1619/chapter_02.md",
-        "notes/readings/1619/chapter_03.md",
-        "notes/readings/1619/chapter_04.md",
-        "notes/readings/1619/chapter_05.md",
-        "notes/readings/1619/chapter_06.md",
-        "notes/readings/1619/epilogue.md",
-        "notes/readings/1619/acknowledgements.md",
-        "notes/readings/1619/about_the_author.md",
-        "notes/readings/1619/endnotes.md",
-        "notes/readings/1619/book_index.md"
+    # Define Wiki outline structure in exact chronological order
+    wiki_structure = [
+        # Category pages (parented to overview)
+        ("cat1", "01. Course Syllabus & Info", "overview"),
+        ("cat2", "02. Course Readings", "overview"),
+        ("cat3", "03. Lecture Notes & Assignment Prompts", "overview"),
+        
+        # Category 1 contents (parented to cat1)
+        ("notes/syllabus.md", "Course Syllabus", "cat1"),
+        ("notes/modules/course_introduction_transcript.md", "Welcome Lecture Transcript", "cat1"),
+        ("notes/clickup_api_integration_guide.md", "ClickUp API Integration Guide", "cat1"),
+        
+        # Category 2 contents (parented to cat2)
+        ("notes/readings/christopher_columbus_biography.md", "Christopher Columbus Biography (Traditional)", "cat2"),
+        ("notes/readings/columbus_and_the_recovery_of_jerusalem.md", "Columbus and the Recovery of Jerusalem (Hamdani)", "cat2"),
+        
+        # 1619 Sub-parent (parented to cat2)
+        ("notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md", "1619: Jamestown and the Forging of American Democracy", "cat2"),
+        
+        # 1619 Book contents (parented to the 1619 sub-parent above)
+        ("notes/readings/1619/preface.md", "00. Preface", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/copyright.md", "01. Copyright & Licensing", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/dedication.md", "02. Dedication & Epigraph", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/authors_note.md", "03. Author's Note", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/introduction.md", "04. Introduction", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/chapter_01.md", "05. Chapter 1 - Jamestown", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/chapter_02.md", "06. Chapter 2 - The Great Reforms", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/chapter_03.md", "07. Chapter 3 - First Africans", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/chapter_04.md", "08. Chapter 4 - Commonwealth", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/chapter_05.md", "09. Chapter 5 - Tumult and Liberty", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/chapter_06.md", "10. Chapter 6 - Inequality and Freedom", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/epilogue.md", "11. Epilogue", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/acknowledgements.md", "12. Acknowledgments", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/about_the_author.md", "13. About the Author", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/endnotes.md", "14. Notes & References", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        ("notes/readings/1619/book_index.md", "15. Book Index", "notes/readings/1619_jamestown_and_the_founding_of_american_democracy.md"),
+        
+        # Category 3 contents (parented to cat3)
+        ("notes/assignments/columbus_essay_video_notes.md", "01a. Columbus Essay Lecture Notes", "cat3"),
+        ("notes/assignments/essay_01_columbus_prompt.md", "01b. Assignment Prompt: Columbus Essay", "cat3"),
+        ("notes/assignments/colonial_settlement_video_notes.md", "02a. Colonial Settlement Lecture Notes", "cat3"),
+        ("notes/assignments/essay_02_colonial_settlement_prompt.md", "02b. Assignment Prompt: Book Essay 1 (Jamestown)", "cat3"),
+        ("notes/assignments/great_reforms_video_notes.md", "03a. Great Reforms Lecture Notes", "cat3"),
+        ("notes/assignments/essay_03_great_reforms_prompt.md", "03b. Assignment Prompt: Book Essay 2 (Edwin Sandys)", "cat3"),
+        ("notes/assignments/first_africans_video_notes.md", "04a. First Africans Lecture Notes", "cat3"),
+        ("notes/assignments/essay_04_first_africans_prompt.md", "04b. Assignment Prompt: Book Essay 3 (First Africans)", "cat3"),
+        ("notes/assignments/commonwealth_video_notes.md", "05a. Commonwealth Lecture Notes", "cat3"),
+        ("notes/assignments/essay_05_commonwealth_prompt.md", "05b. Assignment Prompt: Book Essay 4 (Christian Commonwealth)", "cat3"),
+        ("notes/assignments/tumult_and_liberty_video_notes.md", "06a. Tumult and Liberty Lecture Notes", "cat3"),
+        ("notes/assignments/essay_06_tumult_and_liberty_prompt.md", "06b. Assignment Prompt: Book Essay 5 (1622 Massacre)", "cat3"),
+        ("notes/assignments/american_revolution_video_notes.md", "07a. American Revolution Lecture Notes", "cat3"),
+        ("notes/assignments/essay_08_american_revolution_prompt.md", "07b. Assignment Prompt: Major Essay Two (Revolution)", "cat3"),
+        ("notes/assignments/inequality_and_freedom_video_notes.md", "08a. Inequality and Freedom Lecture Notes", "cat3"),
+        ("notes/assignments/essay_07_inequality_and_freedom_prompt.md", "08b. Assignment Prompt: Book Essay 6 (Inequality/Freedom)", "cat3"),
+        ("notes/assignments/articles_vs_constitution_video_notes.md", "09a. Articles vs Constitution Lecture Notes", "cat3"),
+        ("notes/assignments/essay_09_articles_vs_constitution_prompt.md", "09b. Assignment Prompt: Major Essay Three (Constitution)", "cat3"),
+        ("notes/assignments/creation_of_two_societies_video_notes.md", "10a. Creation of Two Societies Lecture Notes", "cat3"),
+        ("notes/assignments/essay_10_creation_of_two_societies_prompt.md", "10b. Assignment Prompt: Major Essay Four (Two Societies)", "cat3"),
+        ("notes/assignments/debate_over_slavery_video_notes.md", "11a. Debate over Slavery Lecture Notes", "cat3"),
+        ("notes/assignments/essay_11_debate_over_slavery_prompt.md", "11b. Assignment Prompt: Major Essay Five (Proslavery)", "cat3"),
+        ("notes/assignments/civil_war_video_notes.md", "12a. Civil War Lecture Notes", "cat3"),
+        ("notes/assignments/essay_12_civil_war_prompt.md", "12b. Assignment Prompt: Major Essay Six (Civil War)", "cat3")
     ]
     
-    other_files = [f for f in md_files if "readings/1619/" not in f]
-    book_files_in_md = [f for f in md_files if "readings/1619/" in f]
+    # 2. Map notes/index.md to overview page ID
+    doc_url = f"https://app.clickup.com/{workspace_id}/v/dc/{wiki_doc_id}/p/{overview_page_id}"
+    doc_map["notes/index.md"] = doc_url
+    doc_id_map["notes/index.md"] = wiki_doc_id
+    doc_page_id_map["notes/index.md"] = overview_page_id
     
-    sorted_book_files = []
-    for path in book_order:
-        if path in book_files_in_md:
-            sorted_book_files.append(path)
-            book_files_in_md.remove(path)
-    sorted_book_files.extend(book_files_in_md)
-    
-    ordered_md_files = other_files + sorted_book_files
-
-    print(f"\n[~] Scanning and syncing {len(ordered_md_files)} Task-bound ClickUp Documents...")
-    for rel_path in ordered_md_files:
-        clean_title = get_doc_title(rel_path)
-        
-        # Check if this file belongs to the 1619 Book
-        if "readings/1619/" in rel_path:
-            # It's a 1619 Book subpage
-            doc_id = book_doc_id
-            page_id = None
-            
-            # Special Case: Preface is mapped directly to the parent page
-            if rel_path.endswith("preface.md"):
-                page_id = parent_page_id
-                print(f"    -> Mapping '{clean_title}' to parent page (ID: {page_id}).")
-            else:
-                # Match page by title inside book_pages
-                for p in book_pages:
-                    if p.get("name") and p["name"].lower().strip() == clean_title.lower().strip():
-                        page_id = p["id"]
-                        break
-                        
-                if page_id:
-                    print(f"    -> Subpage '{clean_title}' already exists in Book Document (Page ID: {page_id}).")
-                else:
-                    print(f"    -> Subpage '{clean_title}' not found. Creating nested subpage...")
-                    pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{book_doc_id}/pages"
-                    try:
-                        payload = {
-                            "name": clean_title,
-                            "parent_page_id": parent_page_id,
-                            "content": "",
-                            "content_format": "text/md"
-                        }
-                        res = clickup_api_request(pages_url, "POST", headers, payload)
-                        page_id = res.get("id")
-                        print(f"       [+] Created Subpage (Page ID: {page_id})")
-                        book_pages.append({"id": page_id, "name": clean_title})
-                    except Exception as e:
-                        print(f"       [!] Error creating Subpage '{clean_title}': {str(e)}")
-                        continue
-            
-            if page_id:
-                doc_url = f"https://app.clickup.com/{workspace_id}/v/dc/{book_doc_id}/p/{page_id}"
-                doc_map[rel_path] = doc_url
-                doc_id_map[rel_path] = book_doc_id
-                doc_page_id_map[rel_path] = page_id
+    print(f"\n[~] Rebuilding Wiki page tree structure for {len(wiki_structure)} elements...")
+    for key_or_path, page_title, parent_key in wiki_structure:
+        # Resolve parent ID
+        resolved_parent_id = resolved_ids.get(parent_key)
+        if not resolved_parent_id:
+            # Check if parent_key is a file path in resolved_ids
+            if parent_key in resolved_ids:
+                resolved_parent_id = resolved_ids[parent_key]
                 
+        if not resolved_parent_id:
+            print(f"       [!] Warning: Parent key '{parent_key}' not resolved. Defaulting to overview.")
+            resolved_parent_id = overview_page_id
+            
+        page_id = None
+        # Match page in existing wiki_pages
+        for p in wiki_pages:
+            if p.get("name") and p["name"].lower().strip() == page_title.lower().strip():
+                p_parent = p.get("parent_page_id")
+                if p_parent == resolved_parent_id:
+                    page_id = p["id"]
+                    break
+                    
+        if page_id:
+            print(f"    -> Page '{page_title}' already exists in Wiki (Page ID: {page_id}).")
         else:
-            # Standalone Document
-            parent_id, parent_desc = determine_doc_parent(
-                rel_path, task_id_by_name, subtask_id_by_parent_and_name, default_parent_id
-            )
-            
-            # Match by name AND parent_id
-            doc_id = None
-            for d in existing_docs:
-                if d.get("name") and d["name"].lower().strip() == clean_title.lower().strip():
-                    d_parent = d.get("parent", {})
-                    d_parent_id = d_parent.get("id") if d_parent else None
-                    if d_parent_id == parent_id:
-                        doc_id = d["id"]
-                        break
-                        
-            if doc_id:
-                print(f"    -> Doc '{clean_title}' already exists parented to {parent_desc} (ID: {doc_id}).")
-            else:
-                print(f"    -> Doc '{clean_title}' not found. Creating parented to {parent_desc}...")
-                url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs"
-                try:
-                    payload = {
-                        "name": clean_title,
-                        "parent": {
-                            "id": parent_id,
-                            "type": 1
-                        },
-                        "create_page": True
-                    }
-                    res = clickup_api_request(url, "POST", headers, payload)
-                    doc_id = res.get("id")
-                    print(f"       [+] Created Doc (ID: {doc_id})")
-                except Exception as e:
-                    print(f"       [!] Error creating Doc '{clean_title}': {str(e)}")
-                    continue
-                    
-            if doc_id:
-                # Standalone Doc default page ID query
-                page_id = None
-                pages_url = f"https://api.clickup.com/api/v3/workspaces/{workspace_id}/docs/{doc_id}/pages"
-                try:
-                    res = clickup_api_request(pages_url, "GET", headers)
-                    if isinstance(res, list) and len(res) > 0:
-                        page_id = res[0]["id"]
-                    elif isinstance(res, dict) and "pages" in res and len(res["pages"]) > 0:
-                        page_id = res["pages"][0]["id"]
-                except Exception as e:
-                    pass
+            print(f"    -> Page '{page_title}' not found. Creating nested in Wiki...")
+            try:
+                payload = {
+                    "name": page_title,
+                    "parent_page_id": resolved_parent_id,
+                    "content": "",
+                    "content_format": "text/md"
+                }
+                res = clickup_api_request(pages_url, "POST", headers, payload)
+                page_id = res.get("id")
+                print(f"       [+] Created Page (Page ID: {page_id})")
+                wiki_pages.append({"id": page_id, "name": page_title, "parent_page_id": resolved_parent_id})
+            except Exception as e:
+                print(f"       [!] Error creating page '{page_title}': {str(e)}")
+                continue
                 
-                doc_url = f"https://app.clickup.com/{workspace_id}/v/dc/{doc_id}"
-                doc_map[rel_path] = doc_url
-                doc_id_map[rel_path] = doc_id
-                if page_id:
-                    doc_page_id_map[rel_path] = page_id
-                else:
-                    doc_page_id_map[rel_path] = f"first_page_of_{doc_id}"
-                    
-    return md_files, doc_map, doc_id_map, doc_page_id_map
+        resolved_ids[key_or_path] = page_id
+        
+        # If it is a file path, map it for sync and link rewriting
+        if key_or_path.startswith("notes/"):
+            doc_url = f"https://app.clickup.com/{workspace_id}/v/dc/{wiki_doc_id}/p/{page_id}"
+            doc_map[key_or_path] = doc_url
+            doc_id_map[key_or_path] = wiki_doc_id
+            doc_page_id_map[key_or_path] = page_id
+            
+    # Return all md_files that are mapped in the wiki
+    all_files = [f for f in doc_page_id_map.keys()]
+    return all_files, doc_map, doc_id_map, doc_page_id_map
 
 def update_clickup_doc_pages(workspace_id, headers, workspace_root, md_files, doc_id_map, doc_page_id_map, doc_map, asset_map):
     print(f"\n[~] Updating content for {len(doc_page_id_map)} Document pages...")
