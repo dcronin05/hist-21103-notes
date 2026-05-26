@@ -216,6 +216,8 @@ def clickup_api_request(url, method="GET", headers=None, data=None):
     try:
         with urllib.request.urlopen(req) as response:
             res_data = response.read().decode("utf-8")
+            if not res_data.strip():
+                return {}
             return json.loads(res_data)
     except urllib.error.HTTPError as e:
         err_content = e.read().decode("utf-8")
@@ -226,22 +228,137 @@ def clickup_api_request(url, method="GET", headers=None, data=None):
         print(f"\n[ERROR] Network error: {str(e)}")
         raise e
 
+def get_subtask_details(st_name, parent_task_name):
+    st_lower = st_name.lower()
+    checklist = []
+    
+    if st_lower.startswith("read "):
+        reading_name = st_name.replace("Read ", "")
+        description = f"Read and take detailed notes on the assigned source: **{reading_name}**.\n\nFocus on identifying the author's primary arguments, key historical events, and how this source answers the questions in the **{parent_task_name}** prompt."
+        checklist = [
+            f"Locate and open {reading_name}",
+            "Highlight key arguments, quotes, and primary evidence",
+            "Draft a 1-paragraph summary of the source's main thesis",
+            "Identify at least 2 quotes to use in your essay"
+        ]
+        
+    elif "video notes" in st_lower or "lecture notes" in st_lower or "lecture transcript" in st_lower:
+        description = f"Review the auto-generated video transcript and notes from Professor Jim Ross: **{st_name}**.\n\nThese notes summarize the core lecture concepts, historical context, and the professor's expectations for the assignment."
+        checklist = [
+            f"Open and read {st_name}",
+            "Review the key terms and historical concepts discussed",
+            "Note the specific guidance points emphasized by the professor",
+            "Integrate these lecture insights into your outline"
+        ]
+        
+    elif "select 10 documents" in st_lower:
+        description = "Select exactly 10 primary source documents (2 from each group A through E) to compare and contrast for Major Essay Two."
+        checklist = [
+            "Select 2 documents from Group A (Religious)",
+            "Select 2 documents from Group B (Loyalist)",
+            "Select 2 documents from Group C (Rebel)",
+            "Select 2 documents from Group D (African American)",
+            "Select 2 documents from Group E (Official/Legal)",
+            "Ensure you have exactly 10 documents selected before starting to write"
+        ]
+        
+    elif st_lower.startswith("draft ") or st_lower.startswith("write "):
+        description = f"Draft the essay for **{parent_task_name}** according to the professor's prompt requirements."
+        checklist = [
+            "Outline the essay structure (Introduction, Body Paragraphs, Conclusion)",
+            "Draft an introduction with a strong, arguable thesis statement",
+            "Write the body paragraphs, ensuring each paragraph starts with a clear topic sentence",
+            "Integrate direct quotes and specific evidence from the required readings",
+            "Ensure citations are formatted correctly (e.g., standard page number citations)",
+            "Write a conclusion that summarizes the main argument and reflects on the broader historical significance"
+        ]
+        
+    elif st_lower.startswith("submit ") or st_lower.startswith("upload "):
+        description = f"Submit your final draft of **{parent_task_name}** to the course Blackboard portal."
+        checklist = [
+            "Perform a final proofreading pass (check spelling, grammar, and sentence structure)",
+            "Verify formatting: Times New Roman, 12pt, double-spaced (check page limits in prompt)",
+            "Export the document as a PDF or DOCX file",
+            "Log into the Blackboard portal and navigate to the assignment submission page",
+            "Upload the file and click Submit",
+            "Verify that you receive a submission receipt or confirmation email"
+        ]
+        
+    elif "clickup" in st_lower:
+        description = "Set up your ClickUp list, milestones, statuses, and custom fields to keep your progress tracked throughout the 5-week course."
+        checklist = [
+            "Ensure all 13 major tasks are imported successfully",
+            "Double-check due dates and start dates against the course syllabus",
+            "Create a custom number field called 'Points' to track your grade points",
+            "Familiarize yourself with the task checklists and descriptions"
+        ]
+        
+    else:
+        description = f"Complete the subtask: **{st_name}** for **{parent_task_name}**."
+        checklist = [
+            f"Review the requirements for {st_name}",
+            "Perform necessary research or preparation",
+            "Mark as complete when finished"
+        ]
+        
+    # Format checklist as ClickUp Markdown checkboxes
+    markdown_checklist = "\n\n### Subtask Checklist:\n" + "\n".join([f"- [ ] {item}" for item in checklist])
+    return description + markdown_checklist
+
+def clear_list_tasks(list_id, headers, force=False):
+    print("\n[~] Fetching existing tasks to clear...")
+    # Fetch all tasks in the list (including subtasks)
+    url = f"https://api.clickup.com/api/v2/list/{list_id}/task?subtasks=true"
+    tasks_data = clickup_api_request(url, "GET", headers)
+    tasks = tasks_data.get("tasks", [])
+    
+    # We only need to delete parent tasks (deleting a parent automatically deletes its subtasks in ClickUp)
+    parent_tasks = [t for t in tasks if t.get("parent") is None]
+    
+    if not parent_tasks:
+        print("[+] List is already empty. No tasks to clear.")
+        return
+        
+    print(f"[!] Found {len(parent_tasks)} parent tasks in ClickUp list.")
+    if not force:
+        confirm = input("Are you sure you want to delete all existing tasks in this list? (y/n): ").strip().lower()
+        if confirm != 'y':
+            print("[~] Skipping clearing. Proceeding with import...")
+            return
+        
+    print(f"[~] Deleting {len(parent_tasks)} parent tasks (and their subtasks)...")
+    for t in parent_tasks:
+        print(f"    -> Deleting task: '{t['name']}' (ID: {t['id']})...")
+        delete_url = f"https://api.clickup.com/api/v2/task/{t['id']}"
+        clickup_api_request(delete_url, "DELETE", headers)
+        
+    print("[+] List cleared successfully!\n")
+
 def main():
     print("====================================================")
     print("         HIST 21103 ClickUp Tasks Importer          ")
     print("====================================================\n")
     
+    # Check for CLI flags
+    force_clear = "--clear" in sys.argv or "-c" in sys.argv
+    non_interactive = "--non-interactive" in sys.argv or "-n" in sys.argv or force_clear
+    
     # 1. Gather Token and List ID (with defaults)
     default_token = "pk_57181843_7A77LBOH1UJUQS9EPJUH1IOOL62WY4CA"
     default_list_id = "901113816940"
     
-    api_token = input(f"Please paste your ClickUp Personal API Token [Default: {default_token[:6]}...{default_token[-6:]}]: ").strip()
-    if not api_token:
+    if non_interactive:
+        print("[~] Running in non-interactive mode. Using default credentials.")
         api_token = default_token
-        
-    list_id = input(f"Please enter your target ClickUp List ID [Default: {default_list_id}]: ").strip()
-    if not list_id:
         list_id = default_list_id
+    else:
+        api_token = input(f"Please paste your ClickUp Personal API Token [Default: {default_token[:6]}...{default_token[-6:]}]: ").strip()
+        if not api_token:
+            api_token = default_token
+            
+        list_id = input(f"Please enter your target ClickUp List ID [Default: {default_list_id}]: ").strip()
+        if not list_id:
+            list_id = default_list_id
         
     headers = {
         "Authorization": api_token
@@ -269,6 +386,13 @@ def main():
     except Exception as e:
         print("[ERROR] Connection verification failed. Please double-check your API token and List ID.")
         sys.exit(1)
+        
+    # Clear List if user wants to prevent duplicates
+    try:
+        clear_list_tasks(list_id, headers, force=force_clear)
+    except Exception as e:
+        print(f"[!] Warning: Failed to clear list tasks: {str(e)}")
+        print("    Proceeding with import anyway...")
         
     # 3. Create Tasks Loop
     print(f"\n[~] Ready to create {len(tasks_data)} parent tasks & their subtasks. Beginning import...\n")
@@ -300,9 +424,11 @@ def main():
                 
             # Create Nested Subtasks (omitted 'status' to let ClickUp default to list open status)
             for st_name in t["subtasks"]:
+                st_desc = get_subtask_details(st_name, t["name"])
                 st_payload = {
                     "name": st_name,
-                    "parent": task_id
+                    "parent": task_id,
+                    "markdown_content": st_desc
                 }
                 clickup_api_request(task_url, "POST", headers, st_payload)
                 print(f"       + Created subtask: '{st_name}'")
