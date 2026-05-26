@@ -231,16 +231,17 @@ def main():
     print("         HIST 21103 ClickUp Tasks Importer          ")
     print("====================================================\n")
     
-    # 1. Gather Token and List ID
-    api_token = input("Please paste your ClickUp Personal API Token: ").strip()
+    # 1. Gather Token and List ID (with defaults)
+    default_token = "pk_57181843_7A77LBOH1UJUQS9EPJUH1IOOL62WY4CA"
+    default_list_id = "901113816940"
+    
+    api_token = input(f"Please paste your ClickUp Personal API Token [Default: {default_token[:6]}...{default_token[-6:]}]: ").strip()
     if not api_token:
-        print("API Token is required!")
-        sys.exit(1)
+        api_token = default_token
         
-    list_id = input("Please enter your target ClickUp List ID: ").strip()
+    list_id = input(f"Please enter your target ClickUp List ID [Default: {default_list_id}]: ").strip()
     if not list_id:
-        print("List ID is required!")
-        sys.exit(1)
+        list_id = default_list_id
         
     headers = {
         "Authorization": api_token
@@ -275,14 +276,13 @@ def main():
     for i, t in enumerate(tasks_data, 1):
         print(f"[{i}/{len(tasks_data)}] Creating task: '{t['name']}'...")
         
-        # Prepare task payload
+        # Prepare task payload (omitted 'status' to let ClickUp default to the list open status)
         task_payload = {
             "name": t["name"],
             "markdown_content": t["description"],
             "start_date": date_to_ms(t["start_date"]),
             "due_date": date_to_ms(t["due_date"]),
-            "priority": t["priority"],
-            "status": "to do"
+            "priority": t["priority"]
         }
         
         try:
@@ -298,12 +298,11 @@ def main():
                 cf_url = f"https://api.clickup.com/api/v2/task/{task_id}/field/{points_field_id}"
                 clickup_api_request(cf_url, "POST", headers, {"value": t["points"]})
                 
-            # Create Nested Subtasks
+            # Create Nested Subtasks (omitted 'status' to let ClickUp default to list open status)
             for st_name in t["subtasks"]:
                 st_payload = {
                     "name": st_name,
-                    "parent": task_id,
-                    "status": "to do"
+                    "parent": task_id
                 }
                 clickup_api_request(task_url, "POST", headers, st_payload)
                 print(f"       + Created subtask: '{st_name}'")
@@ -311,8 +310,8 @@ def main():
             print("    -> Done!\n")
             
         except Exception as e:
-            print(f"[!] Warning: Failed to import task '{t['name']}' completely due to an error.")
-            print("    Skipping this task and proceeding to the next one...")
+            print(f"\n[ERROR] Failed to import task '{t['name']}' due to an error. Aborting execution to prevent a partially imported state.")
+            sys.exit(1)
             
     print("\n====================================================")
     print("       SUCCESS! All ClickUp tasks are imported!      ")
